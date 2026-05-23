@@ -1,0 +1,151 @@
+aid: klavis
+name: Klavis AI
+description: >-
+  Klavis AI is an open-source MCP integration platform that lets AI agents
+  reliably use external tools at production scale. The product line is
+  organized around Strata (intelligent connectors that compress and route
+  tool context), 100+ prebuilt MCP integrations with OAuth, and an MCP
+  Sandbox for live agent training and evaluation. Target customers are AI
+  agent companies, RL teams, and enterprises that need long-horizon
+  multi-app environments with seeded state, resets, and verifiable outcomes,
+  plus SOC 2 Type II and GDPR posture. SDKs are available for Python and
+  TypeScript/JavaScript, integrations cover Claude, OpenAI, Gemini, Cohere,
+  Mistral, LangChain/LangGraph, LlamaIndex, CrewAI, Mastra, Agno, Fireworks,
+  Together, and Google ADK, and the project is Apache-2.0 on GitHub.
+type: Index
+position: Provider
+access: 3rd-Party
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - MCP
+  - Model Context Protocol
+  - MCP Servers
+  - MCP Hosting
+  - Connectors
+  - OAuth
+  - Sandboxes
+  - Agent Training
+  - Reinforcement Learning
+  - White Label
+  - Open Source
+  - Strata
+url: https://raw.githubusercontent.com/api-evangelist/klavis/refs/heads/main/apis.yml
+created: '2026-05-23'
+modified: '2026-05-23'
+specificationVersion: '0.20'
+apis:
+  - aid: klavis:mcp-platform
+    name: Klavis MCP Platform API
+    description: >-
+      The Klavis API manages hosted MCP servers, OAuth flows for 50+
+      integrated services, Strata multi-tool servers, and live sandbox
+      environments. Endpoints cover MCP server CRUD and tool invocation,
+      sandbox VM acquisition and reset, data initialization and export, user
+      and integration management, and white-label OAuth branding.
+    humanURL: https://www.klavis.ai/docs
+    baseURL: https://api.klavis.ai
+    tags:
+      - MCP Servers
+      - Strata
+      - Sandboxes
+      - OAuth
+      - Integrations
+      - White Label
+      - Users
+    properties:
+      - type: Documentation
+        url: https://www.klavis.ai/docs
+      - type: APIReference
+        url: https://www.klavis.ai/docs/api-reference
+      - type: GettingStarted
+        url: https://www.klavis.ai/docs/quickstart
+      - type: SignUp
+        url: https://www.klavis.ai/home
+      - type: SDK
+        url: https://pypi.org/project/klavis/
+      - type: SDK
+        url: https://www.npmjs.com/package/klavis
+      - type: GitHubRepository
+        url: https://github.com/Klavis-AI/klavis
+      - type: GitHubOrganization
+        url: https://github.com/Klavis-AI
+      - type: Pricing
+        url: https://www.klavis.ai/pricing
+      - type: LLMsTxt
+        url: https://www.klavis.ai/docs/llms.txt
+    features:
+      - name: Hosted MCP Servers
+        description: Create, manage, and call 100+ prebuilt MCP servers via REST endpoints.
+      - name: Strata Unified Server
+        description: Single MCP endpoint that intelligently routes across multiple tool integrations to fit LLM context windows.
+      - name: OAuth for 50+ Services
+        description: Built-in OAuth flows for Gmail, Slack, Salesforce, HubSpot, Notion, GitHub, and more.
+      - name: White-Label OAuth
+        description: Brand OAuth screens and bring your own credentials for customer-facing apps.
+      - name: MCP Sandbox
+        description: Scalable, isolated VMs with seeded state, resets, parallel isolation, and snapshot export for agent training.
+      - name: Realistic Task Environments
+        description: Long-horizon multi-app scenarios spanning browser, code, SaaS, and MCP servers with verifiable outcomes.
+      - name: User & Integration Management
+        description: Manage end users, stored credentials, and which integrations are exposed per agent.
+      - name: Open Source Core
+        description: Apache-2.0 codebase covering 100+ MCP servers and Strata.
+      - name: Compliance
+        description: SOC 2 Type II and GDPR posture for regulated deployments.
+    useCases:
+      - name: Production Agent Integrations
+        description: Connect agents to Gmail, Slack, Salesforce, HubSpot, GitHub, Notion, and more without writing per-tool glue.
+      - name: Agent RL and Evals
+        description: Run reinforcement learning and evaluations in realistic multi-app sandboxes with verifiable outcomes.
+      - name: White-Label MCP for SaaS
+        description: Embed MCP-powered tools into your own product under your own brand.
+      - name: Tool Context Optimization
+        description: Use Strata to expose hundreds of tools to an LLM without overflowing context.
+      - name: Self-Hosted MCP
+        description: Deploy the open-source servers on your own infrastructure.
+    integrations:
+      - name: Claude
+      - name: OpenAI
+      - name: Gemini
+      - name: Cohere
+      - name: Mistral
+      - name: LangChain
+      - name: LangGraph
+      - name: LlamaIndex
+      - name: CrewAI
+      - name: Mastra
+      - name: Agno
+      - name: Fireworks AI
+      - name: Together AI
+      - name: Google ADK
+      - name: Claude Desktop
+      - name: Cursor
+      - name: VS Code
+      - name: Continue
+    authentication:
+      - type: API Key
+        description: "Account API keys passed via the `Authorization: Bearer` header authenticate REST and SDK calls."
+      - type: OAuth2
+        description: Built-in OAuth 2.0 flows handle credentials for 50+ third-party services on behalf of end users.
+common:
+  - type: Website
+    url: https://www.klavis.ai
+  - type: Documentation
+    url: https://www.klavis.ai/docs
+  - type: Blog
+    url: https://www.klavis.ai/blog
+  - type: GitHubOrganization
+    url: https://github.com/Klavis-AI
+  - type: GitHubRepository
+    url: https://github.com/Klavis-AI/klavis
+  - type: Pricing
+    url: https://www.klavis.ai/pricing
+  - type: Contact
+    url: https://www.klavis.ai/contact
+  - type: TermsOfService
+    url: https://www.klavis.ai/terms
+  - type: PrivacyPolicy
+    url: https://www.klavis.ai/privacy
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
