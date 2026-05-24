@@ -1,0 +1,297 @@
+openapi: 3.1.0
+info:
+  title: Klavis AI MCP Platform API
+  description: >-
+    Klavis AI is an open-source MCP integration platform for AI agents. The
+    REST API manages hosted MCP servers, tool invocation, sandbox VM
+    acquisition, and user/integration metadata. API key authentication is
+    passed via the Authorization Bearer header; OAuth 2.0 is supported for
+    third-party service flows.
+  version: v1
+  contact:
+    name: Klavis AI Developer Support
+    url: https://www.klavis.ai/docs
+servers:
+  - url: https://api.klavis.ai
+    description: Klavis AI production server
+security:
+  - BearerAuth: []
+tags:
+  - name: MCP Servers
+    description: Create and manage hosted MCP server instances
+  - name: Tools
+    description: List and invoke MCP server tools
+  - name: Sandbox
+    description: Acquire and manage isolated sandbox VMs
+  - name: Users
+    description: End-user metadata for agent integrations
+paths:
+  /api/mcp-server/create:
+    post:
+      operationId: createMcpServer
+      summary: Create MCP Server Instance
+      description: >-
+        Create a URL for a specified MCP server. Validates the request with an
+        API key and user details, returning an instance identifier and
+        connection URL.
+      tags:
+        - MCP Servers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMcpServerRequest'
+      responses:
+        '200':
+          description: MCP server instance created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/McpServerInstance'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/mcp-server/{server_id}/tools:
+    get:
+      operationId: listMcpServerTools
+      summary: List MCP Server Tools
+      description: >-
+        List all tools available for a specific remote MCP server in various AI
+        model formats.
+      tags:
+        - Tools
+      parameters:
+        - name: server_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Identifier of the MCP server instance
+        - name: format
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [openai, anthropic, gemini, mcp]
+          description: Tool schema format to return
+      responses:
+        '200':
+          description: List of available tools
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToolListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/mcp-server/call-tool:
+    post:
+      operationId: callMcpTool
+      summary: Call Tool
+      description: >-
+        Invoke a tool on a specific remote MCP server. Used by clients to
+        perform function calls without writing per-tool MCP code.
+      tags:
+        - Tools
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CallToolRequest'
+      responses:
+        '200':
+          description: Tool invocation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallToolResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/sandbox/create:
+    post:
+      operationId: createSandbox
+      summary: Acquire Sandbox
+      description: >-
+        Acquire an idle sandbox instance for a specific MCP server with
+        optional benchmark configuration.
+      tags:
+        - Sandbox
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSandboxRequest'
+      responses:
+        '200':
+          description: Sandbox acquired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sandbox'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/user/{user_id}:
+    get:
+      operationId: getUser
+      summary: Get User Information
+      description: Retrieve user metadata by user identifier.
+      tags:
+        - Users
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: User identifier
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Klavis account API key passed via the Authorization Bearer header
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        code:
+          type: integer
+    CreateMcpServerRequest:
+      type: object
+      required:
+        - serverName
+        - userId
+      properties:
+        serverName:
+          type: string
+          description: Name of the prebuilt MCP server to instantiate (e.g., Gmail, Slack)
+        userId:
+          type: string
+          description: End-user identifier owning this instance
+        platformName:
+          type: string
+          description: Calling platform identifier
+    McpServerInstance:
+      type: object
+      properties:
+        instanceId:
+          type: string
+        serverUrl:
+          type: string
+          format: uri
+        oauthUrl:
+          type: string
+          format: uri
+          nullable: true
+    Tool:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        parameters:
+          type: object
+          additionalProperties: true
+    ToolListResponse:
+      type: object
+      properties:
+        tools:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tool'
+    CallToolRequest:
+      type: object
+      required:
+        - serverUrl
+        - toolName
+      properties:
+        serverUrl:
+          type: string
+          format: uri
+        toolName:
+          type: string
+        toolArgs:
+          type: object
+          additionalProperties: true
+        connectionType:
+          type: string
+          enum: [sse, streamable_http]
+    CallToolResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        result:
+          type: object
+          additionalProperties: true
+        error:
+          type: string
+          nullable: true
+    CreateSandboxRequest:
+      type: object
+      required:
+        - serverName
+      properties:
+        serverName:
+          type: string
+        benchmark:
+          type: string
+          nullable: true
+        seedConfig:
+          type: object
+          additionalProperties: true
+    Sandbox:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+        status:
+          type: string
+        connectionUrl:
+          type: string
+          format: uri
+        createdAt:
+          type: string
+          format: date-time
+    User:
+      type: object
+      properties:
+        userId:
+          type: string
+        email:
+          type: string
+        integrations:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
