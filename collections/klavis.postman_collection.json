@@ -1,0 +1,917 @@
+{
+  "item": [
+    {
+      "id": "93f9f7f6-3cb6-4669-a99d-d47e8a9b4fae",
+      "name": "MCP Servers",
+      "description": {
+        "content": "Create and manage hosted MCP server instances",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "2794f4e5-9751-49e4-a15d-575ee3c9cd4a",
+          "name": "Create MCP Server Instance",
+          "request": {
+            "name": "Create MCP Server Instance",
+            "description": {
+              "content": "Create a URL for a specified MCP server. Validates the request with an API key and user details, returning an instance identifier and connection URL.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "mcp-server",
+                "create"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"serverName\": \"<string>\",\n  \"userId\": \"<string>\",\n  \"platformName\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2225dcee-79af-48cc-8cae-d67e0d81ab2a",
+              "name": "MCP server instance created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "mcp-server",
+                    "create"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"serverName\": \"<string>\",\n  \"userId\": \"<string>\",\n  \"platformName\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"instanceId\": \"string\",\n  \"serverUrl\": \"http://qxWrfRyAdBAmh.vzmqipmHIxYR3C,uE\",\n  \"oauthUrl\": \"https://TgOjacTUizeluPbnVBn.myyoJ9wpAVmE-obo2yOgRHOZw6j-.kS50hoV3LsAEOCOR9QOI8TiBwI3UxAlfYvaZz8\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8504da5f-f6ad-4e5d-b24f-e9e3ee697d03",
+              "name": "Missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "mcp-server",
+                    "create"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"serverName\": \"<string>\",\n  \"userId\": \"<string>\",\n  \"platformName\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"code\": 9240\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "377b695d-e54f-4607-84c1-56b2f05b4c41",
+      "name": "Tools",
+      "description": {
+        "content": "List and invoke MCP server tools",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "1a567327-7fc5-41de-839f-6fd61a2a1fe5",
+          "name": "List MCP Server Tools",
+          "request": {
+            "name": "List MCP Server Tools",
+            "description": {
+              "content": "List all tools available for a specific remote MCP server in various AI model formats.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "mcp-server",
+                ":server_id",
+                "tools"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "format",
+                  "value": "<string>",
+                  "description": "Tool schema format to return"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "server_id",
+                  "description": "(Required) Identifier of the MCP server instance"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "413a0777-5d55-45c1-ba1a-9c6fdca1f738",
+              "name": "List of available tools",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "mcp-server",
+                    ":server_id",
+                    "tools"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "server_id",
+                      "description": "(Required) Identifier of the MCP server instance"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tools\": [\n    {\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"parameters\": {\n        \"key_0\": 9948.382776991464,\n        \"key_1\": false\n      }\n    },\n    {\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"parameters\": {\n        \"key_0\": \"string\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f606da22-7c97-459c-9d0f-7a57f5fe5fda",
+              "name": "Missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "mcp-server",
+                    ":server_id",
+                    "tools"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "server_id",
+                      "description": "(Required) Identifier of the MCP server instance"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"code\": 9240\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "92dcda09-e499-4eed-a740-ebabee405272",
+          "name": "Call Tool",
+          "request": {
+            "name": "Call Tool",
+            "description": {
+              "content": "Invoke a tool on a specific remote MCP server. Used by clients to perform function calls without writing per-tool MCP code.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "mcp-server",
+                "call-tool"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"serverUrl\": \"<uri>\",\n  \"toolName\": \"<string>\",\n  \"toolArgs\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\",\n    \"key_2\": 7998,\n    \"key_3\": 4316\n  },\n  \"connectionType\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5dc00b3f-4ecd-4db7-9171-1fa0e9dfc7b2",
+              "name": "Tool invocation result",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "mcp-server",
+                    "call-tool"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"serverUrl\": \"<uri>\",\n  \"toolName\": \"<string>\",\n  \"toolArgs\": {\n    \"key_0\": true\n  },\n  \"connectionType\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"result\": {\n    \"key_0\": false,\n    \"key_1\": \"string\"\n  },\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7701fd43-c1e5-476d-9bcf-82a529f2b9a2",
+              "name": "Missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "mcp-server",
+                    "call-tool"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"serverUrl\": \"<uri>\",\n  \"toolName\": \"<string>\",\n  \"toolArgs\": {\n    \"key_0\": true\n  },\n  \"connectionType\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"code\": 9240\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "d14f38e7-13d4-475b-9166-3200cb8c3ce6",
+      "name": "Sandbox",
+      "description": {
+        "content": "Acquire and manage isolated sandbox VMs",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "11215a8e-905c-4f64-9ad1-ea1c0349e8ff",
+          "name": "Acquire Sandbox",
+          "request": {
+            "name": "Acquire Sandbox",
+            "description": {
+              "content": "Acquire an idle sandbox instance for a specific MCP server with optional benchmark configuration.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "sandbox",
+                "create"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"serverName\": \"<string>\",\n  \"benchmark\": \"<string>\",\n  \"seedConfig\": {\n    \"key_0\": \"string\",\n    \"key_1\": 495,\n    \"key_2\": false,\n    \"key_3\": 2802.4958251435073,\n    \"key_4\": \"string\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "18bae2b8-c2d7-4d08-a670-d9abe77e6661",
+              "name": "Sandbox acquired",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sandbox",
+                    "create"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"serverName\": \"<string>\",\n  \"benchmark\": \"<string>\",\n  \"seedConfig\": {\n    \"key_0\": \"string\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sandboxId\": \"string\",\n  \"status\": \"string\",\n  \"connectionUrl\": \"https://rqrLGXVOxGLWcYZFIyCJzeP.jnRhdaLkWqeEpyn7Cq,YqMPVJNSWKd4D\",\n  \"createdAt\": \"1985-12-05T11:45:52.043Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3413a22f-b51e-4772-8997-aa812104dd0b",
+              "name": "Missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sandbox",
+                    "create"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"serverName\": \"<string>\",\n  \"benchmark\": \"<string>\",\n  \"seedConfig\": {\n    \"key_0\": \"string\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"code\": 9240\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "ce203eb6-f458-4b25-91cd-c3f73b232d1f",
+      "name": "Users",
+      "description": {
+        "content": "End-user metadata for agent integrations",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "17e6e794-296c-41a2-a02e-adc2eb6d3506",
+          "name": "Get User Information",
+          "request": {
+            "name": "Get User Information",
+            "description": {
+              "content": "Retrieve user metadata by user identifier.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "user",
+                ":user_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "user_id",
+                  "description": "(Required) User identifier"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8f76c69f-128e-4b0a-b2a8-2c0fa4275c23",
+              "name": "User details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "user",
+                    ":user_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "user_id",
+                      "description": "(Required) User identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"userId\": \"string\",\n  \"email\": \"string\",\n  \"integrations\": [\n    \"string\",\n    \"string\"\n  ],\n  \"createdAt\": \"2023-04-15T22:53:01.950Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5de6df54-599b-4986-b2e0-432d7cfdb4c8",
+              "name": "Missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "user",
+                    ":user_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "user_id",
+                      "description": "(Required) User identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"code\": 9240\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f539fb17-1f0d-41c4-933c-2badca3feeea",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "user",
+                    ":user_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "user_id",
+                      "description": "(Required) User identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"code\": 9240\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.klavis.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "e209e22b-d1b6-408f-bdf5-d7dd7810282c",
+    "name": "Klavis AI MCP Platform API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Klavis AI is an open-source MCP integration platform for AI agents. The REST API manages hosted MCP servers, tool invocation, sandbox VM acquisition, and user/integration metadata. API key authentication is passed via the Authorization Bearer header; OAuth 2.0 is supported for third-party service flows.\n\nContact Support:\n Name: Klavis AI Developer Support",
+      "type": "text/plain"
+    }
+  }
+}
