@@ -59,11 +59,11 @@ apis:
         url: https://www.klavis.ai/docs/api-reference
       - type: GettingStarted
         url: https://www.klavis.ai/docs/quickstart
-      - type: SignUp
+      - type: Signup
         url: https://www.klavis.ai/home
-      - type: SDK
+      - type: SDKs
         url: https://pypi.org/project/klavis/
-      - type: SDK
+      - type: SDKs
         url: https://www.npmjs.com/package/klavis
       - type: GitHubRepository
         url: https://github.com/Klavis-AI/klavis
@@ -71,7 +71,7 @@ apis:
         url: https://github.com/Klavis-AI
       - type: Pricing
         url: https://www.klavis.ai/pricing
-      - type: LLMsTxt
+      - type: LlmsText
         url: https://www.klavis.ai/docs/llms.txt
     features:
       - name: Hosted MCP Servers
