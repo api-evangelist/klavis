@@ -1,0 +1,87 @@
+openapi: 3.1.0
+info:
+  title: Klavis AI MCP Platform MCP Servers API
+  description: Klavis AI is an open-source MCP integration platform for AI agents. The REST API manages hosted MCP servers, tool invocation, sandbox VM acquisition, and user/integration metadata. API key authentication is passed via the Authorization Bearer header; OAuth 2.0 is supported for third-party service flows.
+  version: v1
+  contact:
+    name: Klavis AI Developer Support
+    url: https://www.klavis.ai/docs
+servers:
+- url: https://api.klavis.ai
+  description: Klavis AI production server
+security:
+- BearerAuth: []
+tags:
+- name: MCP Servers
+  description: Create and manage hosted MCP server instances
+paths:
+  /api/mcp-server/create:
+    post:
+      operationId: createMcpServer
+      summary: Create MCP Server Instance
+      description: Create a URL for a specified MCP server. Validates the request with an API key and user details, returning an instance identifier and connection URL.
+      tags:
+      - MCP Servers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMcpServerRequest'
+      responses:
+        '200':
+          description: MCP server instance created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/McpServerInstance'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        code:
+          type: integer
+    CreateMcpServerRequest:
+      type: object
+      required:
+      - serverName
+      - userId
+      properties:
+        serverName:
+          type: string
+          description: Name of the prebuilt MCP server to instantiate (e.g., Gmail, Slack)
+        userId:
+          type: string
+          description: End-user identifier owning this instance
+        platformName:
+          type: string
+          description: Calling platform identifier
+    McpServerInstance:
+      type: object
+      properties:
+        instanceId:
+          type: string
+        serverUrl:
+          type: string
+          format: uri
+        oauthUrl:
+          type: string
+          format: uri
+          nullable: true
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Klavis account API key passed via the Authorization Bearer header

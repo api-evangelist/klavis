@@ -1,0 +1,86 @@
+openapi: 3.1.0
+info:
+  title: Klavis AI MCP Platform MCP Servers Sandbox API
+  description: Klavis AI is an open-source MCP integration platform for AI agents. The REST API manages hosted MCP servers, tool invocation, sandbox VM acquisition, and user/integration metadata. API key authentication is passed via the Authorization Bearer header; OAuth 2.0 is supported for third-party service flows.
+  version: v1
+  contact:
+    name: Klavis AI Developer Support
+    url: https://www.klavis.ai/docs
+servers:
+- url: https://api.klavis.ai
+  description: Klavis AI production server
+security:
+- BearerAuth: []
+tags:
+- name: Sandbox
+  description: Acquire and manage isolated sandbox VMs
+paths:
+  /api/sandbox/create:
+    post:
+      operationId: createSandbox
+      summary: Acquire Sandbox
+      description: Acquire an idle sandbox instance for a specific MCP server with optional benchmark configuration.
+      tags:
+      - Sandbox
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSandboxRequest'
+      responses:
+        '200':
+          description: Sandbox acquired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sandbox'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        code:
+          type: integer
+    Sandbox:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+        status:
+          type: string
+        connectionUrl:
+          type: string
+          format: uri
+        createdAt:
+          type: string
+          format: date-time
+    CreateSandboxRequest:
+      type: object
+      required:
+      - serverName
+      properties:
+        serverName:
+          type: string
+        benchmark:
+          type: string
+          nullable: true
+        seedConfig:
+          type: object
+          additionalProperties: true
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Klavis account API key passed via the Authorization Bearer header

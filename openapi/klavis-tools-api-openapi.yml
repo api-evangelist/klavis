@@ -1,0 +1,141 @@
+openapi: 3.1.0
+info:
+  title: Klavis AI MCP Platform MCP Servers Tools API
+  description: Klavis AI is an open-source MCP integration platform for AI agents. The REST API manages hosted MCP servers, tool invocation, sandbox VM acquisition, and user/integration metadata. API key authentication is passed via the Authorization Bearer header; OAuth 2.0 is supported for third-party service flows.
+  version: v1
+  contact:
+    name: Klavis AI Developer Support
+    url: https://www.klavis.ai/docs
+servers:
+- url: https://api.klavis.ai
+  description: Klavis AI production server
+security:
+- BearerAuth: []
+tags:
+- name: Tools
+  description: List and invoke MCP server tools
+paths:
+  /api/mcp-server/{server_id}/tools:
+    get:
+      operationId: listMcpServerTools
+      summary: List MCP Server Tools
+      description: List all tools available for a specific remote MCP server in various AI model formats.
+      tags:
+      - Tools
+      parameters:
+      - name: server_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Identifier of the MCP server instance
+      - name: format
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - openai
+          - anthropic
+          - gemini
+          - mcp
+        description: Tool schema format to return
+      responses:
+        '200':
+          description: List of available tools
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToolListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/mcp-server/call-tool:
+    post:
+      operationId: callMcpTool
+      summary: Call Tool
+      description: Invoke a tool on a specific remote MCP server. Used by clients to perform function calls without writing per-tool MCP code.
+      tags:
+      - Tools
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CallToolRequest'
+      responses:
+        '200':
+          description: Tool invocation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallToolResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    CallToolRequest:
+      type: object
+      required:
+      - serverUrl
+      - toolName
+      properties:
+        serverUrl:
+          type: string
+          format: uri
+        toolName:
+          type: string
+        toolArgs:
+          type: object
+          additionalProperties: true
+        connectionType:
+          type: string
+          enum:
+          - sse
+          - streamable_http
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        code:
+          type: integer
+    Tool:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        parameters:
+          type: object
+          additionalProperties: true
+    CallToolResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        result:
+          type: object
+          additionalProperties: true
+        error:
+          type: string
+          nullable: true
+    ToolListResponse:
+      type: object
+      properties:
+        tools:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tool'
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Klavis account API key passed via the Authorization Bearer header
