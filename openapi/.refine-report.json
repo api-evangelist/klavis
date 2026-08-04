@@ -1,0 +1,20 @@
+{
+  "provider": "klavis",
+  "sources": [
+    "klavis-mcp-servers-api-openapi.yml",
+    "klavis-sandbox-api-openapi.yml",
+    "klavis-tools-api-openapi.yml",
+    "klavis-users-api-openapi.yml"
+  ],
+  "outputs": [
+    "klavis-mcp-servers-api-openapi.yml",
+    "klavis-sandbox-api-openapi.yml",
+    "klavis-tools-api-openapi.yml",
+    "klavis-users-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
