@@ -1,0 +1,197 @@
+{
+  "item": [
+    {
+      "id": "bc8f5336-e530-4377-afac-11f7ad4898a4",
+      "name": "Sandbox",
+      "description": {
+        "content": "Acquire and manage isolated sandbox VMs",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "9ad68203-dfe5-44b0-921b-64425bf4aa8f",
+          "name": "Acquire Sandbox",
+          "request": {
+            "name": "Acquire Sandbox",
+            "description": {
+              "content": "Acquire an idle sandbox instance for a specific MCP server with optional benchmark configuration.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "sandbox",
+                "create"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"serverName\": \"<string>\",\n  \"benchmark\": \"<string>\",\n  \"seedConfig\": {\n    \"key_0\": \"string\",\n    \"key_1\": 6033\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "47f48aa3-bd3e-4f4d-a433-197dc17111c6",
+              "name": "Sandbox acquired",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sandbox",
+                    "create"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"serverName\": \"<string>\",\n  \"benchmark\": \"<string>\",\n  \"seedConfig\": {\n    \"key_0\": 2437\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sandboxId\": \"string\",\n  \"status\": \"string\",\n  \"connectionUrl\": \"http://UYsJyDzfDrdXFBXxjPefqCsQyGB.zab81GFpee-ClyvGiyHeFq15ty\",\n  \"createdAt\": \"1975-08-19T21:52:55.122Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "39f42daf-0feb-43ea-937a-77bb4b6df0f0",
+              "name": "Missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "sandbox",
+                    "create"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"serverName\": \"<string>\",\n  \"benchmark\": \"<string>\",\n  \"seedConfig\": {\n    \"key_0\": 2437\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"code\": 5328\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.klavis.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "a2d54685-025a-46d6-b223-06745c037e15",
+    "name": "Klavis AI MCP Platform MCP Servers Sandbox API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Klavis AI is an open-source MCP integration platform for AI agents. The REST API manages hosted MCP servers, tool invocation, sandbox VM acquisition, and user/integration metadata. API key authentication is passed via the Authorization Bearer header; OAuth 2.0 is supported for third-party service flows.\n\nContact Support:\n Name: Klavis AI Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

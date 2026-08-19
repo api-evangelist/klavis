@@ -1,0 +1,64 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Klavis AI MCP Platform MCP Servers Tools API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tools",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List MCP Server Tools",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.klavis.ai/api/mcp-server/:server_id/tools",
+            "params": [
+              {
+                "name": "server_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the MCP server instance"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "Tool schema format to return"
+              }
+            ]
+          },
+          "docs": "List all tools available for a specific remote MCP server in various AI model formats."
+        },
+        {
+          "info": {
+            "name": "Call Tool",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.klavis.ai/api/mcp-server/call-tool",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Invoke a tool on a specific remote MCP server. Used by clients to perform function calls without writing per-tool MCP code."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

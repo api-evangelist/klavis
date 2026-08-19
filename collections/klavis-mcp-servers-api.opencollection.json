@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Klavis AI MCP Platform MCP Servers API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "MCP Servers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create MCP Server Instance",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.klavis.ai/api/mcp-server/create",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a URL for a specified MCP server. Validates the request with an API key and user details, returning an instance identifier and connection URL."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

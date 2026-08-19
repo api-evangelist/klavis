@@ -1,0 +1,43 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Klavis AI MCP Platform MCP Servers Users API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get User Information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.klavis.ai/api/user/:user_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "User identifier"
+              }
+            ]
+          },
+          "docs": "Retrieve user metadata by user identifier."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

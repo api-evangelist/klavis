@@ -1,0 +1,197 @@
+{
+  "item": [
+    {
+      "id": "4a6fff75-b9e1-40f5-9973-952f73ead752",
+      "name": "MCP Servers",
+      "description": {
+        "content": "Create and manage hosted MCP server instances",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b75a8d27-8f88-429f-9fd7-6cdb7e4f4c1a",
+          "name": "Create MCP Server Instance",
+          "request": {
+            "name": "Create MCP Server Instance",
+            "description": {
+              "content": "Create a URL for a specified MCP server. Validates the request with an API key and user details, returning an instance identifier and connection URL.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "mcp-server",
+                "create"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"serverName\": \"<string>\",\n  \"userId\": \"<string>\",\n  \"platformName\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "be8a5125-d022-488e-95f2-4ad677521d8c",
+              "name": "MCP server instance created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "mcp-server",
+                    "create"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"serverName\": \"<string>\",\n  \"userId\": \"<string>\",\n  \"platformName\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"instanceId\": \"string\",\n  \"serverUrl\": \"http://PsTDifHxhrrGxeqWmyBkcEi.alojTGh0nHc-\",\n  \"oauthUrl\": \"http://tk.nsjW3bPtfPD9jox6Rv3RqTJndVugu2YagJQdlx8J,\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3a1a04df-5568-43c7-8d0c-804f15f1af0a",
+              "name": "Missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "mcp-server",
+                    "create"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"serverName\": \"<string>\",\n  \"userId\": \"<string>\",\n  \"platformName\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"code\": 3175\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.klavis.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "4c5b830a-3228-4c6a-9055-0752740087b2",
+    "name": "Klavis AI MCP Platform MCP Servers API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Klavis AI is an open-source MCP integration platform for AI agents. The REST API manages hosted MCP servers, tool invocation, sandbox VM acquisition, and user/integration metadata. API key authentication is passed via the Authorization Bearer header; OAuth 2.0 is supported for third-party service flows.\n\nContact Support:\n Name: Klavis AI Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

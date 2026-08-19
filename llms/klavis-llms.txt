@@ -1,0 +1,352 @@
+# Klavis AI
+
+> Klavis AI is building Open Source MCP Integrations for AI applications.
+
+## Docs
+
+- [Paving the road to AGI](https://www.klavis.ai/docs/introduction.md)
+- [Sandbox](https://www.klavis.ai/docs/concepts/sandbox.md): Scalable, isolated training and RL environments for real-world tool use
+- [Overview](https://www.klavis.ai/docs/api-reference/overview.md)
+- [Authentication](https://www.klavis.ai/docs/api-reference/authentication.md): How to authenticate your API requests.
+- [Rate Limit](https://www.klavis.ai/docs/api-reference/rate-limit.md): Understanding API rate limits.
+- [Acquire a sandbox](https://www.klavis.ai/docs/api-reference/sandbox/create.md): Acquire an idle sandbox instance for a specific MCP server. The sandbox will be marked as 'occupied'. Optionally choose a benchmark (e.g., 'MCP_Atlas', 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data fo…
+- [Get sandbox details](https://www.klavis.ai/docs/api-reference/sandbox/get.md): Retrieve detailed information about a specific sandbox instance.
+- [List all sandboxes](https://www.klavis.ai/docs/api-reference/sandbox/list.md): Get all sandboxes associated with the API key's account. Optionally filter by tag.
+- [Release sandbox](https://www.klavis.ai/docs/api-reference/sandbox/delete.md): Release an occupied sandbox back to idle state and marks the sandbox as available for reuse.
+- [Reset sandbox to initial state](https://www.klavis.ai/docs/api-reference/sandbox/reset.md): Reset the sandbox to its initial empty state, clearing all data while maintaining the sandbox instance.
+- [Prepare sandbox infrastructure for high demand](https://www.klavis.ai/docs/api-reference/sandbox/prepare.md): Scale up sandbox capacity for the specified benchmark in anticipation of heavy usage. The capacity boost is temporary and reverts automatically after approximately 1 hour. Can be called multiple times for different benchmarks; each benchmark's capacity is managed independently.
+- [Initialize airtable sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/airtable/initialize-airtable.md): Initialize the sandbox with airtable-specific data following the defined schema.
+- [Export airtable sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/airtable/dump-airtable.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize asana sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/asana/initialize-asana.md): Initialize the sandbox with asana-specific data following the defined schema.
+- [Export asana sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/asana/dump-asana.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize calcom](https://www.klavis.ai/docs/api-reference/sandbox/calcom/initialize-calcom.md)
+- [Dump calcom](https://www.klavis.ai/docs/api-reference/sandbox/calcom/dump-calcom.md)
+- [Initialize clickup sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/clickup/initialize-clickup.md): Initialize the sandbox with clickup-specific data following the defined schema.
+- [Export clickup sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/clickup/dump-clickup.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize close sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/close/initialize-close.md): Initialize the sandbox with close-specific data following the defined schema.
+- [Export close sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/close/dump-close.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize confluence sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/confluence/initialize-confluence.md): Initialize the sandbox with confluence-specific data following the defined schema.
+- [Export confluence sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/confluence/dump-confluence.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize discord sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/discord/initialize-discord.md): Initialize the sandbox with discord-specific data following the defined schema.
+- [Export discord sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/discord/dump-discord.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize dropbox sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/dropbox/initialize-dropbox.md): Initialize the sandbox with dropbox-specific data following the defined schema.
+- [Export dropbox sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/dropbox/dump-dropbox.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize gmail sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/gmail/initialize-gmail.md): Initialize the sandbox with gmail-specific data following the defined schema.
+- [Export gmail sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/gmail/dump-gmail.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize github sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/github/initialize-github.md): Initialize the sandbox with github-specific data following the defined schema.
+- [Export github sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/github/dump-github.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize google_calendar sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/google_calendar/initialize-google-calendar.md): Initialize the sandbox with google_calendar-specific data following the defined schema.
+- [Export google_calendar sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/google_calendar/dump-google-calendar.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize google_docs sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/google_docs/initialize-google-docs.md): Initialize the sandbox with google_docs-specific data following the defined schema.
+- [Export google_docs sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/google_docs/dump-google-docs.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize google_drive sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/google_drive/initialize-google-drive.md): Initialize the sandbox with google_drive-specific data following the defined schema.
+- [Export google_drive sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/google_drive/dump-google-drive.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize google_sheets sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/google_sheets/initialize-google-sheets.md): Initialize the sandbox with google_sheets-specific data following the defined schema.
+- [Export google_sheets sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/google_sheets/dump-google-sheets.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize hubspot sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/hubspot/initialize-hubspot.md): Initialize the sandbox with hubspot-specific data following the defined schema.
+- [Export hubspot sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/hubspot/dump-hubspot.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize jira sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/jira/initialize-jira.md): Initialize the sandbox with jira-specific data following the defined schema.
+- [Export jira sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/jira/dump-jira.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize linear sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/linear/initialize-linear.md): Initialize the sandbox with linear-specific data following the defined schema.
+- [Export linear sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/linear/dump-linear.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize mem0 sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/mem0/initialize-mem0.md): Initialize the sandbox with mem0-specific data following the defined schema.
+- [Export mem0 sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/mem0/dump-mem0.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize moneybird sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/moneybird/initialize-moneybird.md): Initialize the sandbox with moneybird-specific data following the defined schema.
+- [Export moneybird sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/moneybird/dump-moneybird.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize notion sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/notion/initialize-notion.md): Initialize the sandbox with notion-specific data following the defined schema.
+- [Export notion sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/notion/dump-notion.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize onedrive sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/onedrive/initialize-onedrive.md): Initialize the sandbox with onedrive-specific data following the defined schema.
+- [Export onedrive sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/onedrive/dump-onedrive.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize outlook_calendar sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/outlook_calendar/initialize-outlook-calendar.md): Initialize the sandbox with outlook_calendar-specific data following the defined schema.
+- [Export outlook_calendar sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/outlook_calendar/dump-outlook-calendar.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize outlook_mail sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/outlook_mail/initialize-outlook-mail.md): Initialize the sandbox with outlook_mail-specific data following the defined schema.
+- [Export outlook_mail sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/outlook_mail/dump-outlook-mail.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize quickbooks sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/quickbooks/initialize-quickbooks.md): Initialize the sandbox with quickbooks-specific data following the defined schema.
+- [Export quickbooks sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/quickbooks/dump-quickbooks.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize resend sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/resend/initialize-resend.md): Initialize the sandbox with resend-specific data following the defined schema.
+- [Export resend sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/resend/dump-resend.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize salesforce sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/salesforce/initialize-salesforce.md): Initialize the sandbox with salesforce-specific data following the defined schema.
+- [Export salesforce sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/salesforce/dump-salesforce.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize shopify sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/shopify/initialize-shopify.md): Initialize the sandbox with shopify-specific data following the defined schema.
+- [Export shopify sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/shopify/dump-shopify.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize slack sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/slack/initialize-slack.md): Initialize the sandbox with slack-specific data following the defined schema.
+- [Export slack sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/slack/dump-slack.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize snowflake sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/snowflake/initialize-snowflake.md): Initialize the sandbox with snowflake-specific data following the defined schema.
+- [Export snowflake sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/snowflake/dump-snowflake.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize supabase sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/supabase/initialize-supabase.md): Initialize the sandbox with supabase-specific data following the defined schema.
+- [Export supabase sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/supabase/dump-supabase.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize microsoft_teams sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/microsoft_teams/initialize-microsoft-teams.md): Initialize the sandbox with microsoft_teams-specific data following the defined schema.
+- [Export microsoft_teams sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/microsoft_teams/dump-microsoft-teams.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize monday sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/monday/initialize-monday.md): Initialize the sandbox with monday-specific data following the defined schema.
+- [Export monday sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/monday/dump-monday.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize motion sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/motion/initialize-motion.md): Initialize the sandbox with motion-specific data following the defined schema.
+- [Export motion sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/motion/dump-motion.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize woocommerce sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/woocommerce/initialize-woocommerce.md): Initialize the sandbox with woocommerce-specific data following the defined schema.
+- [Export woocommerce sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/woocommerce/dump-woocommerce.md): Export all data from the sandbox in the same format used for initialization.
+- [Initialize wordpress sandbox with data](https://www.klavis.ai/docs/api-reference/sandbox/wordpress/initialize-wordpress.md): Initialize the sandbox with wordpress-specific data following the defined schema.
+- [Export wordpress sandbox data](https://www.klavis.ai/docs/api-reference/sandbox/wordpress/dump-wordpress.md): Export all data from the sandbox in the same format used for initialization.
+- [Stateless MCP Server](https://www.klavis.ai/docs/api-reference/sandbox/stateless_mcp.md): A list of stateless MCP servers supported in Klavis Sandbox that can be accessed directly without authentication
+- [Acquire a local sandbox](https://www.klavis.ai/docs/api-reference/local-sandbox/acquire.md): Initializes a specialized Virtual Machine environment (Local Sandbox) that hosts multiple interconnected MCP servers. Optionally specify a benchmark (e.g., 'Toolathlon') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded dat…
+- [Get local sandbox details](https://www.klavis.ai/docs/api-reference/local-sandbox/get.md): Retrieves details about a local sandbox environment, including its status and all running servers.
+- [List local sandboxes](https://www.klavis.ai/docs/api-reference/local-sandbox/list.md): Lists all active local sandbox environments owned by the user.
+- [Release a local sandbox](https://www.klavis.ai/docs/api-reference/local-sandbox/release.md): Releases the local sandbox VM and all associated servers, cleaning up the shared environment.
+- [Reset local sandbox to initial state](https://www.klavis.ai/docs/api-reference/local-sandbox/reset.md): Resets the state of the local sandbox VM and all its servers to their initial state.
+- [Get URL to upload your data](https://www.klavis.ai/docs/api-reference/local-sandbox/upload-url.md): Generates a signed URL to upload a `tar.gz` archive containing your workspace files. Once uploaded, use the `/initialize` endpoint to unpack it into the sandbox.
+- [Initialize sandbox from your uploaded data](https://www.klavis.ai/docs/api-reference/local-sandbox/initialize.md): Extracts the uploaded `tar.gz` archive into the sandbox workspace. This must be called after successfully uploading the file using the URL from `/upload-url`.
+- [Download sandbox data](https://www.klavis.ai/docs/api-reference/local-sandbox/dump.md): Creates a `tar.gz` archive of the current workspace and provides a temporary download URL. Useful for saving your work or exporting the sandbox state.
+- [List universes](https://www.klavis.ai/docs/api-reference/universe/list-universes.md): List all available universes.
+- [Get init data](https://www.klavis.ai/docs/api-reference/universe/get-universe-data.md): Get universe initial data for all services.
+- [Acquire universe](https://www.klavis.ai/docs/api-reference/universe/acquire-universe.md): Acquire the next idle universe instance.
+- [Release universe](https://www.klavis.ai/docs/api-reference/universe/release-universe.md): Release and Reinitialize the universe to its initial state.
+- [Get task details](https://www.klavis.ai/docs/api-reference/universe/get-task.md): Get task details within a universe instance.
+- [Verify task](https://www.klavis.ai/docs/api-reference/universe/verify-task.md): Verify if the task has been performed correctly by running the task's verify function.
+- [Create](https://www.klavis.ai/docs/api-reference/strata/create.md): Create a Strata MCP server.
+- [Get](https://www.klavis.ai/docs/api-reference/strata/get.md): Get information about an existing Strata MCP server instance.
+- [Add](https://www.klavis.ai/docs/api-reference/strata/add.md): Add servers to an existing Strata MCP server.
+- [Delete](https://www.klavis.ai/docs/api-reference/strata/delete.md): Delete servers from an existing Strata MCP server.
+- [List Raw Actions](https://www.klavis.ai/docs/api-reference/strata/list-raw-actions.md): Fetch raw actions (all underlying actions) for a specific integration within a Strata MCP instance.
+- [Set Strata Auth](https://www.klavis.ai/docs/api-reference/strata/set-strata-auth.md): Sets authentication data for a specific integration within a Strata MCP server.
+- [Get Strata Auth](https://www.klavis.ai/docs/api-reference/strata/get-strata-auth.md): Retrieves authentication data for a specific integration within a Strata MCP server.
+- [Delete Strata Auth](https://www.klavis.ai/docs/api-reference/strata/delete-strata-auth.md): Deletes authentication data for a specific integration within a Strata MCP server.
+- [Create](https://www.klavis.ai/docs/api-reference/mcp-server/create-a-server-instance.md): Creates a URL for a specified MCP server, validating the request with an API key and user details. Returns the existing server URL if it already exists for the user. If OAuth is configured for the server, also returns the base OAuth authorization URL. Note that some servers have hundreds of tools an…
+- [Get](https://www.klavis.ai/docs/api-reference/mcp-server/get-server-instance.md): Checks the details of a specific server connection instance using its unique ID and API key, returning server details like authentication status and associated server/platform info.
+- [Update](https://www.klavis.ai/docs/api-reference/mcp-server/update-a-server-instance.md): Updates the settings of a specific server connection instance. Currently supports updating the read-only status of the connection.
+- [Delete](https://www.klavis.ai/docs/api-reference/mcp-server/delete-a-server-instance.md): Completely removes a server connection instance using its unique ID, deleting all associated data from the system.
+- [List Raw Actions](https://www.klavis.ai/docs/api-reference/mcp-server/list-raw-actions.md): Fetch raw actions (all underlying actions) for a specific integration instance.
+- [Set Instance Auth](https://www.klavis.ai/docs/api-reference/mcp-server/set-instance_auth.md): Sets authentication data for a specific integration instance. Accepts either API key authentication or general authentication data. This updates the auth_metadata for the specified integration instance.
+- [Get Instance Auth](https://www.klavis.ai/docs/api-reference/mcp-server/get-instance_auth.md): Retrieves the auth data for a specific integration instance that the API key owner controls. Includes access token, refresh token, and other authentication data.
+- [Delete Instance Auth](https://www.klavis.ai/docs/api-reference/mcp-server/delete-instance_auth.md): Deletes authentication data for a specific server connection instance.
+- [Get User](https://www.klavis.ai/docs/api-reference/user/get-user.md): Get user information by user_id.
+- [Get User Integrations](https://www.klavis.ai/docs/api-reference/user/get-user-integrations.md): Get all available integrations (MCP server names) by user ID. Returns a list of integration names and their authentication status.
+- [Get All Users](https://www.klavis.ai/docs/api-reference/user/get-all-users.md): Retrieve all users that have been created under your account, with support for pagination.
+- [Delete User](https://www.klavis.ai/docs/api-reference/user/delete-user.md): Delete a user and all associated data by user_id. Users cannot delete their own accounts. This operation will permanently remove all user data.
+- [Set User Auth](https://www.klavis.ai/docs/api-reference/user/set-user-auth.md): Sets authentication data for a specific integration for a user.
+- [Get User Auth](https://www.klavis.ai/docs/api-reference/user/get-user-auth.md): Retrieves authentication data for a specific integration for a user.
+- [Delete User Auth](https://www.klavis.ai/docs/api-reference/user/delete-user-auth.md): Deletes authentication data for a specific integration for a user.
+- [Get All Servers](https://www.klavis.ai/docs/api-reference/mcp-server/get-all-servers.md): Get all MCP servers with their basic information including id, name, description, and tools.
+- [Get Tools](https://www.klavis.ai/docs/api-reference/mcp-server/get-tools.md): Get tools information for any MCP server.
+- [List Tools](https://www.klavis.ai/docs/api-reference/mcp-server/list-tools.md): Lists all tools available for a specific remote MCP server in various AI model formats.
+- [Call Tool](https://www.klavis.ai/docs/api-reference/mcp-server/call-tool.md): Calls a tool on a specific remote MCP server, used for function calling. Eliminates the need for manual MCP code implementation. Under the hood, Klavis will instantiates an MCP client and establishes a connection with the remote MCP server to call the tool.
+- [Create](https://www.klavis.ai/docs/api-reference/white-labeling/create.md): Saves OAuth white labeling information, or updates existing information if the `client_id` matches.
+- [Get](https://www.klavis.ai/docs/api-reference/white-labeling/get.md): Retrieves white labeling information for a specific OAuth client ID.
+- [Create](https://www.klavis.ai/docs/api-reference/mcp-server/create-a-self-hosted-mcp-server-instance.md): Creates an instance id for a self-hosted MCP server, validating the request with an API key and user details. The main purpose of this endpoint is to create an instance id for a self-hosted MCP server. The instance id is used to identify and store the auth metadata in the database. Returns the exist…
+- [Authorize Airtable](https://www.klavis.ai/docs/api-reference/oauth/airtable-oauth/authorize-airtable.md): Start Airtable OAuth flow
+- [Authorize Asana](https://www.klavis.ai/docs/api-reference/oauth/asana-oauth/authorize-asana.md): Start Asana OAuth flow
+- [Authorize Attio](https://www.klavis.ai/docs/api-reference/oauth/attio-oauth/authorize-attio.md): Start Attio OAuth flow
+- [Authorize Box](https://www.klavis.ai/docs/api-reference/oauth/box-oauth/authorize-box.md): Start Box OAuth 2.0 flow
+- [Authorize Calcom](https://www.klavis.ai/docs/api-reference/oauth/calcom-oauth/authorize-calcom.md): Start Cal.com OAuth flow
+- [Authorize Canva](https://www.klavis.ai/docs/api-reference/oauth/canva-oauth/authorize-canva.md): Start Canva OAuth flow with PKCE
+- [Authorize Clickup](https://www.klavis.ai/docs/api-reference/oauth/clickup-oauth/authorize-clickup.md): Start ClickUp OAuth flow
+- [Authorize Close](https://www.klavis.ai/docs/api-reference/oauth/close-oauth/authorize-close.md): Start Close OAuth flow
+- [Authorize Confluence](https://www.klavis.ai/docs/api-reference/oauth/confluence-oauth/authorize-confluence.md): Start Confluence OAuth flow
+- [Authorize Dialpad](https://www.klavis.ai/docs/api-reference/oauth/dialpad-oauth/authorize-dialpad.md): Start Dialpad OAuth flow
+- [Authorize Docusign](https://www.klavis.ai/docs/api-reference/oauth/docusign-oauth/authorize-docusign.md): Start DocuSign OAuth flow
+- [Authorize Dropbox](https://www.klavis.ai/docs/api-reference/oauth/dropbox-oauth/authorize-dropbox.md): Start Dropbox OAuth flow
+- [Authorize Figma](https://www.klavis.ai/docs/api-reference/oauth/figma-oauth/authorize-figma.md): Start Figma OAuth flow
+- [Authorize Gcalendar](https://www.klavis.ai/docs/api-reference/oauth/gcalendar-oauth/authorize-gcalendar.md): Start Google Calendar OAuth flow
+- [Authorize Gdocs](https://www.klavis.ai/docs/api-reference/oauth/gdocs-oauth/authorize-gdocs.md): Start Google Docs OAuth flow
+- [Authorize Gdrive](https://www.klavis.ai/docs/api-reference/oauth/gdrive-oauth/authorize-gdrive.md): Start Google Drive OAuth flow
+- [Authorize Github](https://www.klavis.ai/docs/api-reference/oauth/github-oauth/authorize-github.md): Start GitHub OAuth flow
+- [Authorize Gitlab](https://www.klavis.ai/docs/api-reference/oauth/gitlab-oauth/authorize-gitlab.md): Start GitLab OAuth flow
+- [Authorize Gmail](https://www.klavis.ai/docs/api-reference/oauth/gmail-oauth/authorize-gmail.md): Start Gmail OAuth flow
+- [Authorize Gsheets](https://www.klavis.ai/docs/api-reference/oauth/gsheets-oauth/authorize-gsheets.md): Start Google Sheets OAuth flow
+- [Authorize Honeycomb](https://www.klavis.ai/docs/api-reference/oauth/honeycomb-oauth/authorize-honeycomb.md): Start OAuth flow and redirect to authorization page.
+- [Authorize Hubspot](https://www.klavis.ai/docs/api-reference/oauth/hubspot-oauth/authorize-hubspot.md): Start HubSpot OAuth flow
+- [Authorize Hugging Face](https://www.klavis.ai/docs/api-reference/oauth/huggingface-oauth/authorize-huggingface.md): Start OAuth flow and redirect to authorization page.
+- [Authorize Jira](https://www.klavis.ai/docs/api-reference/oauth/jira-oauth/authorize-jira.md): Start Jira OAuth flow
+- [Authorize Klaviyo](https://www.klavis.ai/docs/api-reference/oauth/klaviyo-oauth/authorize-klaviyo.md)
+- [Authorize Linear](https://www.klavis.ai/docs/api-reference/oauth/linear-oauth/authorize-linear.md): Start Linear OAuth flow
+- [Authorize Linkedin](https://www.klavis.ai/docs/api-reference/oauth/linkedin-oauth/authorize-linkedin.md): Start LinkedIn OAuth flow
+- [Authorize Netlify](https://www.klavis.ai/docs/api-reference/oauth/netlify-oauth/authorize-netlify.md): Start OAuth flow and redirect to authorization page.
+- [Authorize Notion](https://www.klavis.ai/docs/api-reference/oauth/notion-oauth/authorize-notion.md): Start Notion OAuth flow
+- [Authorize OneDrive](https://www.klavis.ai/docs/api-reference/oauth/onedrive-oauth/authorize-onedrive.md)
+- [Authorize Outlook](https://www.klavis.ai/docs/api-reference/oauth/outlook-oauth/authorize-outlook.md)
+- [Authorize Pagerduty](https://www.klavis.ai/docs/api-reference/oauth/pagerduty-oauth/authorize-pagerduty.md): Start PagerDuty OAuth flow
+- [Authorize PayPal](https://www.klavis.ai/docs/api-reference/oauth/paypal-oauth/authorize-paypal.md): Start OAuth flow and redirect to authorization page.
+- [Authorize Pipedrive](https://www.klavis.ai/docs/api-reference/oauth/pipedrive-oauth/authorize-pipedrive.md): Start Pipedrive OAuth flow
+- [Authorize Quickbooks](https://www.klavis.ai/docs/api-reference/oauth/quickbooks-oauth/authorize-quickbooks.md): Start QuickBooks OAuth flow
+- [Authorize Salesforce](https://www.klavis.ai/docs/api-reference/oauth/salesforce-oauth/authorize-salesforce.md): Start Salesforce OAuth flow
+- [Authorize Sentry](https://www.klavis.ai/docs/api-reference/oauth/sentry-oauth/authorize-sentry.md): Start OAuth flow and redirect to authorization page.
+- [Authorize shopify](https://www.klavis.ai/docs/api-reference/oauth/shopify-oauth/authorize-shopify.md)
+- [Authorize Slack](https://www.klavis.ai/docs/api-reference/oauth/slack-oauth/authorize-slack.md): Start Slack OAuth flow
+- [Authorize Stripe Connect](https://www.klavis.ai/docs/api-reference/oauth/stripe-connect-oauth/authorize-stripe-connect.md): Start Stripe Connect OAuth flow
+- [Authorize Supabase](https://www.klavis.ai/docs/api-reference/oauth/supabase-oauth/authorize-supabase.md): Start Supabase OAuth flow
+- [Authorize Vercel](https://www.klavis.ai/docs/api-reference/oauth/vercel-oauth/authorize-vercel.md): Start Vercel OAuth flow using integration pattern
+- [Authorize Wordpress](https://www.klavis.ai/docs/api-reference/oauth/wordpress-oauth/authorize-wordpress.md): Start WordPress OAuth flow
+- [Authorize Xero](https://www.klavis.ai/docs/api-reference/oauth/xero-oauth/authorize-xero.md): Start Xero OAuth flow
+- [Authorize Zendesk](https://www.klavis.ai/docs/api-reference/oauth/zendesk-oauth/authorize-zendesk.md): Start Zendesk OAuth flow
+- [Quickstart](https://www.klavis.ai/docs/quickstart.md): Let your agent connect any tools reliably in minutes via MCP
+- [Installation](https://www.klavis.ai/docs/installation.md): Install Klavis SDK or use REST API directly
+- [MCP](https://www.klavis.ai/docs/concepts/mcp.md): Understanding the Model Context Protocol and how it enables AI agents to interact with external systems
+- [Strata](https://www.klavis.ai/docs/concepts/strata.md): One MCP server for AI agents to use tools progressively at any scale
+- [API Key](https://www.klavis.ai/docs/auth/api-key.md)
+- [OAuth](https://www.klavis.ai/docs/auth/oauth.md)
+- [White-label](https://www.klavis.ai/docs/auth/white-label.md): White-label allows you to integrate our OAuth flows with your own branding and custom OAuth applications
+- [Klavis Security](https://www.klavis.ai/docs/enterprise-security/klavis-security.md): Comprehensive security layer for MCP integrations protecting against prompt injection, tool poisoning, and other emerging threats.
+- [Overview](https://www.klavis.ai/docs/ai-platform-integration/overview.md): Integrate Klavis MCP Servers with leading AI platforms to build powerful AI agents
+- [Agno](https://www.klavis.ai/docs/ai-platform-integration/agno.md): Learn how to build AI agents that integrate Agno with Strata MCP servers to build AI agents that can interact with Gmail and Slack.
+- [Claude](https://www.klavis.ai/docs/ai-platform-integration/claude.md): Learn how to build AI agents that integrate Anthropic's Claude with Strata MCP servers to build AI agents that can interact with Gmail and Slack.
+- [Cohere](https://www.klavis.ai/docs/ai-platform-integration/cohere.md): Learn how to build AI agents that integrate Cohere with Strata MCP servers to build AI agents that can interact with Gmail and Slack.
+- [CrewAI](https://www.klavis.ai/docs/ai-platform-integration/crewai.md): Build powerful AI agent crews that integrate with Strata MCP servers to build AI agents that can interact with Gmail and Slack.
+- [Fireworks AI](https://www.klavis.ai/docs/ai-platform-integration/fireworks-ai.md): Learn how to build AI agents that integrate Fireworks AI's LLMs with Klavis MCP Servers
+- [Gemini](https://www.klavis.ai/docs/ai-platform-integration/gemini.md): Learn how to build AI agents that integrate Google's Gemini with Strata MCP servers to build AI agents that can interact with Gmail and Slack.
+- [Google ADK](https://www.klavis.ai/docs/ai-platform-integration/google-adk.md): This tutorial demonstrates how to integrate Google Agent Development Kit (ADK) with Klavis MCP servers to build AI agents that can interact with Gmail and Slack.
+- [LangChain / LangGraph](https://www.klavis.ai/docs/ai-platform-integration/langchain.md): This tutorial demonstrates how to integrate LangChain's agent framework with Strata MCP servers to build AI agents that can interact with Gmail and Slack.
+- [LlamaIndex](https://www.klavis.ai/docs/ai-platform-integration/llamaindex.md): Learn how to build AI agents that integrate with Strata MCP servers to build AI agents that can interact with Gmail and Slack.
+- [Mastra](https://www.klavis.ai/docs/ai-platform-integration/mastra.md): Learn how to build AI agents that integrate Mastra framework with Klavis MCP Servers for enhanced functionality
+- [Mistral](https://www.klavis.ai/docs/ai-platform-integration/mistral.md): Learn how to build AI agents that integrate Mistral AI with Strata MCP servers to build AI agents that can interact with Gmail and Slack.
+- [OpenAI](https://www.klavis.ai/docs/ai-platform-integration/openai.md): This tutorial demonstrates how to integrate OpenAI's function calling capabilities with Strata MCP servers to build AI agents that can interact with Gmail and Slack.
+- [Together AI](https://www.klavis.ai/docs/ai-platform-integration/together-ai.md): Learn how to build AI agents that integrate Together AI's powerful LLMs with Klavis MCP Servers
+- [MCP Servers Overview](https://www.klavis.ai/docs/mcp-server/overview.md): Quickstart to Klavis-hosted MCP servers and available integrations.
+- [Affinity](https://www.klavis.ai/docs/mcp-server/affinity.md): Connect AI agents to Affinity CRM for managing contacts, deals, and relationships
+- [Airtable](https://www.klavis.ai/docs/mcp-server/airtable.md): Connect AI agents to Airtable for managing databases, records, and workflows
+- [Amplitude](https://www.klavis.ai/docs/mcp-server/amplitude.md): Connect AI agents to Amplitude to analyze product usage data, track user behavior, and optimize product decisions
+- [Asana](https://www.klavis.ai/docs/mcp-server/asana.md): Connect AI agents to Asana for managing projects, tasks, and team collaboration
+- [Attio](https://www.klavis.ai/docs/mcp-server/attio.md): Connect AI agents to Attio for CRM management and customer relationship tracking
+- [Box](https://www.klavis.ai/docs/mcp-server/box.md): Connect AI agents to Box for managing files and collaboration
+- [Brave Search](https://www.klavis.ai/docs/mcp-server/brave_search.md): Connect AI agents to Brave Search for web, image, news, and video search capabilities
+- [Cal.com](https://www.klavis.ai/docs/mcp-server/cal_com.md): Connect AI agents to Cal.com for scheduling and calendar management
+- [Calendly](https://www.klavis.ai/docs/mcp-server/calendly.md): Connect AI agents to Calendly for automated scheduling and calendar management
+- [Canva](https://www.klavis.ai/docs/mcp-server/canva.md): Connect AI agents to Canva for design creation, template management, and exporting designs
+- [ClickUp](https://www.klavis.ai/docs/mcp-server/clickup.md): Connect AI agents to ClickUp for project management and task tracking
+- [Clockwise](https://www.klavis.ai/docs/mcp-server/clockwise.md): Connect AI agents to Clockwise to intelligently optimize calendars, schedule meetings, and improve team productivity.
+- [Close](https://www.klavis.ai/docs/mcp-server/close.md): Connect AI agents to Close CRM for sales pipeline management and lead automation
+- [Cloudflare](https://www.klavis.ai/docs/mcp-server/cloudflare.md): Connect AI agents to Cloudflare for CDN, security, and edge computing management
+- [Coinbase](https://www.klavis.ai/docs/mcp-server/coinbase.md): Connect AI agents to Coinbase for cryptocurrency data and portfolio management
+- [Confluence](https://www.klavis.ai/docs/mcp-server/confluence.md): Connect AI agents to Confluence for document management and collaborative editing
+- [Dialpad](https://www.klavis.ai/docs/mcp-server/dialpad.md): Connect to Dialpad for AI-Powered Customer Communication Platform
+- [Discord](https://www.klavis.ai/docs/mcp-server/discord.md): Connect AI agents to Discord for server management and communication
+- [Doc2markdown](https://www.klavis.ai/docs/mcp-server/doc2markdown.md): Connect AI agents to Doc2markdown for document format conversion
+- [Docusign](https://www.klavis.ai/docs/mcp-server/docusign.md): Connect AI agents to Docusign for Electronic Signatures and Agreements
+- [Dropbox](https://www.klavis.ai/docs/mcp-server/dropbox.md): Connect AI agents to Dropbox for file storage and collaboration management
+- [ElevenLabs](https://www.klavis.ai/docs/mcp-server/elevenlabs.md): Connect AI agents to ElevenLabs for managing voice and audio
+- [Exa](https://www.klavis.ai/docs/mcp-server/exa.md): Connect AI agents to Exa for AI-powered semantic search and content discovery
+- [Fathom](https://www.klavis.ai/docs/mcp-server/fathom.md): Connect to Fathom for AI-Powered Notes and Summaries
+- [Fetch URL](https://www.klavis.ai/docs/mcp-server/fetch_url.md): Connect AI agents to webpages for content retrieval and analysis
+- [Figma](https://www.klavis.ai/docs/mcp-server/figma.md): Connect AI agents to Figma for design collaboration and asset management
+- [Firecrawl Deep Research](https://www.klavis.ai/docs/mcp-server/firecrawl-deep-research.md): Connect AI agents to Firecrawl Deep Research for comprehensive web-based research and analysis
+- [Firecrawl Web Search](https://www.klavis.ai/docs/mcp-server/firecrawl-web-search.md): Connect AI agents to Firecrawl Web Search for advanced web scraping and content extraction
+- [Fireflies](https://www.klavis.ai/docs/mcp-server/fireflies.md): Connect AI agents to Fireflies for automated meeting transcription, note-taking, and conversation analysis
+- [Freshdesk](https://www.klavis.ai/docs/mcp-server/freshdesk.md): Connect AI agents to Freshdesk for managing customer support
+- [GitHub](https://www.klavis.ai/docs/mcp-server/github.md): Connect AI agents to GitHub for repository management and code collaboration
+- [GitLab](https://www.klavis.ai/docs/mcp-server/gitlab.md): Connect AI agents to GitLab for source control, CI/CD, and DevOps automation
+- [Gmail](https://www.klavis.ai/docs/mcp-server/gmail.md): Connect AI agents to Gmail for email management and communication
+- [Gong](https://www.klavis.ai/docs/mcp-server/gong.md): Connect AI agents to Gong for sales conversation intelligence and call analytics
+- [Google Calendar](https://www.klavis.ai/docs/mcp-server/google_calendar.md): Connect AI agents to Google Calendar for event management and scheduling automation
+- [Google Cloud](https://www.klavis.ai/docs/mcp-server/google_cloud.md): Connect AI agents to Google Cloud for cloud infrastructure management, resource monitoring, and service automation
+- [Google Docs](https://www.klavis.ai/docs/mcp-server/google_docs.md): Connect AI agents to Google Docs for document creation and collaboration
+- [Google Drive](https://www.klavis.ai/docs/mcp-server/google_drive.md): Connect AI agents to Google Drive for file storage and collaboration
+- [Google Forms](https://www.klavis.ai/docs/mcp-server/google_forms.md): Connect AI agents to Google Forms for form creation, response management, and survey automation
+- [Google Jobs](https://www.klavis.ai/docs/mcp-server/google_jobs.md): Connect AI agents to Google Jobs for managing job postings and applications
+- [Google Sheets](https://www.klavis.ai/docs/mcp-server/google_sheets.md): Connect AI agents to Google Sheets for spreadsheet automation and data management
+- [Gorgias](https://www.klavis.ai/docs/mcp-server/gorgias.md): Connect AI agents to Gorgias for customer support ticket management and helpdesk operations
+- [Hacker News](https://www.klavis.ai/docs/mcp-server/hacker_news.md): Connect AI agents to Hacker News for news aggregation and content analysis
+- [Help Scout](https://www.klavis.ai/docs/mcp-server/help_scout.md): Connect AI agents to Help Scout for customer support, conversation management, and mailbox operations
+- [HeyGen](https://www.klavis.ai/docs/mcp-server/heygen.md): Connect AI agents to HeyGen for AI-powered video generation and avatar creation
+- [Honeycomb](https://www.klavis.ai/docs/mcp-server/honeycomb.md): Connect AI agents to Honeycomb for observability and distributed tracing
+- [HubSpot](https://www.klavis.ai/docs/mcp-server/hubspot.md): Connect AI agents to HubSpot for CRM management and sales automation
+- [HuggingFace](https://www.klavis.ai/docs/mcp-server/huggingface.md): Connect AI agents to HuggingFace for ML model hosting and inference
+- [Instagram](https://www.klavis.ai/docs/mcp-server/instagram.md): Connect AI agents to Instagram to manage content, analyze engagement, and optimize social media growth and campaigns.
+- [Intercom](https://www.klavis.ai/docs/mcp-server/intercom.md): Connect AI agents to Intercom for customer messaging, support conversations, and user engagement
+- [Jira](https://www.klavis.ai/docs/mcp-server/jira.md): Connect AI agents to Jira for project tracking and issue management
+- [Jotform](https://www.klavis.ai/docs/mcp-server/jotform.md): Connect AI agents to Jotform to create, manage, and analyze forms, automate data collection, and integrate responses into workflows.
+- [Klavis ReportGen](https://www.klavis.ai/docs/mcp-server/klavis-reportgen.md): Connect AI agents to Klavis ReportGen for generating visually appealing web reports
+- [Klaviyo](https://www.klavis.ai/docs/mcp-server/klaviyo.md): Connect AI agents to Klaviyo for managing marketing campaigns and customer data
+- [Linear](https://www.klavis.ai/docs/mcp-server/linear.md): Connect AI agents to Linear for project management and issue tracking automation
+- [LinkedIn](https://www.klavis.ai/docs/mcp-server/linkedin.md): Connect AI agents to LinkedIn for professional networking, content publishing, and profile management automation
+- [LiveAgent](https://www.klavis.ai/docs/mcp-server/liveagent.md): Connect AI agents to LiveAgent for customer support ticketing, live chat, and multi-channel helpdesk management
+- [Markdown2doc](https://www.klavis.ai/docs/mcp-server/markdown2doc.md): Connect AI agents to Markdown2doc for converting markdown to various document formats
+- [Mem0](https://www.klavis.ai/docs/mcp-server/mem0.md): Connect AI agents to Mem0 for long-term memory, retrieval, and personalization
+- [Metabase](https://www.klavis.ai/docs/mcp-server/metabase.md): Connect AI agents to Metabase for managing data and analytics
+- [Microsoft Teams](https://www.klavis.ai/docs/mcp-server/microsoft_teams.md): Connect AI agents to Microsoft Teams for team collaboration and communication automation
+- [Mixpanel](https://www.klavis.ai/docs/mcp-server/mixpanel.md): Connect AI agents to Mixpanel for advanced analytics and user behavior tracking
+- [Monday.com](https://www.klavis.ai/docs/mcp-server/monday.md): Connect AI agents to Monday.com for project management and workflow automation
+- [Moneybird](https://www.klavis.ai/docs/mcp-server/moneybird.md): Connect AI agents to Moneybird for accounting and financial management
+- [Motion](https://www.klavis.ai/docs/mcp-server/motion.md): Connect AI agents to Motion for intelligent task management and calendar automation
+- [Netlify](https://www.klavis.ai/docs/mcp-server/netlify.md): Connect AI agents to Netlify for web deployment and hosting management
+- [Notion](https://www.klavis.ai/docs/mcp-server/notion.md): Connect AI agents to Notion for knowledge management and collaborative workflows
+- [OneDrive](https://www.klavis.ai/docs/mcp-server/onedrive.md): Connect AI agents to OneDrive for cloud storage management and file automation
+- [OpenRouter](https://www.klavis.ai/docs/mcp-server/openrouter.md): Connect AI agents to OpenRouter for access to multiple AI models and model comparison
+- [Outlook](https://www.klavis.ai/docs/mcp-server/outlook.md): Connect AI agents to Outlook for email management and automation
+- [Outlook Calendar](https://www.klavis.ai/docs/mcp-server/outlook_calendar.md): Connect AI agents to Outlook Calendar for scheduling events, managing appointments, and calendar operations
+- [Pagerduty](https://www.klavis.ai/docs/mcp-server/pagerduty.md): Connect AI agents to Pagerduty for managing incidents and alerts
+- [PayPal](https://www.klavis.ai/docs/mcp-server/paypal.md): Connect AI agents to PayPal for payment processing and transaction management
+- [Perplexity](https://www.klavis.ai/docs/mcp-server/perplexity.md): Learn how to use Klavis to connect your AI application to Perplexity MCP Server
+- [Pipedrive](https://www.klavis.ai/docs/mcp-server/pipedrive.md): Connect AI agents to Pipedrive for managing sales and CRM
+- [Plai](https://www.klavis.ai/docs/mcp-server/plai.md): Connect AI agents to Plai for Facebook, Instagram, and LinkedIn advertising
+- [PostgreSQL](https://www.klavis.ai/docs/mcp-server/postgres.md): Connect AI agents to PostgreSQL databases for query execution, data analysis, and database management automation
+- [Postman](https://www.klavis.ai/docs/mcp-server/postman.md): Connect AI agents to Postman for API testing, collection management, and workspace collaboration
+- [Posthog](https://www.klavis.ai/docs/mcp-server/posthog.md): Connect AI agents to Posthog for managing analytics and collaboration
+- [QuickBooks](https://www.klavis.ai/docs/mcp-server/quickbooks.md): Connect AI agents to QuickBooks for accounting automation and financial data management
+- [Resend](https://www.klavis.ai/docs/mcp-server/resend.md): Connect AI agents to Resend for automated email campaigns and transactional messaging
+- [Salesforce](https://www.klavis.ai/docs/mcp-server/salesforce.md): Connect AI agents to Salesforce for CRM and sales automation
+- [Sendgrid](https://www.klavis.ai/docs/mcp-server/sendgrid.md): Connect AI agents to Sendgrid for managing emails and collaboration
+- [Sentry](https://www.klavis.ai/docs/mcp-server/sentry.md): Connect AI agents to Sentry for error monitoring and performance tracking
+- [ServiceNow](https://www.klavis.ai/docs/mcp-server/servicenow.md): Connect ServiceNow to manage IT service workflows through AI agents.
+- [Sharesight](https://www.klavis.ai/docs/mcp-server/sharesight.md): Connect AI agents to Sharesight for portfolio tracking, investment management, and financial reporting automation
+- [Shopify](https://www.klavis.ai/docs/mcp-server/shopify.md): Connect AI agents to Shopify for managing e-commerce and collaboration
+- [Slack](https://www.klavis.ai/docs/mcp-server/slack.md): Connect AI agents to Slack for team communication and collaboration
+- [Snowflake](https://www.klavis.ai/docs/mcp-server/snowflake.md): Connect AI agents to Snowflake to query and analyze large-scale data, automate data workflows, and generate insights.
+- [Square](https://www.klavis.ai/docs/mcp-server/square.md): Connect AI agents to Square to manage payments, track sales and inventory, analyze customer data, and automate reporting.
+- [Stripe](https://www.klavis.ai/docs/mcp-server/stripe.md): Connect AI agents to Stripe for payment processing, customer management, and subscription automation
+- [Supabase](https://www.klavis.ai/docs/mcp-server/supabase.md): Connect AI agents to Supabase for database management, project creation, and serverless backend automation
+- [Tavily](https://www.klavis.ai/docs/mcp-server/tavily.md): Connect AI agents to Tavily for managing files and collaboration
+- [Vercel](https://www.klavis.ai/docs/mcp-server/vercel.md): Connect AI agents to Vercel for managing deployments and collaboration
+- [Weights and Biases](https://www.klavis.ai/docs/mcp-server/wandb.md): Connect AI agents to Weights & Biases to track experiments, monitor model training, and collaborate on workflows from development to production.
+- [WhatsApp](https://www.klavis.ai/docs/mcp-server/whatsapp.md): Connect AI agents to WhatsApp for business messaging and communication
+- [WordPress](https://www.klavis.ai/docs/mcp-server/wordpress.md): Connect AI agents to WordPress for content management, post creation, and blog automation
+- [YouTube](https://www.klavis.ai/docs/mcp-server/youtube.md): Connect AI agents to YouTube for video transcript extraction, content analysis, and YouTube data automation
+- [Zendesk](https://www.klavis.ai/docs/mcp-server/zendesk.md): Connect AI agents to Zendesk for customer support and ticket management
+- [Zoho Desk](https://www.klavis.ai/docs/mcp-server/zoho_desk.md): Connect AI agents to Zoho Desk for customer support ticketing, help desk management, and service operations
+- [Zoho Mail](https://www.klavis.ai/docs/mcp-server/zoho_mail.md): Connect AI agents to Zoho Mail for email management, organization, and communication automation
+- [MCP Server Instance](https://www.klavis.ai/docs/legacy/instance.md): 1:1 Mapping API to MCP Server Tool
+- [Introduction](https://www.klavis.ai/docs/knowledge-base/introduction.md): A collection of answers to frequently asked questions about MCP
+- [Create Your First MCP Server](https://www.klavis.ai/docs/knowledge-base/onboarding/create-your-first-mcp-server.md)
+- [Use Your First MCP Server](https://www.klavis.ai/docs/knowledge-base/onboarding/use-your-first-mcp-server.md)
+- [LLM-based Development](https://www.klavis.ai/docs/knowledge-base/llm-based-development.md): Enhance your AI coding experience with LLM readable documentation.
+- [Overview](https://www.klavis.ai/docs/knowledge-base/use-mcp-server/overview.md): Learn how to use MCP Servers in your favorite Client
+- [Antigravity](https://www.klavis.ai/docs/knowledge-base/use-mcp-server/antigravity.md): Connect Strata with Antigravity IDE in minutes and supercharge your AI coding experience
+- [ChatGPT Connectors](https://www.klavis.ai/docs/knowledge-base/use-mcp-server/chatgpt.md): Connect Strata with ChatGPT Connectors in minutes and supercharge your AI coding experience
+- [Claude Code](https://www.klavis.ai/docs/knowledge-base/use-mcp-server/claude_code.md): Connect Strata with Claude Code in minutes and supercharge your AI coding experience
+- [Claude Web/Desktop](https://www.klavis.ai/docs/knowledge-base/use-mcp-server/claude_web_desktop.md): Connect Strata with Claude Web/Desktop in minutes and supercharge your AI coding experience
+- [Cline](https://www.klavis.ai/docs/knowledge-base/use-mcp-server/cline.md): Connect Strata with Cline in minutes and supercharge your AI coding experience
+- [Continue](https://www.klavis.ai/docs/knowledge-base/use-mcp-server/continue.md): Connect Strata with Continue in minutes and supercharge your AI coding experience
+- [Cursor](https://www.klavis.ai/docs/knowledge-base/use-mcp-server/cursor.md): Connect Strata with Cursor IDE in minutes and supercharge your AI coding experience
+- [Gemini CLI](https://www.klavis.ai/docs/knowledge-base/use-mcp-server/gemini_cli.md): Connect Strata with Gemini CLI in minutes and supercharge your AI coding experience
+- [Kiro](https://www.klavis.ai/docs/knowledge-base/use-mcp-server/kiro.md): Connect Strata with Kiro in minutes and supercharge your AI workflow experience
+- [n8n](https://www.klavis.ai/docs/knowledge-base/use-mcp-server/n8n.md): Connect Strata with n8n in minutes and unlock powerful workflow automation
+- [Agent Builder](https://www.klavis.ai/docs/knowledge-base/use-mcp-server/openai-agent-builder.md): Connect Strata with OpenAI's Agent Builder in minutes and unlock powerful workflow automation
+- [VS Code](https://www.klavis.ai/docs/knowledge-base/use-mcp-server/vs_code.md): Connect Strata with VS Code in minutes and supercharge your AI coding experience
+- [Windsurf](https://www.klavis.ai/docs/knowledge-base/use-mcp-server/windsurf.md): Connect Strata with Windsurf IDE in minutes and supercharge your AI coding experience
+- [OAuth Scopes Reference](https://www.klavis.ai/docs/knowledge-base/oauth_app/oauth-scopes.md)
+- [Setting Up Airtable OAuth App](https://www.klavis.ai/docs/knowledge-base/oauth_app/airtable.md): Complete guide to creating and configuring a Airtable OAuth application
+- [Setting Up Asana OAuth App](https://www.klavis.ai/docs/knowledge-base/oauth_app/asana.md): Complete guide to creating and configuring a Asana OAuth application
+- [Setting Up Calendly OAuth App](https://www.klavis.ai/docs/knowledge-base/oauth_app/calendly.md): Complete guide to creating and configuring a Calendly OAuth application
+- [Setting Up Canva OAuth App](https://www.klavis.ai/docs/knowledge-base/oauth_app/canva.md): Complete guide to creating and configuring a Canva OAuth application
+- [Setting Up Discord OAuth App](https://www.klavis.ai/docs/knowledge-base/oauth_app/discord.md): Complete guide to creating and configuring a Discord OAuth application
+- [Setting Up Dropbox OAuth App](https://www.klavis.ai/docs/knowledge-base/oauth_app/dropbox.md): Complete guide to creating and configuring a Dropbox OAuth application
+- [Setting Up Figma OAuth App](https://www.klavis.ai/docs/knowledge-base/oauth_app/figma.md): Complete guide to creating and configuring a Figma OAuth application
+- [Setting Up Gmail OAuth App](https://www.klavis.ai/docs/knowledge-base/oauth_app/gmail.md): Complete guide to creating and configuring a Gmail OAuth application
+- [Setting Up Google Calendar OAuth App](https://www.klavis.ai/docs/knowledge-base/oauth_app/google_calendar.md): Complete guide to creating and configuring a Google Calendar OAuth application
+- [Setting Up Google Docs OAuth App](https://www.klavis.ai/docs/knowledge-base/oauth_app/google_docs.md): Complete guide to creating and configuring a Google Docs OAuth application
+- [Setting Up Google Drive OAuth App](https://www.klavis.ai/docs/knowledge-base/oauth_app/google_drive.md): Complete guide to creating and configuring a Google Drive OAuth application
+- [Setting Up Google Sheets OAuth App](https://www.klavis.ai/docs/knowledge-base/oauth_app/google_sheets.md): Complete guide to creating and configuring a Google Sheets OAuth application
+- [Setting Up HubSpot OAuth App](https://www.klavis.ai/docs/knowledge-base/oauth_app/hubspot.md): Complete guide to creating and configuring a HubSpot OAuth application
+- [Setting Up LinkedIn OAuth App](https://www.klavis.ai/docs/knowledge-base/oauth_app/linkedin.md): Complete guide to creating and configuring a LinkedIn OAuth application
+- [Setting Up Microsoft Azure OAuth App](https://www.klavis.ai/docs/knowledge-base/oauth_app/microsoft_azure.md): Complete guide to creating and configuring a Microsoft Azure (Entra ID) OAuth application
+- [Setting Up Monday.com OAuth App](https://www.klavis.ai/docs/knowledge-base/oauth_app/monday.md): Complete guide to creating and configuring a Monday.com OAuth application
+- [Setting Up Moneybird OAuth App](https://www.klavis.ai/docs/knowledge-base/oauth_app/moneybird.md): Complete guide to creating and configuring a Moneybird OAuth application
+- [Setting Up OneDrive OAuth App](https://www.klavis.ai/docs/knowledge-base/oauth_app/onedrive.md): Complete guide to creating and configuring a OneDrive OAuth application
+- [Setting Up QuickBooks OAuth App](https://www.klavis.ai/docs/knowledge-base/oauth_app/quickbooks.md): Complete guide to creating and configuring a QuickBooks OAuth application
+- [Setting Up Salesforce OAuth App](https://www.klavis.ai/docs/knowledge-base/oauth_app/salesforce.md): Complete guide to creating and configuring a Salesforce OAuth application
+- [Setting Up Slack OAuth App](https://www.klavis.ai/docs/knowledge-base/oauth_app/slack.md): Complete guide to creating and configuring a Slack OAuth application
+- [Setting Up Xero OAuth App](https://www.klavis.ai/docs/knowledge-base/oauth_app/xero.md): Complete guide to creating and configuring a Xero OAuth application
+
+## OpenAPI Specs
+
+- [openapi](https://www.klavis.ai/docs/api-reference/openapi.json)
+
+## Optional
+
+- [Website](https://www.klavis.ai)
+- [Blog](https://www.klavis.ai/blog)

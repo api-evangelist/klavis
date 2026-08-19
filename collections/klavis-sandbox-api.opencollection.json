@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Klavis AI MCP Platform MCP Servers Sandbox API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Sandbox",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Acquire Sandbox",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.klavis.ai/api/sandbox/create",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Acquire an idle sandbox instance for a specific MCP server with optional benchmark configuration."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
