@@ -46,11 +46,11 @@ access: 3rd-Party
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/klavis.png
 tags:
   - MCP
-  - MCP Servers
+  - MCP Server
   - MCP Hosting
   - Connectors
   - Authentication
-  - Sandboxes
+  - Sandbox
   - Agent Training
   - Reinforcement Learning
   - White Label
@@ -84,9 +84,9 @@ apis:
   humanURL: https://www.klavis.ai/docs
   baseURL: https://api.klavis.ai
   tags:
-  - MCP Servers
+  - MCP Server
   - Strata
-  - Sandboxes
+  - Sandbox
   - Authentication
   - Integration
   - White Label
@@ -190,6 +190,8 @@ apis:
   humanURL: https://www.klavis.ai/docs
   baseURL: https://api.klavis.ai
   tags:
+  - MCP Server
+  tags_raw:
   - MCP Servers
   properties:
   - type: OpenAPI
