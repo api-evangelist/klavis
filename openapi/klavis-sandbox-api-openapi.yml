@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Klavis AI MCP Platform MCP Servers Sandbox API
+  title: Klavis AI MCP Platform Sandbox API
   description: Klavis AI is an open-source MCP integration platform for AI agents. The REST API manages hosted MCP servers, tool invocation, sandbox VM acquisition, and user/integration metadata. API key authentication is passed via the Authorization Bearer header; OAuth 2.0 is supported for third-party service flows.
   version: v1
   contact:
@@ -46,19 +46,6 @@ components:
           type: string
         code:
           type: integer
-    Sandbox:
-      type: object
-      properties:
-        sandboxId:
-          type: string
-        status:
-          type: string
-        connectionUrl:
-          type: string
-          format: uri
-        createdAt:
-          type: string
-          format: date-time
     CreateSandboxRequest:
       type: object
       required:
@@ -72,6 +59,19 @@ components:
         seedConfig:
           type: object
           additionalProperties: true
+    Sandbox:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+        status:
+          type: string
+        connectionUrl:
+          type: string
+          format: uri
+        createdAt:
+          type: string
+          format: date-time
   responses:
     Unauthorized:
       description: Missing or invalid API key

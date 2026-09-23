@@ -1,0 +1,30 @@
+# Front Door AI Index — klavis — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: klavis
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.klavis.ai
+  final_host: www.klavis.ai
+  ownership: own
+  owner: klavis
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 23
+  host_score: 23
+  density: 110.05
+  words: 209
+  tiers:
+    agentic: 13
+    core: 10
+    model: 0
+  ambiguous: 4
+  top_terms:
+    AI: 9
+    agentic: 6
+    MCP: 4
+    agent: 4
+    AI agent: 3
+    LLMs: 1
