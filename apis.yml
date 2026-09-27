@@ -54,7 +54,7 @@ tags:
   - Agent Training
   - Reinforcement Learning
   - White Label
-  - Open-Source
+  - Open Source
   - Strata
 tags_raw:
   - MCP
@@ -69,6 +69,7 @@ tags_raw:
   - White Label
   - Open Source
   - Strata
+  - Open-Source
 url: https://raw.githubusercontent.com/api-evangelist/klavis/refs/heads/main/apis.yml
 created: '2026-05-23'
 modified: '2026-05-23'

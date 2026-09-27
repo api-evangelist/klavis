@@ -73,17 +73,13 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    CallToolResponse:
+    ToolListResponse:
       type: object
       properties:
-        success:
-          type: boolean
-        result:
-          type: object
-          additionalProperties: true
-        error:
-          type: string
-          nullable: true
+        tools:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tool'
     CallToolRequest:
       type: object
       required:
@@ -103,13 +99,17 @@ components:
           enum:
           - sse
           - streamable_http
-    ToolListResponse:
+    CallToolResponse:
       type: object
       properties:
-        tools:
-          type: array
-          items:
-            $ref: '#/components/schemas/Tool'
+        success:
+          type: boolean
+        result:
+          type: object
+          additionalProperties: true
+        error:
+          type: string
+          nullable: true
     ErrorResponse:
       type: object
       properties:
