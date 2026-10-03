@@ -39,6 +39,19 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
+    Sandbox:
+      type: object
+      properties:
+        sandboxId:
+          type: string
+        status:
+          type: string
+        connectionUrl:
+          type: string
+          format: uri
+        createdAt:
+          type: string
+          format: date-time
     ErrorResponse:
       type: object
       properties:
@@ -59,19 +72,6 @@ components:
         seedConfig:
           type: object
           additionalProperties: true
-    Sandbox:
-      type: object
-      properties:
-        sandboxId:
-          type: string
-        status:
-          type: string
-        connectionUrl:
-          type: string
-          format: uri
-        createdAt:
-          type: string
-          format: date-time
   responses:
     Unauthorized:
       description: Missing or invalid API key

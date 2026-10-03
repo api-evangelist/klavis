@@ -72,7 +72,35 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   schemas:
+    Tool:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        parameters:
+          type: object
+          additionalProperties: true
+    CallToolResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        result:
+          type: object
+          additionalProperties: true
+        error:
+          type: string
+          nullable: true
     ToolListResponse:
       type: object
       properties:
@@ -80,6 +108,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Tool'
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        code:
+          type: integer
     CallToolRequest:
       type: object
       required:
@@ -99,41 +134,6 @@ components:
           enum:
           - sse
           - streamable_http
-    CallToolResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-        result:
-          type: object
-          additionalProperties: true
-        error:
-          type: string
-          nullable: true
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-        code:
-          type: integer
-    Tool:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        parameters:
-          type: object
-          additionalProperties: true
-  responses:
-    Unauthorized:
-      description: Missing or invalid API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     BearerAuth:
       type: http
