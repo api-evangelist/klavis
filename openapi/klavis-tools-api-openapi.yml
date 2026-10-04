@@ -72,14 +72,33 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    Unauthorized:
-      description: Missing or invalid API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        code:
+          type: integer
+    CallToolRequest:
+      type: object
+      required:
+      - serverUrl
+      - toolName
+      properties:
+        serverUrl:
+          type: string
+          format: uri
+        toolName:
+          type: string
+        toolArgs:
+          type: object
+          additionalProperties: true
+        connectionType:
+          type: string
+          enum:
+          - sse
+          - streamable_http
     Tool:
       type: object
       properties:
@@ -108,32 +127,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Tool'
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-        code:
-          type: integer
-    CallToolRequest:
-      type: object
-      required:
-      - serverUrl
-      - toolName
-      properties:
-        serverUrl:
-          type: string
-          format: uri
-        toolName:
-          type: string
-        toolArgs:
-          type: object
-          additionalProperties: true
-        connectionType:
-          type: string
-          enum:
-          - sse
-          - streamable_http
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     BearerAuth:
       type: http

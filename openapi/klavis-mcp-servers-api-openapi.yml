@@ -39,13 +39,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-        code:
-          type: integer
     McpServerInstance:
       type: object
       properties:
@@ -58,6 +51,13 @@ components:
           type: string
           format: uri
           nullable: true
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        code:
+          type: integer
     CreateMcpServerRequest:
       type: object
       required:
