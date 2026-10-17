@@ -39,25 +39,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    McpServerInstance:
-      type: object
-      properties:
-        instanceId:
-          type: string
-        serverUrl:
-          type: string
-          format: uri
-        oauthUrl:
-          type: string
-          format: uri
-          nullable: true
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-        code:
-          type: integer
     CreateMcpServerRequest:
       type: object
       required:
@@ -73,6 +54,25 @@ components:
         platformName:
           type: string
           description: Calling platform identifier
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        code:
+          type: integer
+    McpServerInstance:
+      type: object
+      properties:
+        instanceId:
+          type: string
+        serverUrl:
+          type: string
+          format: uri
+        oauthUrl:
+          type: string
+          format: uri
+          nullable: true
   responses:
     Unauthorized:
       description: Missing or invalid API key
