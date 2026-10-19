@@ -1,0 +1,231 @@
+openapi: 3.2.0
+info:
+  title: Klavis AI (https://www.klavis.ai) White Labeling API
+  description: Klavis AI - Open Source MCP Integrations for AI Applications
+  version: 0.1.0
+servers:
+- url: https://api.klavis.ai
+  description: US Production server
+- url: https://api.eu.klavis.ai
+  description: EU Production server
+tags:
+- name: white-labeling
+paths:
+  /white-labeling/create:
+    post:
+      tags:
+      - white-labeling
+      summary: Create
+      description: Saves OAuth white labeling information, or updates existing information if the `client_id` matches.
+      operationId: createWhiteLabeling
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWhiteLabelingRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WhiteLabelingResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /white-labeling/get/{client_id}:
+    get:
+      tags:
+      - white-labeling
+      summary: Get
+      description: Retrieves white labeling information for a specific OAuth client ID.
+      operationId: getWhiteLabelingByClientId
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: client_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Client Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WhiteLabelingResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CreateWhiteLabelingRequest:
+      properties:
+        client_id:
+          type: string
+          title: Client Id
+          description: OAuth client ID
+        client_secret:
+          type: string
+          title: Client Secret
+          description: OAuth client secret
+        server_name:
+          $ref: '#/components/schemas/OAuthServerName'
+          description: Optional. The name of the server
+        callback_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Callback Url
+          description: Optional. OAuth callback URL
+        account_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Account Id
+          description: Optional. The UUID of the account
+      type: object
+      required:
+      - client_id
+      - client_secret
+      - server_name
+      title: CreateWhiteLabelingRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    OAuthServerName:
+      type: string
+      enum:
+      - Airtable
+      - Asana
+      - Attio
+      - Box
+      - Cal.com
+      - Canva
+      - ClickUp
+      - Close
+      - Confluence
+      - Dialpad
+      - DocuSign
+      - Dropbox
+      - Fathom
+      - Figma
+      - GitHub
+      - GitLab
+      - Gmail
+      - Google Calendar
+      - Google Docs
+      - Google Drive
+      - Google Sheets
+      - Google Forms
+      - Google Cloud
+      - GoogleWorkspaceAtlas
+      - HubSpot
+      - Jira
+      - Klaviyo
+      - Linear
+      - LinkedIn
+      - Microsoft Teams
+      - Monday
+      - Moneybird
+      - Notion
+      - Onedrive
+      - Outlook
+      - MsCalendar
+      - PagerDuty
+      - Pipedrive
+      - QuickBooks
+      - Salesforce
+      - Slack
+      - Stripe
+      - Supabase
+      - Vercel
+      - WordPress
+      - Xero
+      - YouTube
+      - Zendesk
+      - PayPal
+      - Sentry
+      - Netlify
+      - Hugging Face
+      - Square
+      - Clockwise
+      - Jotform
+      - Honeycomb
+      - Zoho Mail
+      - Sharesight
+      - Instagram
+      title: OAuthServerName
+    WhiteLabelingResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          description: Whether the operation was successful
+        data:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Data
+          description: The white labeling data if successful
+        message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Message
+          description: Error message if unsuccessful
+      type: object
+      required:
+      - success
+      title: WhiteLabelingResponse
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      description: Your Klavis AI API key.
+      scheme: bearer
+      x-fern-bearer:
+        name: api_key

@@ -1,0 +1,1691 @@
+openapi: 3.2.0
+info:
+  title: Klavis AI (https://www.klavis.ai) MCP Server API
+  description: Klavis AI - Open Source MCP Integrations for AI Applications
+  version: 0.1.0
+servers:
+- url: https://api.klavis.ai
+  description: US Production server
+- url: https://api.eu.klavis.ai
+  description: EU Production server
+tags:
+- name: mcp-server
+paths:
+  /mcp-server/call-tool:
+    post:
+      tags:
+      - mcp-server
+      summary: Call Tool
+      description: 'Calls a tool on a specific remote MCP server, used for function calling. Eliminates the need for manual MCP code implementation.
+
+        Under the hood, Klavis will instantiates an MCP client and establishes a connection with the remote MCP server to call the tool.'
+      operationId: callServerTool
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CallToolRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallToolResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /mcp-server/list-tools:
+    post:
+      tags:
+      - mcp-server
+      summary: List Tools
+      description: 'Lists all tools available for a specific remote MCP server in various AI model formats.
+
+
+        This eliminates the need for manual MCP code implementation and format conversion.
+
+        Under the hood, Klavis instantiates an MCP client and establishes a connection
+
+        with the remote MCP server to retrieve available tools.'
+      operationId: listServerTools
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListToolsRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListToolsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /mcp-server/strata/create:
+    post:
+      tags:
+      - mcp-server
+      summary: Create
+      description: 'Create a Strata MCP server.
+
+
+        Parameters:
+
+        - servers: Can be ''ALL'' to add all available Klavis integration, a list of specific server names, or null to add no servers
+
+        - externalServers: Optional list of external MCP servers to validate and add'
+      operationId: create_strata_server_mcp_server_strata_create_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StrataCreateRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StrataCreateResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /mcp-server/strata/add:
+    post:
+      tags:
+      - mcp-server
+      summary: Add
+      description: 'Add servers to an existing Strata MCP server.
+
+
+        Note: After adding servers, you need to reconnect the MCP server so that list_tool can be updated with the new servers.
+
+
+        Parameters:
+
+        - servers: Can be ''ALL'' to add all available servers, a list of specific server names, or null to add no servers
+
+        - externalServers: Optional list of external MCP servers to validate and add'
+      operationId: add_servers_to_strata_mcp_server_strata_add_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StrataAddServersRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StrataAddServersResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /mcp-server/strata/{strataId}/servers:
+    delete:
+      tags:
+      - mcp-server
+      summary: Delete
+      description: 'Delete servers from an existing Strata MCP server.
+
+
+        Note: After deleting servers, you need to reconnect the MCP server so that list_tool can be updated to reflect the removed servers.
+
+
+        Parameters:
+
+        - strataId: The strata server ID (path parameter)
+
+        - servers: Can be ''ALL'' to delete all available Klavis integration, a list of specific server names, or null to delete no servers
+
+        - externalServers: Query parameter - comma-separated list of external server names to delete
+
+
+        Returns separate lists for deleted Klavis servers and deleted external servers.'
+      operationId: delete_servers_from_strata_mcp_server_strata__strataId__servers_delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: strataId
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Strataid
+      - name: servers
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: array
+            items:
+              anyOf:
+              - $ref: '#/components/schemas/McpServerName'
+              - const: ALL
+                type: string
+          - type: 'null'
+          description: List of Klavis integration to delete (e.g., 'jira', 'linear'), 'ALL' to delete all Klavis integration, or null to delete no servers.
+          title: Servers
+        description: List of Klavis integration to delete (e.g., 'jira', 'linear'), 'ALL' to delete all Klavis integration, or null to delete no servers.
+      - name: externalServers
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Comma-separated list of external server names to delete
+          title: Externalservers
+        description: Comma-separated list of external server names to delete
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StrataDeleteServersResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /mcp-server/strata/{strataId}:
+    get:
+      tags:
+      - mcp-server
+      summary: Get
+      description: 'Get information about an existing Strata MCP server instance.
+
+
+        Returns the strata URL, connected klavis servers, connected external servers (with URLs),
+
+        and authentication URLs for klavis servers.'
+      operationId: get_strata_server_mcp_server_strata__strataId__get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: strataId
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Strataid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StrataGetResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /mcp-server/strata/{strataId}/raw-actions:
+    get:
+      tags:
+      - mcp-server
+      summary: List Raw Actions
+      description: Fetch raw actions (all underlying actions) for a specific integration within a Strata MCP instance.
+      operationId: list_strata_raw_actions_mcp_server_strata__strataId__raw_actions_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: strataId
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The strata server ID
+          title: Strataid
+        description: The strata server ID
+      - name: server
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/McpServerName'
+          minLength: 1
+          description: The name of the server to fetch raw actions for
+        description: The name of the server to fetch raw actions for
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StrataRawActionsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /mcp-server/strata/{strataId}/auth/{serverName}:
+    get:
+      tags:
+      - mcp-server
+      summary: Get Strata Auth
+      description: 'Retrieves authentication data for a specific integration within a Strata MCP server.
+
+
+        Returns the authentication data if available, along with authentication status.'
+      operationId: getStrataAuth
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: strataId
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The strata server ID
+          title: Strataid
+        description: The strata server ID
+      - name: serverName
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/McpServerName'
+          description: The name of the Klavis MCP server to get authentication for (e.g., 'GitHub', 'Jira')
+        description: The name of the Klavis MCP server to get authentication for (e.g., 'GitHub', 'Jira')
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StrataGetAuthResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - mcp-server
+      summary: Delete Strata Auth
+      description: 'Deletes authentication data for a specific integration within a Strata MCP server.
+
+
+        This will clear the stored authentication credentials, effectively unauthenticating the server.'
+      operationId: deleteStrataAuth
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: strataId
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The strata server ID
+          title: Strataid
+        description: The strata server ID
+      - name: serverName
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/McpServerName'
+          description: The name of the Klavis MCP server to delete authentication for (e.g., 'github', 'jira')
+        description: The name of the Klavis MCP server to delete authentication for (e.g., 'github', 'jira')
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /mcp-server/strata/set-auth:
+    post:
+      tags:
+      - mcp-server
+      summary: Set Strata Auth
+      description: 'Sets authentication data for a specific integration within a Strata MCP server.
+
+
+        Accepts either API key authentication or general authentication data.'
+      operationId: set_strata_auth_mcp_server_strata_set_auth_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StrataSetAuthRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /mcp-server/instance/create:
+    post:
+      tags:
+      - mcp-server
+      summary: Create
+      description: 'Creates a URL for a specified MCP server,
+
+        validating the request with an API key and user details.
+
+        Returns the existing server URL if it already exists for the user.
+
+        If OAuth is configured for the server, also returns the base OAuth authorization URL.
+
+        Note that some servers have hundreds of tools and therefore only expose the Strata tools.'
+      operationId: createServerInstance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateServerRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateServerResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /mcp-server/self-hosted/instance/create:
+    post:
+      tags:
+      - mcp-server
+      summary: Create
+      description: 'Creates an instance id for a self-hosted MCP server,
+
+        validating the request with an API key and user details.
+
+        The main purpose of this endpoint is to create an instance id for a self-hosted MCP server.
+
+        The instance id is used to identify and store the auth metadata in the database.
+
+        Returns the existing instance id if it already exists for the user.'
+      operationId: createSelfHostedServerInstance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSelfHostedServerRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateSelfHostedServerResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /mcp-server/instance/{instanceId}:
+    get:
+      tags:
+      - mcp-server
+      summary: Get
+      description: 'Checks the details of a specific server connection instance using its unique ID and API key,
+
+        returning server details like authentication status and associated server/platform info.'
+      operationId: getServerInstance
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: instanceId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: The ID of the connection integration instance whose status is being checked. This is returned by the Create API.
+          title: Instanceid
+        description: The ID of the connection integration instance whose status is being checked. This is returned by the Create API.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetInstanceResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - mcp-server
+      summary: Update
+      description: 'Updates the settings of a specific server connection instance.
+
+        Currently supports updating the read-only status of the connection.'
+      operationId: updateServerInstance
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: instanceId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: The ID of the connection integration instance to update.
+          title: Instanceid
+        description: The ID of the connection integration instance to update.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateServerInstanceRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateServerInstanceResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - mcp-server
+      summary: Delete
+      description: 'Completely removes a server connection instance using its unique ID,
+
+        deleting all associated data from the system.'
+      operationId: deleteServerInstance
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: instanceId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: The ID of the connection instance to delete.
+          title: Instanceid
+        description: The ID of the connection instance to delete.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /mcp-server/instance/{instanceId}/auth:
+    delete:
+      tags:
+      - mcp-server
+      summary: Delete Instance Auth
+      description: Deletes authentication data for a specific server connection instance.
+      operationId: deleteInstanceAuth
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: instanceId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: The ID of the connection instance to delete auth for.
+          title: Instanceid
+        description: The ID of the connection instance to delete auth for.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - mcp-server
+      summary: Get Instance Auth
+      description: 'Retrieves the auth data for a specific integration instance that the API key owner controls.
+
+        Includes access token, refresh token, and other authentication data.
+
+
+        This endpoint includes proper ownership verification to ensure users can only access
+
+        authentication data for integration instances they own. It also handles token refresh if needed.'
+      operationId: getInstanceAuthData
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: instanceId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          description: The ID of the connection integration instance to get auth data for.
+          title: Instanceid
+        description: The ID of the connection integration instance to get auth data for.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAuthDataResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /mcp-server/tools/{serverName}:
+    get:
+      tags:
+      - mcp-server
+      summary: Get Tools
+      description: Get tools information for any MCP server.
+      operationId: getServerTools
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: serverName
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/McpServerName'
+          description: The name of the target MCP server. Case-insensitive (e.g., 'google calendar', 'GOOGLE_CALENDAR', 'Google Calendar' are all valid).
+        description: The name of the target MCP server. Case-insensitive (e.g., 'google calendar', 'GOOGLE_CALENDAR', 'Google Calendar' are all valid).
+      - name: format
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/ToolFormat'
+          description: The format to return tools in. Default is MCP Native format for maximum compatibility.
+          default: mcp_native
+        description: The format to return tools in. Default is MCP Native format for maximum compatibility.
+      - name: legacy
+        in: query
+        required: false
+        schema:
+          type: boolean
+          description: Whether to use the legacy server. Default is False.
+          default: false
+          title: Legacy
+        description: Whether to use the legacy server. Default is False.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListToolsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /mcp-server/servers:
+    get:
+      tags:
+      - mcp-server
+      summary: Get All Servers
+      description: Get all MCP servers with their basic information including id, name, description, and tools.
+      operationId: getAllMcpServers
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMcpServersResponse'
+      security:
+      - HTTPBearer: []
+  /mcp-server/instance/set-auth:
+    post:
+      tags:
+      - mcp-server
+      summary: Set Instance Auth
+      description: 'Sets authentication data for a specific integration instance.
+
+        Accepts either API key authentication or general authentication data.
+
+        This updates the auth_metadata for the specified integration instance.'
+      operationId: setInstanceAuth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetAuthRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /mcp-server/instance/{instanceId}/raw-actions:
+    get:
+      tags:
+      - mcp-server
+      summary: List Raw Actions
+      description: 'Fetch raw actions (all underlying actions) for a specific integration instance.
+
+
+        This endpoint takes an instance ID, and then fetches the raw actions with categories.'
+      operationId: listRawActions
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: instanceId
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The instance ID for the server connection
+          title: Instanceid
+        description: The instance ID for the server connection
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RawActionsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    CallToolRequest:
+      properties:
+        serverUrl:
+          type: string
+          title: Serverurl
+          description: The full URL for connecting to the MCP server
+        toolName:
+          type: string
+          title: Toolname
+          description: The name of the tool to call
+        toolArgs:
+          additionalProperties: true
+          type: object
+          title: Toolargs
+          description: The input parameters for the tool
+        connectionType:
+          $ref: '#/components/schemas/ConnectionType'
+          description: The connection type to use for the MCP server. Default is STREAMABLE_HTTP.
+          default: StreamableHttp
+        headers:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Headers
+          description: Optional HTTP headers to include when connecting to the server
+      type: object
+      required:
+      - serverUrl
+      - toolName
+      title: CallToolRequest
+    ToolFormat:
+      type: string
+      enum:
+      - openai
+      - anthropic
+      - gemini
+      - mcp_native
+      title: ToolFormat
+    CallToolResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          description: Whether the API call was successful
+        result:
+          anyOf:
+          - $ref: '#/components/schemas/CallToolResult'
+          - type: 'null'
+          description: The result of the tool call, if successful
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+          description: Error message, if the tool call failed
+      type: object
+      required:
+      - success
+      title: CallToolResponse
+    CreateServerResponse:
+      properties:
+        serverUrl:
+          type: string
+          title: Serverurl
+          description: The full URL for connecting to the MCP server, including the instance ID.
+        instanceId:
+          type: string
+          title: Instanceid
+          description: The unique identifier for this specific server connection integration instance.
+        oauthUrl:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Oauthurl
+          description: The OAuth URL for authentication if available, supports white label if configured.
+      type: object
+      required:
+      - serverUrl
+      - instanceId
+      title: CreateServerResponse
+    CreateServerRequest:
+      properties:
+        serverName:
+          $ref: '#/components/schemas/McpServerName'
+          description: The name of the target MCP server. Case-insensitive (e.g., 'google calendar', 'GOOGLE_CALENDAR', 'Google Calendar' are all valid).
+        userId:
+          type: string
+          minLength: 1
+          title: Userid
+          description: The unique identifier for the user. The server instance along with the all the authentication data will belong to that specific user only. It can be a UUID from the database, a unique email address from the user, etc.
+        platformName:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Platformname
+          description: The name of the platform associated with the user. Optional.
+        connectionType:
+          $ref: '#/components/schemas/ConnectionType'
+          description: The connection type to use for the MCP server. Default is STREAMABLE_HTTP.
+          default: StreamableHttp
+        legacy:
+          type: boolean
+          title: Legacy
+          description: Whether to use the legacy server. Default is False.
+          default: false
+        isReadOnly:
+          type: boolean
+          title: Isreadonly
+          description: Whether the MCP server connection is read-only. When true, write operations will be restricted. Default is False.
+          default: false
+      type: object
+      required:
+      - serverName
+      - userId
+      title: CreateServerRequest
+    ServerTool:
+      properties:
+        name:
+          type: string
+          title: Name
+        description:
+          type: string
+          title: Description
+      type: object
+      required:
+      - name
+      - description
+      title: ServerTool
+    StrataSetAuthRequest:
+      properties:
+        strataId:
+          type: string
+          title: Strataid
+          description: The strata server ID
+        serverName:
+          $ref: '#/components/schemas/McpServerName'
+          description: The name of the Klavis MCP server to set authentication for (e.g., 'GitHub', 'Jira')
+        authData:
+          anyOf:
+          - $ref: '#/components/schemas/ApiKeyAuth'
+          - $ref: '#/components/schemas/GeneralAuth'
+          title: Authdata
+          description: Authentication data
+      type: object
+      required:
+      - strataId
+      - serverName
+      - authData
+      title: StrataSetAuthRequest
+    StrataGetAuthResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        serverName:
+          type: string
+          title: Servername
+          description: The name of the server
+        authData:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Authdata
+          description: The authentication data if available
+        isAuthenticated:
+          type: boolean
+          title: Isauthenticated
+          description: Whether the server has authentication data configured
+        message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Message
+      type: object
+      required:
+      - success
+      - serverName
+      - isAuthenticated
+      title: StrataGetAuthResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    StrataAddServersResponse:
+      properties:
+        addedServers:
+          items:
+            type: string
+          type: array
+          title: Addedservers
+          description: List of Klavis integration that were added
+        addedExternalServers:
+          items:
+            $ref: '#/components/schemas/ExternalServerInfo'
+          type: array
+          title: Addedexternalservers
+          description: List of external MCP servers that were added with name and URL
+        oauthUrls:
+          additionalProperties:
+            type: string
+          type: object
+          title: Oauthurls
+          description: Map of connected integration to OAuth URL, supports white labeling if configured
+        apiKeyUrls:
+          additionalProperties:
+            type: string
+          type: object
+          title: Apikeyurls
+          description: Map of connected integration to API key setup URL
+      type: object
+      required:
+      - addedServers
+      title: StrataAddServersResponse
+    CreateSelfHostedServerRequest:
+      properties:
+        serverName:
+          $ref: '#/components/schemas/McpServerName'
+          description: The name of the target MCP server. Case-insensitive (e.g., 'google calendar', 'GOOGLE_CALENDAR', 'Google Calendar' are all valid).
+        userId:
+          type: string
+          minLength: 1
+          title: Userid
+          description: The unique identifier for the user. The server instance along with the all the authentication data will belong to that specific user only. It can be a UUID from the database, a unique email address from the user, etc.
+      type: object
+      required:
+      - serverName
+      - userId
+      title: CreateSelfHostedServerRequest
+    ExternalServerRequest:
+      properties:
+        name:
+          type: string
+          minLength: 1
+          title: Name
+          description: The name of the external server
+        url:
+          type: string
+          minLength: 1
+          title: Url
+          description: The URL of the external MCP server
+        headers:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Headers
+          description: Optional HTTP headers to include when connecting to the external server (e.g., for bearer authentication)
+      type: object
+      required:
+      - name
+      - url
+      title: ExternalServerRequest
+    StrataRawActionsResponse:
+      properties:
+        strataId:
+          type: string
+          title: Strataid
+          description: The strata server ID
+        server:
+          type: string
+          title: Server
+          description: The requested server name
+        result:
+          additionalProperties: true
+          type: object
+          title: Result
+          description: Map of categories to raw actions
+      type: object
+      required:
+      - strataId
+      - server
+      title: StrataRawActionsResponse
+    StrataDeleteServersResponse:
+      properties:
+        deletedServers:
+          items:
+            type: string
+          type: array
+          title: Deletedservers
+          description: List of integration that were deleted
+        deletedExternalServers:
+          items:
+            type: string
+          type: array
+          title: Deletedexternalservers
+          description: List of external MCP server names that were deleted
+      type: object
+      required:
+      - deletedServers
+      - deletedExternalServers
+      title: StrataDeleteServersResponse
+    UpdateServerInstanceRequest:
+      properties:
+        isReadOnly:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Isreadonly
+          description: Whether the MCP server connection is read-only. When true, write operations will be restricted.
+      additionalProperties: false
+      type: object
+      title: UpdateServerInstanceRequest
+    ListToolsRequest:
+      properties:
+        serverUrl:
+          type: string
+          title: Serverurl
+          description: The full URL for connecting to the MCP server
+        connectionType:
+          $ref: '#/components/schemas/ConnectionType'
+          description: The connection type to use for the MCP server. Default is STREAMABLE_HTTP.
+          default: StreamableHttp
+        format:
+          $ref: '#/components/schemas/ToolFormat'
+          description: The format to return tools in. Default is MCP Native format for maximum compatibility.
+          default: mcp_native
+        headers:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Headers
+          description: Optional HTTP headers to include when connecting to the server
+      type: object
+      required:
+      - serverUrl
+      title: ListToolsRequest
+    StrataCreateRequest:
+      properties:
+        userId:
+          type: string
+          minLength: 1
+          title: Userid
+          description: The unique identifier for the user. The server instance along with the all the authentication data will belong to that specific user only. It can be a UUID from the database, a unique email address from the user, etc.
+        servers:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/McpServerName'
+            type: array
+          - type: string
+            const: ALL
+          - type: 'null'
+          title: Servers
+          description: List of Klavis MCP servers to enable (e.g., 'jira', 'linear'), 'ALL' to add all Klavis MCP servers, or null to add no servers.
+        externalServers:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ExternalServerRequest'
+            type: array
+          - type: 'null'
+          title: Externalservers
+          description: Optional list of external MCP servers to add with their URLs. Each server will be validated before being added.
+        enableAuthHandling:
+          type: boolean
+          title: Enableauthhandling
+          description: Whether to enable authentication handling. Default is True.
+          default: true
+      type: object
+      required:
+      - userId
+      title: StrataCreateRequest
+    ExternalServerInfo:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: The name of the external server
+        url:
+          type: string
+          title: Url
+          description: The URL of the external MCP server
+        headers:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Headers
+          description: Optional HTTP headers used when connecting to the external server
+      type: object
+      required:
+      - name
+      - url
+      title: ExternalServerInfo
+    ConnectionType:
+      type: string
+      enum:
+      - SSE
+      - StreamableHttp
+      title: ConnectionType
+    GetMcpServersResponse:
+      properties:
+        servers:
+          items:
+            $ref: '#/components/schemas/McpServer'
+          type: array
+          title: Servers
+      type: object
+      required:
+      - servers
+      title: GetMcpServersResponse
+    CreateSelfHostedServerResponse:
+      properties:
+        instanceId:
+          type: string
+          title: Instanceid
+          description: The unique identifier for this specific server connection integration instance.
+        oauthUrl:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Oauthurl
+          description: The OAuth authorization URL for the specified server, if OAuth is configured.
+      type: object
+      required:
+      - instanceId
+      title: CreateSelfHostedServerResponse
+    RawActionsResponse:
+      properties:
+        instanceId:
+          type: string
+          title: Instanceid
+          description: The instance ID
+        serverName:
+          type: string
+          title: Servername
+          description: The requested server name
+        result:
+          additionalProperties: true
+          type: object
+          title: Result
+          description: Map of categories to raw actions
+      type: object
+      required:
+      - instanceId
+      - serverName
+      title: RawActionsResponse
+    McpServerName:
+      type: string
+      enum:
+      - Affinity
+      - Airtable
+      - Amplitude
+      - Asana
+      - Attio
+      - Box
+      - Brave Search
+      - Cal.com
+      - Canva
+      - ClickUp
+      - Close
+      - Cloudflare
+      - Coinbase
+      - Confluence
+      - Dialpad
+      - Discord
+      - Doc2markdown
+      - DocuSign
+      - Dropbox
+      - ElevenLabs
+      - Exa
+      - Fathom
+      - Fetch URL
+      - Figma
+      - Fireflies
+      - Firecrawl Deep Research
+      - Firecrawl Web Search
+      - Freshdesk
+      - GitHub
+      - GitLab
+      - Gmail
+      - Gong
+      - Google Calendar
+      - Google Docs
+      - Google Drive
+      - Google Jobs
+      - Google Sheets
+      - Google Forms
+      - Google Cloud
+      - GoogleWorkspaceAtlas
+      - Hacker News
+      - Heygen
+      - HubSpot
+      - Intercom
+      - Jira
+      - Klaviyo
+      - Klavis ReportGen
+      - Linear
+      - LinkedIn
+      - Markdown2doc
+      - Mem0
+      - Microsoft Teams
+      - Mixpanel
+      - Monday
+      - Moneybird
+      - Motion
+      - Notion
+      - OneDrive
+      - Openrouter
+      - Outlook Mail
+      - Outlook Calendar
+      - PagerDuty
+      - Pipedrive
+      - Plai
+      - Postgres
+      - PostHog
+      - Postman
+      - QuickBooks
+      - Resend
+      - Salesforce
+      - SendGrid
+      - Shopify
+      - Slack
+      - Snowflake
+      - Stripe
+      - Supabase
+      - Tavily
+      - Vercel
+      - WhatsApp
+      - WordPress
+      - YouTube
+      - Zendesk
+      - ServiceNow
+      - PayPal
+      - Sentry
+      - Netlify
+      - Hugging Face
+      - Square
+      - Clockwise
+      - Jotform
+      - Honeycomb
+      - Zoho Mail
+      - Sharesight
+      - Weights and Biases
+      - Instagram
+      - MongoDB
+      title: McpServerName
+    UpdateServerInstanceResponse:
+      properties:
+        instanceId:
+          type: string
+          title: Instanceid
+          description: The unique identifier of the updated connection integration instance.
+        isReadOnly:
+          type: boolean
+          title: Isreadonly
+          description: The current read-only status of the connection.
+        message:
+          type: string
+          title: Message
+          description: A message indicating the result of the update operation.
+      type: object
+      required:
+      - instanceId
+      - isReadOnly
+      - message
+      title: UpdateServerInstanceResponse
+    StatusResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Message
+      type: object
+      required:
+      - success
+      title: StatusResponse
+    ListToolsResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          description: Whether the list tools request was successful
+        tools:
+          anyOf:
+          - items: {}
+            type: array
+          - type: 'null'
+          title: Tools
+          description: List of tools in the requested format
+        format:
+          $ref: '#/components/schemas/ToolFormat'
+          description: The format of the returned tools
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+          description: Error message, if the request failed
+      type: object
+      required:
+      - success
+      - format
+      title: ListToolsResponse
+    McpServer:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        tools:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ServerTool'
+            type: array
+          - type: 'null'
+          title: Tools
+        authNeeded:
+          type: boolean
+          title: Authneeded
+          default: true
+      type: object
+      required:
+      - id
+      - name
+      title: McpServer
+    GetAuthDataResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+          description: Whether the request was successful
+        authData:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: GetAuthDataResponseAuthData
+          description: Complete authentication data including access token, refresh token, scope, expiration, and platform-specific data
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+          description: Error message if the request failed
+      type: object
+      required:
+      - success
+      title: GetAuthDataResponse
+    StrataAddServersRequest:
+      properties:
+        strataId:
+          type: string
+          minLength: 1
+          title: Strataid
+          description: The strata server ID
+        servers:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/McpServerName'
+            type: array
+          - type: string
+            const: ALL
+          - type: 'null'
+          title: Servers
+          description: List of Klavis integration to add (e.g., 'jira', 'linear'), 'ALL' to add all Klavis integration, or null to add no servers.
+        externalServers:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ExternalServerRequest'
+            type: array
+          - type: 'null'
+          title: Externalservers
+          description: Optional list of external MCP servers to add with their URLs. Each server will be validated before being added.
+      type: object
+      required:
+      - strataId
+      title: StrataAddServersRequest
+    GetInstanceResponse:
+      properties:
+        instanceId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instanceid
+          description: The unique identifier of the connection integration instance.
+        authNeeded:
+          type: boolean
+          title: Authneeded
+          description: Indicates whether authentication is required for this server instance.
+          default: false
+        isAuthenticated:
+          type: boolean
+          title: Isauthenticated
+          description: Indicates whether the instance is authenticated successfully.
+          default: false
+        serverName:
+          type: string
+          title: Servername
+          description: The name of the MCP server associated with the instance.
+          default: ''
+        platform:
+          type: string
+          title: Platform
+          description: The platform associated with the instance.
+          default: ''
+        externalUserId:
+          type: string
+          title: Externaluserid
+          description: The user's identifier on the external platform.
+          default: ''
+        oauthUrl:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Oauthurl
+          description: The OAuth URL for authentication if available, supports white label if configured.
+      type: object
+      title: GetInstanceResponse
+    SetAuthRequest:
+      properties:
+        instanceId:
+          type: string
+          title: Instanceid
+          description: The unique identifier for the connection instance
+        authData:
+          anyOf:
+          - $ref: '#/components/schemas/ApiKeyAuth'
+          - $ref: '#/components/schemas/GeneralAuth'
+          title: SetAuthRequestAuthData
+          description: Authentication data
+      type: object
+      required:
+      - instanceId
+      - authData
+      title: SetAuthRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    CallToolResult:
+      properties:
+        content:
+          items: {}
+          type: array
+          title: Content
+          description: The content of the tool call
+        isError:
+          type: boolean
+          title: Iserror
+          description: Whether the tool call was successful
+          default: false
+      type: object
+      required:
+      - content
+      title: CallToolResult
+      description: The server's response to a tool call.
+    StrataCreateResponse:
+      properties:
+        strataServerUrl:
+          type: string
+          title: Strataserverurl
+          description: URL to connect to the Strata MCP server
+        strataId:
+          type: string
+          title: Strataid
+          description: The strata server ID
+        addedServers:
+          items:
+            type: string
+          type: array
+          title: Addedservers
+          description: List of Klavis integration that were added
+        addedExternalServers:
+          items:
+            $ref: '#/components/schemas/ExternalServerInfo'
+          type: array
+          title: Addedexternalservers
+          description: List of external MCP servers that were added with name and URL
+        oauthUrls:
+          additionalProperties:
+            type: string
+          type: object
+          title: Oauthurls
+          description: Map of connected integration to OAuth URL, supports white labeling if configured
+        apiKeyUrls:
+          additionalProperties:
+            type: string
+          type: object
+          title: Apikeyurls
+          description: Map of connected integration to API key setup URL
+      type: object
+      required:
+      - strataServerUrl
+      - strataId
+      - addedServers
+      title: StrataCreateResponse
+    GeneralAuth:
+      properties:
+        data:
+          additionalProperties: true
+          type: object
+          title: Data
+          description: Any other general authentication data to save
+      additionalProperties: false
+      type: object
+      title: 'Option 2: General Auth Data'
+    StrataGetResponse:
+      properties:
+        strataServerUrl:
+          type: string
+          title: Strataserverurl
+          description: URL to connect to the Strata MCP server
+        strataId:
+          type: string
+          title: Strataid
+          description: The strata server ID
+        connectedServers:
+          items:
+            type: string
+          type: array
+          title: Connectedservers
+          description: List of available integration currently connected to this strata
+        connectedExternalServers:
+          items:
+            $ref: '#/components/schemas/ExternalServerInfo'
+          type: array
+          title: Connectedexternalservers
+          description: List of external servers with name and URL currently connected to this strata
+        oauthUrls:
+          additionalProperties:
+            type: string
+          type: object
+          title: Oauthurls
+          description: Map of connected integration to OAuth URL, supports white labeling if configured
+        apiKeyUrls:
+          additionalProperties:
+            type: string
+          type: object
+          title: Apikeyurls
+          description: Map of connected integration to API key setup URL
+      type: object
+      required:
+      - strataServerUrl
+      - strataId
+      - connectedServers
+      - connectedExternalServers
+      title: StrataGetResponse
+    ApiKeyAuth:
+      properties:
+        token:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Token
+          description: The API key to save (token field)
+        api_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Api Key
+          description: The API key to save (api_key field)
+      additionalProperties: false
+      type: object
+      title: 'Option 1: API Key'
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      description: Your Klavis AI API key.
+      scheme: bearer
+      x-fern-bearer:
+        name: api_key

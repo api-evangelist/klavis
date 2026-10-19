@@ -185,18 +185,6 @@ apis:
   - type: OAuth2
     description: >-
       Built-in OAuth 2.0 flows handle credentials for 50+ third-party services on behalf of end users.
-- aid: klavis:klavis-mcp-servers-api
-  name: Klavis AI MCP Servers API
-  description: Create and manage hosted MCP server instances
-  humanURL: https://www.klavis.ai/docs
-  baseURL: https://api.klavis.ai
-  tags:
-  - MCP Server
-  tags_raw:
-  - MCP Servers
-  properties:
-  - type: OpenAPI
-    url: openapi/klavis-mcp-servers-api-openapi.yml
 - aid: klavis:klavis-sandbox-api
   name: Klavis AI Sandbox API
   description: Acquire and manage isolated sandbox VMs
@@ -207,28 +195,677 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/klavis-sandbox-api-openapi.yml
-- aid: klavis:klavis-tools-api
-  name: Klavis AI Tools API
-  description: List and invoke MCP server tools
+- aid: klavis:klavis-airtable-oauth-api
+  name: Klavis AI Airtable OAUTH API
+  description: The airtable-oauth API from Klavis AI — 1 operation(s) for airtable-oauth.
   humanURL: https://www.klavis.ai/docs
   baseURL: https://api.klavis.ai
   tags:
-  - Tools
+  - airtable-oauth
   properties:
   - type: OpenAPI
-    url: openapi/klavis-tools-api-openapi.yml
-- aid: klavis:klavis-users-api
-  name: Klavis AI Users API
-  description: End-user metadata for agent integrations
+    url: openapi/klavis-airtable-oauth-api-openapi.yml
+- aid: klavis:klavis-amplitude-oauth-api
+  name: Klavis AI Amplitude OAUTH API
+  description: The amplitude-oauth API from Klavis AI — 1 operation(s) for amplitude-oauth.
   humanURL: https://www.klavis.ai/docs
   baseURL: https://api.klavis.ai
   tags:
-  - User
-  tags_raw:
-  - Users
+  - amplitude-oauth
   properties:
   - type: OpenAPI
-    url: openapi/klavis-users-api-openapi.yml
+    url: openapi/klavis-amplitude-oauth-api-openapi.yml
+- aid: klavis:klavis-asana-oauth-api
+  name: Klavis AI Asana OAUTH API
+  description: The asana-oauth API from Klavis AI — 1 operation(s) for asana-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - asana-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-asana-oauth-api-openapi.yml
+- aid: klavis:klavis-attio-oauth-api
+  name: Klavis AI Attio OAUTH API
+  description: The attio-oauth API from Klavis AI — 1 operation(s) for attio-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - attio-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-attio-oauth-api-openapi.yml
+- aid: klavis:klavis-box-oauth-api
+  name: Klavis AI Box OAUTH API
+  description: The box-oauth API from Klavis AI — 1 operation(s) for box-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - box-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-box-oauth-api-openapi.yml
+- aid: klavis:klavis-calcom-oauth-api
+  name: Klavis AI Calcom OAUTH API
+  description: The calcom-oauth API from Klavis AI — 1 operation(s) for calcom-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - calcom-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-calcom-oauth-api-openapi.yml
+- aid: klavis:klavis-canva-oauth-api
+  name: Klavis AI Canva OAUTH API
+  description: The canva-oauth API from Klavis AI — 1 operation(s) for canva-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - canva-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-canva-oauth-api-openapi.yml
+- aid: klavis:klavis-clickup-oauth-api
+  name: Klavis AI Clickup OAUTH API
+  description: The clickup-oauth API from Klavis AI — 1 operation(s) for clickup-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - clickup-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-clickup-oauth-api-openapi.yml
+- aid: klavis:klavis-clockwise-oauth-api
+  name: Klavis AI Clockwise OAUTH API
+  description: The clockwise-oauth API from Klavis AI — 1 operation(s) for clockwise-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - clockwise-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-clockwise-oauth-api-openapi.yml
+- aid: klavis:klavis-close-oauth-api
+  name: Klavis AI Close OAUTH API
+  description: The close-oauth API from Klavis AI — 1 operation(s) for close-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - close-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-close-oauth-api-openapi.yml
+- aid: klavis:klavis-confluence-oauth-api
+  name: Klavis AI Confluence OAUTH API
+  description: The confluence-oauth API from Klavis AI — 1 operation(s) for confluence-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - confluence-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-confluence-oauth-api-openapi.yml
+- aid: klavis:klavis-dialpad-oauth-api
+  name: Klavis AI Dialpad OAUTH API
+  description: The dialpad-oauth API from Klavis AI — 1 operation(s) for dialpad-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - dialpad-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-dialpad-oauth-api-openapi.yml
+- aid: klavis:klavis-docusign-oauth-api
+  name: Klavis AI Docusign OAUTH API
+  description: The docusign-oauth API from Klavis AI — 1 operation(s) for docusign-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - docusign-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-docusign-oauth-api-openapi.yml
+- aid: klavis:klavis-dropbox-oauth-api
+  name: Klavis AI Dropbox OAUTH API
+  description: The dropbox-oauth API from Klavis AI — 1 operation(s) for dropbox-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - dropbox-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-dropbox-oauth-api-openapi.yml
+- aid: klavis:klavis-fathom-oauth-api
+  name: Klavis AI Fathom OAUTH API
+  description: The fathom-oauth API from Klavis AI — 1 operation(s) for fathom-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - fathom-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-fathom-oauth-api-openapi.yml
+- aid: klavis:klavis-figma-oauth-api
+  name: Klavis AI Figma OAUTH API
+  description: The figma-oauth API from Klavis AI — 1 operation(s) for figma-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - figma-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-figma-oauth-api-openapi.yml
+- aid: klavis:klavis-gcalendar-oauth-api
+  name: Klavis AI Gcalendar OAUTH API
+  description: The gcalendar-oauth API from Klavis AI — 1 operation(s) for gcalendar-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - gcalendar-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-gcalendar-oauth-api-openapi.yml
+- aid: klavis:klavis-gdocs-oauth-api
+  name: Klavis AI Gdocs OAUTH API
+  description: The gdocs-oauth API from Klavis AI — 1 operation(s) for gdocs-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - gdocs-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-gdocs-oauth-api-openapi.yml
+- aid: klavis:klavis-gdrive-oauth-api
+  name: Klavis AI Gdrive OAUTH API
+  description: The gdrive-oauth API from Klavis AI — 1 operation(s) for gdrive-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - gdrive-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-gdrive-oauth-api-openapi.yml
+- aid: klavis:klavis-github-oauth-api
+  name: Klavis AI Github OAUTH API
+  description: The github-oauth API from Klavis AI — 1 operation(s) for github-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - github-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-github-oauth-api-openapi.yml
+- aid: klavis:klavis-gitlab-oauth-api
+  name: Klavis AI Gitlab OAUTH API
+  description: The gitlab-oauth API from Klavis AI — 1 operation(s) for gitlab-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - gitlab-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-gitlab-oauth-api-openapi.yml
+- aid: klavis:klavis-gmail-oauth-api
+  name: Klavis AI Gmail OAUTH API
+  description: The gmail-oauth API from Klavis AI — 1 operation(s) for gmail-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - gmail-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-gmail-oauth-api-openapi.yml
+- aid: klavis:klavis-google-cloud-oauth-api
+  name: Klavis AI Google Cloud OAUTH API
+  description: The google-cloud-oauth API from Klavis AI — 1 operation(s) for google-cloud-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - google-cloud-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-google-cloud-oauth-api-openapi.yml
+- aid: klavis:klavis-google-forms-oauth-api
+  name: Klavis AI Google Forms OAUTH API
+  description: The google-forms-oauth API from Klavis AI — 1 operation(s) for google-forms-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - google-forms-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-google-forms-oauth-api-openapi.yml
+- aid: klavis:klavis-google-workspace-atlas-oauth-api
+  name: Klavis AI Google Workspace Atlas OAUTH API
+  description: >-
+    The google-workspace-atlas-oauth API from Klavis AI — 1 operation(s) for google-workspace-atlas-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - google-workspace-atlas-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-google-workspace-atlas-oauth-api-openapi.yml
+- aid: klavis:klavis-gsheets-oauth-api
+  name: Klavis AI Gsheets OAUTH API
+  description: The gsheets-oauth API from Klavis AI — 1 operation(s) for gsheets-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - gsheets-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-gsheets-oauth-api-openapi.yml
+- aid: klavis:klavis-honeycomb-oauth-api
+  name: Klavis AI Honeycomb OAUTH API
+  description: The honeycomb-oauth API from Klavis AI — 1 operation(s) for honeycomb-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - honeycomb-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-honeycomb-oauth-api-openapi.yml
+- aid: klavis:klavis-hubspot-oauth-api
+  name: Klavis AI Hubspot OAUTH API
+  description: The hubspot-oauth API from Klavis AI — 1 operation(s) for hubspot-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - hubspot-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-hubspot-oauth-api-openapi.yml
+- aid: klavis:klavis-huggingface-oauth-api
+  name: Klavis AI Huggingface OAUTH API
+  description: The huggingface-oauth API from Klavis AI — 1 operation(s) for huggingface-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - huggingface-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-huggingface-oauth-api-openapi.yml
+- aid: klavis:klavis-instagram-oauth-api
+  name: Klavis AI Instagram OAUTH API
+  description: The instagram-oauth API from Klavis AI — 1 operation(s) for instagram-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - instagram-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-instagram-oauth-api-openapi.yml
+- aid: klavis:klavis-intercom-oauth-api
+  name: Klavis AI Intercom OAUTH API
+  description: The intercom-oauth API from Klavis AI — 1 operation(s) for intercom-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - intercom-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-intercom-oauth-api-openapi.yml
+- aid: klavis:klavis-jira-oauth-api
+  name: Klavis AI Jira OAUTH API
+  description: The jira-oauth API from Klavis AI — 1 operation(s) for jira-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - jira-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-jira-oauth-api-openapi.yml
+- aid: klavis:klavis-jotform-oauth-api
+  name: Klavis AI Jotform OAUTH API
+  description: The jotform-oauth API from Klavis AI — 1 operation(s) for jotform-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - jotform-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-jotform-oauth-api-openapi.yml
+- aid: klavis:klavis-klaviyo-oauth-api
+  name: Klavis AI Klaviyo OAUTH API
+  description: The klaviyo-oauth API from Klavis AI — 1 operation(s) for klaviyo-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - klaviyo-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-klaviyo-oauth-api-openapi.yml
+- aid: klavis:klavis-linear-oauth-api
+  name: Klavis AI Linear OAUTH API
+  description: The linear-oauth API from Klavis AI — 1 operation(s) for linear-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - linear-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-linear-oauth-api-openapi.yml
+- aid: klavis:klavis-linkedin-oauth-api
+  name: Klavis AI Linkedin OAUTH API
+  description: The linkedin-oauth API from Klavis AI — 1 operation(s) for linkedin-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - linkedin-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-linkedin-oauth-api-openapi.yml
+- aid: klavis:klavis-local-sandbox-api
+  name: Klavis AI Local Sandbox API
+  description: The local-sandbox API from Klavis AI — 17 operation(s) for local-sandbox.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - local-sandbox
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-local-sandbox-api-openapi.yml
+- aid: klavis:klavis-mcp-server-api
+  name: Klavis AI MCP Server API
+  description: The mcp-server API from Klavis AI — 17 operation(s) for mcp-server.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - mcp-server
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-mcp-server-api-openapi.yml
+- aid: klavis:klavis-monday-oauth-api
+  name: Klavis AI Monday OAUTH API
+  description: The monday-oauth API from Klavis AI — 1 operation(s) for monday-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - monday-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-monday-oauth-api-openapi.yml
+- aid: klavis:klavis-mscalendar-oauth-api
+  name: Klavis AI Mscalendar OAUTH API
+  description: The mscalendar-oauth API from Klavis AI — 2 operation(s) for mscalendar-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - mscalendar-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-mscalendar-oauth-api-openapi.yml
+- aid: klavis:klavis-netlify-oauth-api
+  name: Klavis AI Netlify OAUTH API
+  description: The netlify-oauth API from Klavis AI — 1 operation(s) for netlify-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - netlify-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-netlify-oauth-api-openapi.yml
+- aid: klavis:klavis-notion-mcp-oauth-api
+  name: Klavis AI Notion MCP OAUTH API
+  description: The notion-mcp-oauth API from Klavis AI — 2 operation(s) for notion-mcp-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - notion-mcp-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-notion-mcp-oauth-api-openapi.yml
+- aid: klavis:klavis-notion-oauth-api
+  name: Klavis AI Notion OAUTH API
+  description: The notion-oauth API from Klavis AI — 1 operation(s) for notion-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - notion-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-notion-oauth-api-openapi.yml
+- aid: klavis:klavis-onedrive-oauth-api
+  name: Klavis AI Onedrive OAUTH API
+  description: The onedrive-oauth API from Klavis AI — 2 operation(s) for onedrive-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - onedrive-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-onedrive-oauth-api-openapi.yml
+- aid: klavis:klavis-outlook-oauth-api
+  name: Klavis AI Outlook OAUTH API
+  description: The outlook-oauth API from Klavis AI — 2 operation(s) for outlook-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - outlook-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-outlook-oauth-api-openapi.yml
+- aid: klavis:klavis-pagerduty-oauth-api
+  name: Klavis AI Pagerduty OAUTH API
+  description: The pagerduty-oauth API from Klavis AI — 1 operation(s) for pagerduty-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - pagerduty-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-pagerduty-oauth-api-openapi.yml
+- aid: klavis:klavis-paypal-oauth-api
+  name: Klavis AI Paypal OAUTH API
+  description: The paypal-oauth API from Klavis AI — 1 operation(s) for paypal-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - paypal-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-paypal-oauth-api-openapi.yml
+- aid: klavis:klavis-pipedrive-oauth-api
+  name: Klavis AI Pipedrive OAUTH API
+  description: The pipedrive-oauth API from Klavis AI — 1 operation(s) for pipedrive-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - pipedrive-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-pipedrive-oauth-api-openapi.yml
+- aid: klavis:klavis-quickbooks-oauth-api
+  name: Klavis AI Quickbooks OAUTH API
+  description: The quickbooks-oauth API from Klavis AI — 1 operation(s) for quickbooks-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - quickbooks-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-quickbooks-oauth-api-openapi.yml
+- aid: klavis:klavis-salesforce-oauth-api
+  name: Klavis AI Salesforce OAUTH API
+  description: The salesforce-oauth API from Klavis AI — 1 operation(s) for salesforce-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - salesforce-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-salesforce-oauth-api-openapi.yml
+- aid: klavis:klavis-sentry-oauth-api
+  name: Klavis AI Sentry OAUTH API
+  description: The sentry-oauth API from Klavis AI — 1 operation(s) for sentry-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - sentry-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-sentry-oauth-api-openapi.yml
+- aid: klavis:klavis-sharesight-oauth-api
+  name: Klavis AI Sharesight OAUTH API
+  description: The sharesight-oauth API from Klavis AI — 1 operation(s) for sharesight-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - sharesight-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-sharesight-oauth-api-openapi.yml
+- aid: klavis:klavis-slack-oauth-api
+  name: Klavis AI Slack OAUTH API
+  description: The slack-oauth API from Klavis AI — 1 operation(s) for slack-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - slack-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-slack-oauth-api-openapi.yml
+- aid: klavis:klavis-square-oauth-api
+  name: Klavis AI Square OAUTH API
+  description: The square-oauth API from Klavis AI — 1 operation(s) for square-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - square-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-square-oauth-api-openapi.yml
+- aid: klavis:klavis-stripe-connect-oauth-api
+  name: Klavis AI Stripe Connect OAUTH API
+  description: The stripe-connect-oauth API from Klavis AI — 1 operation(s) for stripe-connect-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - stripe-connect-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-stripe-connect-oauth-api-openapi.yml
+- aid: klavis:klavis-supabase-oauth-api
+  name: Klavis AI Supabase OAUTH API
+  description: The supabase-oauth API from Klavis AI — 1 operation(s) for supabase-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - supabase-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-supabase-oauth-api-openapi.yml
+- aid: klavis:klavis-teams-oauth-api
+  name: Klavis AI Teams OAUTH API
+  description: The teams-oauth API from Klavis AI — 2 operation(s) for teams-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - teams-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-teams-oauth-api-openapi.yml
+- aid: klavis:klavis-universe-api
+  name: Klavis AI Universe API
+  description: The Universe API from Klavis AI — 6 operation(s) for universe.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - Universe
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-universe-api-openapi.yml
+- aid: klavis:klavis-user-api
+  name: Klavis AI User API
+  description: The user API from Klavis AI — 5 operation(s) for user.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - user
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-user-api-openapi.yml
+- aid: klavis:klavis-vercel-oauth-api
+  name: Klavis AI Vercel OAUTH API
+  description: The vercel-oauth API from Klavis AI — 1 operation(s) for vercel-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - vercel-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-vercel-oauth-api-openapi.yml
+- aid: klavis:klavis-white-labeling-api
+  name: Klavis AI White Labeling API
+  description: The white-labeling API from Klavis AI — 2 operation(s) for white-labeling.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - white-labeling
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-white-labeling-api-openapi.yml
+- aid: klavis:klavis-wordpress-oauth-api
+  name: Klavis AI Wordpress OAUTH API
+  description: The wordpress-oauth API from Klavis AI — 1 operation(s) for wordpress-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - wordpress-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-wordpress-oauth-api-openapi.yml
+- aid: klavis:klavis-xero-oauth-api
+  name: Klavis AI Xero OAUTH API
+  description: The xero-oauth API from Klavis AI — 1 operation(s) for xero-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - xero-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-xero-oauth-api-openapi.yml
+- aid: klavis:klavis-youtube-oauth-api
+  name: Klavis AI Youtube OAUTH API
+  description: The youtube-oauth API from Klavis AI — 1 operation(s) for youtube-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - youtube-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-youtube-oauth-api-openapi.yml
+- aid: klavis:klavis-zendesk-oauth-api
+  name: Klavis AI Zendesk OAUTH API
+  description: The zendesk-oauth API from Klavis AI — 1 operation(s) for zendesk-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - zendesk-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-zendesk-oauth-api-openapi.yml
+- aid: klavis:klavis-zoho-mail-oauth-api
+  name: Klavis AI Zoho Mail OAUTH API
+  description: The zoho-mail-oauth API from Klavis AI — 1 operation(s) for zoho-mail-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - zoho-mail-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-zoho-mail-oauth-api-openapi.yml
+- aid: klavis:klavis-zoom-oauth-api
+  name: Klavis AI Zoom OAUTH API
+  description: The zoom-oauth API from Klavis AI — 1 operation(s) for zoom-oauth.
+  humanURL: https://www.klavis.ai/docs
+  baseURL: https://api.klavis.ai
+  tags:
+  - zoom-oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/klavis-zoom-oauth-api-openapi.yml
 common:
   - type: Plans
     url: plans/klavis-plans-pricing.yml

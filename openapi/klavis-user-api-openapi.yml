@@ -1,0 +1,621 @@
+openapi: 3.2.0
+info:
+  title: Klavis AI (https://www.klavis.ai) User API
+  description: Klavis AI - Open Source MCP Integrations for AI Applications
+  version: 0.1.0
+servers:
+- url: https://api.klavis.ai
+  description: US Production server
+- url: https://api.eu.klavis.ai
+  description: EU Production server
+tags:
+- name: User
+paths:
+  /user/{userId}/integrations:
+    get:
+      tags:
+      - User
+      summary: Get User Integrations
+      description: 'Get all available integrations (MCP server names) by user ID.
+
+        Returns a list of integration names and their authentication status.'
+      operationId: getUserIntegrations
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          description: The external user ID
+          title: Userid
+        description: The external user ID
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserIntegrationsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /user/{userId}:
+    get:
+      tags:
+      - User
+      summary: Get User
+      description: Get user information by user_id.
+      operationId: getUserByUserId
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          description: The identifier for the user to fetch.
+          title: Userid
+        description: The identifier for the user to fetch.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - User
+      summary: Delete User
+      description: 'Delete a user and all associated data by user_id.
+
+        Users cannot delete their own accounts.
+
+        This operation will permanently remove all user data.'
+      operationId: deleteUserByUserId
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          description: The identifier for the user to delete.
+          title: Userid
+        description: The identifier for the user to delete.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteUserResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /user/:
+    get:
+      tags:
+      - User
+      summary: Get All Users
+      description: Retrieve all users that have been created under your account, with support for pagination.
+      operationId: getAllUsers
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+          minimum: 1
+          description: Number of results per page (max 1000)
+          default: 50
+          title: Page Size
+        description: Number of results per page (max 1000)
+      - name: page_number
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          description: Page number to retrieve (starting from 1)
+          default: 1
+          title: Page Number
+        description: Page number to retrieve (starting from 1)
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAllUsersResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /user/set-auth:
+    post:
+      tags:
+      - User
+      summary: Set User Auth
+      description: 'Sets authentication data for a specific integration for a user.
+
+
+        Accepts either API key authentication or general authentication data.
+
+        This updates the auth_metadata for the specified user''s integration instance.'
+      operationId: setUserAuth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetUserAuthRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /user/{userId}/auth/{serverName}:
+    get:
+      tags:
+      - User
+      summary: Get User Auth
+      description: 'Retrieves authentication data for a specific integration for a user.
+
+
+        Returns the authentication data if available, along with authentication status.
+
+        Includes token refresh handling if needed.'
+      operationId: getUserAuth
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          description: The identifier for the user
+          title: Userid
+        description: The identifier for the user
+      - name: serverName
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/McpServerName'
+          description: The name of the MCP server (e.g., 'GitHub', 'Jira')
+        description: The name of the MCP server (e.g., 'GitHub', 'Jira')
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserAuthResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - User
+      summary: Delete User Auth
+      description: 'Deletes authentication data for a specific integration for a user.
+
+
+        This will clear the stored authentication credentials, effectively unauthenticating the integration.'
+      operationId: deleteUserAuth
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          description: The unique identifier for the user
+          title: Userid
+        description: The unique identifier for the user
+      - name: serverName
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/McpServerName'
+          description: The name of the MCP server to delete authentication for (e.g., 'github', 'jira')
+        description: The name of the MCP server to delete authentication for (e.g., 'github', 'jira')
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    GetUserAuthResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        userId:
+          type: string
+          title: Userid
+          description: The user identifier
+        serverName:
+          type: string
+          title: Servername
+          description: The name of the server
+        authData:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: GetUserAuthResponseAuthData
+          description: The authentication data if available
+        isAuthenticated:
+          type: boolean
+          title: Isauthenticated
+          description: Whether the server has authentication data configured
+        message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Message
+      type: object
+      required:
+      - success
+      - userId
+      - serverName
+      - isAuthenticated
+      title: GetUserAuthResponse
+    GetUserIntegrationsResponse:
+      properties:
+        integrations:
+          items:
+            $ref: '#/components/schemas/IntegrationItem'
+          type: array
+          title: Integrations
+      type: object
+      required:
+      - integrations
+      title: GetUserIntegrationsResponse
+    McpServerName:
+      type: string
+      enum:
+      - Affinity
+      - Airtable
+      - Amplitude
+      - Asana
+      - Attio
+      - Box
+      - Brave Search
+      - Cal.com
+      - Canva
+      - ClickUp
+      - Close
+      - Cloudflare
+      - Coinbase
+      - Confluence
+      - Dialpad
+      - Discord
+      - Doc2markdown
+      - DocuSign
+      - Dropbox
+      - ElevenLabs
+      - Exa
+      - Fathom
+      - Fetch URL
+      - Figma
+      - Fireflies
+      - Firecrawl Deep Research
+      - Firecrawl Web Search
+      - Freshdesk
+      - GitHub
+      - GitLab
+      - Gmail
+      - Gong
+      - Google Calendar
+      - Google Docs
+      - Google Drive
+      - Google Jobs
+      - Google Sheets
+      - Google Forms
+      - Google Cloud
+      - GoogleWorkspaceAtlas
+      - Hacker News
+      - Heygen
+      - HubSpot
+      - Intercom
+      - Jira
+      - Klaviyo
+      - Klavis ReportGen
+      - Linear
+      - LinkedIn
+      - Markdown2doc
+      - Mem0
+      - Microsoft Teams
+      - Mixpanel
+      - Monday
+      - Moneybird
+      - Motion
+      - Notion
+      - OneDrive
+      - Openrouter
+      - Outlook Mail
+      - Outlook Calendar
+      - PagerDuty
+      - Pipedrive
+      - Plai
+      - Postgres
+      - PostHog
+      - Postman
+      - QuickBooks
+      - Resend
+      - Salesforce
+      - SendGrid
+      - Shopify
+      - Slack
+      - Snowflake
+      - Stripe
+      - Supabase
+      - Tavily
+      - Vercel
+      - WhatsApp
+      - WordPress
+      - YouTube
+      - Zendesk
+      - ServiceNow
+      - PayPal
+      - Sentry
+      - Netlify
+      - Hugging Face
+      - Square
+      - Clockwise
+      - Jotform
+      - Honeycomb
+      - Zoho Mail
+      - Sharesight
+      - Weights and Biases
+      - Instagram
+      - MongoDB
+      title: McpServerName
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    GetAllUsersResponse:
+      properties:
+        users:
+          items:
+            $ref: '#/components/schemas/UserInfo'
+          type: array
+          title: Users
+          description: List of users
+        totalCount:
+          type: integer
+          title: Totalcount
+          description: Total number of users across all pages
+        page:
+          type: integer
+          title: Page
+          description: Current page number
+        pageSize:
+          type: integer
+          title: Pagesize
+          description: Number of results per page
+        totalPages:
+          type: integer
+          title: Totalpages
+          description: Total number of pages
+      type: object
+      required:
+      - users
+      - totalCount
+      - page
+      - pageSize
+      - totalPages
+      title: GetAllUsersResponse
+    DeleteUserResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+      - success
+      - message
+      title: DeleteUserResponse
+    StatusResponse:
+      properties:
+        success:
+          type: boolean
+          title: Success
+        message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Message
+      type: object
+      required:
+      - success
+      title: StatusResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    GetUserResponse:
+      properties:
+        userId:
+          type: string
+          title: Userid
+        createdAt:
+          type: string
+          title: Createdat
+        lastUsedAt:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Lastusedat
+      type: object
+      required:
+      - userId
+      - createdAt
+      title: GetUserResponse
+    IntegrationItem:
+      properties:
+        name:
+          $ref: '#/components/schemas/McpServerName'
+        is_authenticated:
+          type: boolean
+          title: Is Authenticated
+          description: Whether the integration is authenticated
+      type: object
+      required:
+      - name
+      - is_authenticated
+      title: IntegrationItem
+    SetUserAuthRequest:
+      properties:
+        userId:
+          type: string
+          minLength: 1
+          title: Userid
+          description: The unique identifier for the user
+        serverName:
+          $ref: '#/components/schemas/McpServerName'
+          description: The name of the MCP server to set authentication for (e.g., 'GitHub', 'Jira')
+        authData:
+          anyOf:
+          - $ref: '#/components/schemas/ApiKeyAuth'
+          - $ref: '#/components/schemas/GeneralAuth'
+          title: SetUserAuthRequestAuthData
+          description: Authentication data
+      type: object
+      required:
+      - userId
+      - serverName
+      - authData
+      title: SetUserAuthRequest
+    GeneralAuth:
+      properties:
+        data:
+          additionalProperties: true
+          type: object
+          title: Data
+          description: Any other general authentication data to save
+      additionalProperties: false
+      type: object
+      title: 'Option 2: General Auth Data'
+    UserInfo:
+      properties:
+        userId:
+          type: string
+          title: Userid
+          description: The external user ID
+        createdAt:
+          type: string
+          title: Createdat
+          description: The timestamp when the user was created
+      type: object
+      required:
+      - userId
+      - createdAt
+      title: UserInfo
+    ApiKeyAuth:
+      properties:
+        token:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Token
+          description: The API key to save (token field)
+        api_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Api Key
+          description: The API key to save (api_key field)
+      additionalProperties: false
+      type: object
+      title: 'Option 1: API Key'
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      description: Your Klavis AI API key.
+      scheme: bearer
+      x-fern-bearer:
+        name: api_key

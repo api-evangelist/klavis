@@ -1,0 +1,2882 @@
+openapi: 3.2.0
+info:
+  title: Klavis AI (https://www.klavis.ai) Local Sandbox API
+  description: Klavis AI - Open Source MCP Integrations for AI Applications
+  version: 0.1.0
+servers:
+- url: https://api.klavis.ai
+  description: US Production server
+- url: https://api.eu.klavis.ai
+  description: EU Production server
+tags:
+- name: local-sandbox
+paths:
+  /local-sandbox:
+    get:
+      tags:
+      - local-sandbox
+      summary: List local sandboxes
+      description: Lists all active local sandbox environments owned by the user.
+      operationId: list_local_sandboxes_local_sandbox_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListLocalSandboxesResponse'
+      security:
+      - HTTPBearer: []
+    post:
+      tags:
+      - local-sandbox
+      summary: Acquire a local sandbox
+      description: 'Initializes a specialized Virtual Machine environment (Local Sandbox) that hosts multiple interconnected MCP servers. Optionally specify a benchmark (e.g., ''Toolathlon'') to configure the sandbox. IMPORTANT: The benchmark parameter may affect BOTH (1) the initial data environment (e.g., preloaded data or pre-configured state for supported servers) AND (2) the MCP server implementation itself — some servers may be routed to a benchmark-specific MCP server with potentially different tools or behaviors.'
+      operationId: acquire_local_sandbox_local_sandbox_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcquireLocalSandboxRequest'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcquireLocalSandboxResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /local-sandbox/{local_sandbox_id}:
+    delete:
+      tags:
+      - local-sandbox
+      summary: Release a local sandbox
+      description: Releases the local sandbox VM and all associated servers, cleaning up the shared environment.
+      operationId: release_local_sandbox_local_sandbox__local_sandbox_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: local_sandbox_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The ID of the local sandbox to release
+          title: Local Sandbox Id
+        description: The ID of the local sandbox to release
+      - name: is_ttl
+        in: query
+        required: false
+        schema:
+          type: boolean
+          description: Flag indicating if this is a TTL release task
+          default: false
+          title: Is Ttl
+        description: Flag indicating if this is a TTL release task
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - local-sandbox
+      summary: Get local sandbox details
+      description: Retrieves details about a local sandbox environment, including its status and all running servers.
+      operationId: get_local_sandbox_local_sandbox__local_sandbox_id__get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: local_sandbox_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The ID of the local sandbox to retrieve
+          title: Local Sandbox Id
+        description: The ID of the local sandbox to retrieve
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocalSandboxInfo'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /local-sandbox/{local_sandbox_id}/reset:
+    post:
+      tags:
+      - local-sandbox
+      summary: Reset local sandbox to initial state
+      description: Resets the state of the local sandbox VM and all its servers to their initial state.
+      operationId: reset_local_sandbox_local_sandbox__local_sandbox_id__reset_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: local_sandbox_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The ID of the local sandbox to reset
+          title: Local Sandbox Id
+        description: The ID of the local sandbox to reset
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /local-sandbox/{local_sandbox_id}/upload-url:
+    post:
+      tags:
+      - local-sandbox
+      summary: Get URL to upload your data
+      description: Generates a signed URL to upload a `tar.gz` archive containing your workspace files. Once uploaded, use the `/initialize` endpoint to unpack it into the sandbox.
+      operationId: get_upload_url_local_sandbox__local_sandbox_id__upload_url_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: local_sandbox_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The local sandbox identifier
+          title: Local Sandbox Id
+        description: The local sandbox identifier
+      - name: region
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/GCSRegion'
+          description: GCS bucket region for the signed URL. Use 'asia' for users in China/Asia to upload to a nearby bucket (lower latency). The file is accessible from any region over Google's private backbone. Defaults to 'us'.
+          default: us
+        description: GCS bucket region for the signed URL. Use 'asia' for users in China/Asia to upload to a nearby bucket (lower latency). The file is accessible from any region over Google's private backbone. Defaults to 'us'.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadUrlResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /local-sandbox/{local_sandbox_id}/initialize:
+    post:
+      tags:
+      - local-sandbox
+      summary: Initialize sandbox from your uploaded data
+      description: Extracts the uploaded `tar.gz` archive into the sandbox workspace. This must be called after successfully uploading the file using the URL from `/upload-url`.
+      operationId: initialize_local_sandbox_local_sandbox__local_sandbox_id__initialize_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: local_sandbox_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The local sandbox identifier
+          title: Local Sandbox Id
+        description: The local sandbox identifier
+      - name: region
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/GCSRegion'
+          description: GCS bucket region where the archive was uploaded. Must match the region used in the `/upload-url` call. Defaults to 'us'.
+          default: us
+        description: GCS bucket region where the archive was uploaded. Must match the region used in the `/upload-url` call. Defaults to 'us'.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitializeSandboxResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /local-sandbox/{local_sandbox_id}/dump:
+    get:
+      tags:
+      - local-sandbox
+      summary: Download sandbox data
+      description: Creates a `tar.gz` archive of the current workspace and provides a temporary download URL. Useful for saving your work or exporting the sandbox state.
+      operationId: dump_local_sandbox_local_sandbox__local_sandbox_id__dump_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: local_sandbox_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The local sandbox identifier
+          title: Local Sandbox Id
+        description: The local sandbox identifier
+      - name: region
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/GCSRegion'
+          description: GCS bucket region for the download URL. Use 'asia' for users in China/Asia for faster downloads from a nearby bucket. Defaults to 'us'.
+          default: us
+        description: GCS bucket region for the download URL. Use 'asia' for users in China/Asia for faster downloads from a nearby bucket. Defaults to 'us'.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DumpUrlResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /local-sandbox/{local_sandbox_id}/execution-upload-url:
+    post:
+      tags:
+      - local-sandbox
+      summary: Get a pre-signed URL to upload an execution archive
+      description: Returns a pre-signed GCS PUT URL so the caller can upload a tar.gz archive containing `main.py`, `requirements.txt`, etc. for later execution.
+      operationId: get_execution_upload_url_local_sandbox__local_sandbox_id__execution_upload_url_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: local_sandbox_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The local sandbox identifier
+          title: Local Sandbox Id
+        description: The local sandbox identifier
+      - name: region
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/GCSRegion'
+          description: GCS bucket region for the signed URL. Defaults to 'us'.
+          default: us
+        description: GCS bucket region for the signed URL. Defaults to 'us'.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExecutionUploadUrlRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExecutionUploadUrlResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /local-sandbox/{local_sandbox_id}/execute:
+    post:
+      tags:
+      - local-sandbox
+      summary: Execute a script inside the sandbox
+      description: Computes the internal GCS archive URL from the sandbox ID and execution name, then triggers the sandbox executor to download, install dependencies, and execute `main.py`. The execution runs in the background — poll `/execution-logs` to track progress. The archive must first be uploaded via `/execution-upload-url`.
+      operationId: execute_in_sandbox_local_sandbox__local_sandbox_id__execute_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: local_sandbox_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The local sandbox identifier
+          title: Local Sandbox Id
+        description: The local sandbox identifier
+      - name: region
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/GCSRegion'
+          description: GCS bucket region where the archive was uploaded. Defaults to 'us'.
+          default: us
+        description: GCS bucket region where the archive was uploaded. Defaults to 'us'.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExecuteRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExecuteResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /local-sandbox/{local_sandbox_id}/execution-status:
+    get:
+      tags:
+      - local-sandbox
+      summary: Get execution status
+      description: 'Returns the current status of an execution: pending, running, completed, or failed.'
+      operationId: get_execution_status_local_sandbox__local_sandbox_id__execution_status_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: local_sandbox_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The local sandbox identifier
+          title: Local Sandbox Id
+        description: The local sandbox identifier
+      - name: execution_name
+        in: query
+        required: true
+        schema:
+          type: string
+          description: Name of the execution to check status for
+          title: Execution Name
+        description: Name of the execution to check status for
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExecutionStatusResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /local-sandbox/{local_sandbox_id}/execution-logs:
+    get:
+      tags:
+      - local-sandbox
+      summary: Poll execution logs
+      description: Returns execution status and new log content since the provided byte cursor. Call repeatedly with the returned cursor to stream logs.
+      operationId: get_execution_logs_local_sandbox__local_sandbox_id__execution_logs_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: local_sandbox_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The local sandbox identifier
+          title: Local Sandbox Id
+        description: The local sandbox identifier
+      - name: execution_name
+        in: query
+        required: true
+        schema:
+          type: string
+          description: Name of the execution to get logs for
+          title: Execution Name
+        description: Name of the execution to get logs for
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          description: Byte offset to start reading from
+          default: 0
+          title: Cursor
+        description: Byte offset to start reading from
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExecutionLogsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /local-sandbox/{local_sandbox_id}/export-artifacts:
+    post:
+      tags:
+      - local-sandbox
+      summary: Export execution artifacts
+      description: Zips the execution directory and uploads it to GCS. Returns a signed download URL for the exported artifacts.
+      operationId: export_artifacts_local_sandbox__local_sandbox_id__export_artifacts_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: local_sandbox_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The local sandbox identifier
+          title: Local Sandbox Id
+        description: The local sandbox identifier
+      - name: region
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/GCSRegion'
+          description: GCS bucket region for the signed URL. Defaults to 'us'.
+          default: us
+        description: GCS bucket region for the signed URL. Defaults to 'us'.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExportArtifactsRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportArtifactsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /local-sandbox/google_cloud/{sandbox_id}/initialize:
+    post:
+      tags:
+      - local-sandbox
+      summary: Initialize google_cloud sandbox with data
+      description: Initialize the sandbox with google_cloud-specific data following the defined schema.
+      operationId: initialize_sandbox_local_sandbox_google_cloud__sandbox_id__initialize_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: sandbox_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The unique sandbox identifier
+          title: Sandbox Id
+        description: The unique sandbox identifier
+      - name: init_default_data
+        in: query
+        required: false
+        schema:
+          type: boolean
+          description: If true, use default test data for initialization
+          default: false
+          title: Init Default Data
+        description: If true, use default test data for initialization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              anyOf:
+              - $ref: '#/components/schemas/GoogleCloudData-Input'
+              - type: 'null'
+              title: Request Body
+            examples:
+              default:
+                summary: Example initialization data
+                value:
+                  datasets:
+                  - id: sales_analytics
+                    description: Sales and revenue analytics data warehouse
+                    location: US
+                  - id: customer_data
+                    description: Customer information and interactions
+                    location: US
+                  - id: product_catalog
+                    description: Product inventory and catalog data
+                    location: EU
+                  tables:
+                  - dataset_id: sales_analytics
+                    id: daily_sales
+                    description: Daily sales transactions
+                    fields:
+                    - name: transaction_id
+                      type: STRING
+                      mode: REQUIRED
+                      description: Unique transaction identifier
+                    - name: sale_date
+                      type: DATE
+                      mode: REQUIRED
+                      description: Date of sale
+                    - name: product_id
+                      type: STRING
+                      mode: REQUIRED
+                      description: Product identifier
+                    - name: quantity
+                      type: INTEGER
+                      mode: REQUIRED
+                      description: Quantity sold
+                    - name: unit_price
+                      type: FLOAT
+                      mode: REQUIRED
+                      description: Price per unit
+                    - name: total_amount
+                      type: FLOAT
+                      mode: REQUIRED
+                      description: Total sale amount
+                    - name: region
+                      type: STRING
+                      mode: NULLABLE
+                      description: Sales region
+                  - dataset_id: sales_analytics
+                    id: monthly_revenue
+                    description: Monthly revenue aggregation
+                    fields:
+                    - name: month
+                      type: DATE
+                      mode: REQUIRED
+                      description: First day of the month
+                    - name: region
+                      type: STRING
+                      mode: REQUIRED
+                      description: Sales region
+                    - name: total_revenue
+                      type: FLOAT
+                      mode: REQUIRED
+                      description: Total revenue for the month
+                    - name: transaction_count
+                      type: INTEGER
+                      mode: REQUIRED
+                      description: Number of transactions
+                    - name: avg_order_value
+                      type: FLOAT
+                      mode: NULLABLE
+                      description: Average order value
+                  - dataset_id: customer_data
+                    id: customers
+                    description: Customer master data
+                    fields:
+                    - name: customer_id
+                      type: STRING
+                      mode: REQUIRED
+                      description: Unique customer identifier
+                    - name: email
+                      type: STRING
+                      mode: REQUIRED
+                      description: Customer email address
+                    - name: name
+                      type: STRING
+                      mode: REQUIRED
+                      description: Customer full name
+                    - name: created_at
+                      type: TIMESTAMP
+                      mode: REQUIRED
+                      description: Account creation timestamp
+                    - name: tier
+                      type: STRING
+                      mode: NULLABLE
+                      description: Customer tier (bronze, silver, gold)
+                    - name: lifetime_value
+                      type: FLOAT
+                      mode: NULLABLE
+                      description: Customer lifetime value
+                  - dataset_id: product_catalog
+                    id: products
+                    description: Product catalog
+                    fields:
+                    - name: product_id
+                      type: STRING
+                      mode: REQUIRED
+                      description: Product identifier
+                    - name: name
+                      type: STRING
+                      mode: REQUIRED
+                      description: Product name
+                    - name: category
+                      type: STRING
+                      mode: REQUIRED
+                      description: Product category
+                    - name: price
+                      type: FLOAT
+                      mode: REQUIRED
+                      description: Current price
+                    - name: stock_quantity
+                      type: INTEGER
+                      mode: REQUIRED
+                      description: Available stock
+                    - name: is_active
+                      type: BOOLEAN
+                      mode: REQUIRED
+                      description: Whether product is active
+                  buckets:
+                  - name: sandbox-data-lake-123
+                    location: US
+                    storage_class: STANDARD
+                    versioning_enabled: true
+                    lifecycle_rules:
+                    - action: Delete
+                      age_days: 365
+                  - name: sandbox-exports-123
+                    location: US
+                    storage_class: STANDARD
+                    versioning_enabled: false
+                  - name: sandbox-backups-123
+                    location: US-EAST1
+                    storage_class: NEARLINE
+                    versioning_enabled: true
+                    lifecycle_rules:
+                    - action: SetStorageClass
+                      action_storage_class: COLDLINE
+                      age_days: 90
+                    - action: Delete
+                      age_days: 730
+                  - name: sandbox-logs-archive-123
+                    location: US
+                    storage_class: ARCHIVE
+                    versioning_enabled: false
+                  objects:
+                  - bucket: sandbox-data-lake-123
+                    name: raw/sales/2025/01/daily_sales_20250101.csv
+                    content_type: text/csv
+                    content: 'transaction_id,sale_date,product_id,quantity,unit_price,total_amount,region
+
+                      TXN001,2025-01-01,PROD001,5,19.99,99.95,North America
+
+                      TXN002,2025-01-01,PROD002,3,29.99,89.97,Europe
+
+                      TXN003,2025-01-01,PROD001,10,19.99,199.90,Asia Pacific'
+                  - bucket: sandbox-data-lake-123
+                    name: raw/sales/2025/01/daily_sales_20250102.csv
+                    content_type: text/csv
+                    content: 'transaction_id,sale_date,product_id,quantity,unit_price,total_amount,region
+
+                      TXN004,2025-01-02,PROD003,2,49.99,99.98,North America
+
+                      TXN005,2025-01-02,PROD001,7,19.99,139.93,Europe
+
+                      TXN006,2025-01-02,PROD002,4,29.99,119.96,Asia Pacific'
+                  - bucket: sandbox-data-lake-123
+                    name: processed/customers/customer_segments.json
+                    content_type: application/json
+                    content: '{"segments": [{"name": "High Value", "count": 1500, "avgLTV": 2500}, {"name": "Medium Value", "count": 5000, "avgLTV": 800}, {"name": "Low Value", "count": 12000, "avgLTV": 150}]}'
+                  - bucket: sandbox-exports-123
+                    name: exports/monthly_report_202501.csv
+                    content_type: text/csv
+                    content: 'month,total_revenue,total_transactions,avg_order_value
+
+                      2025-01,1250000.00,15000,83.33'
+                  - bucket: sandbox-data-lake-123
+                    name: config/etl_pipeline_config.yaml
+                    content_type: application/x-yaml
+                    content: "pipeline:\n  name: daily_sales_etl\n  schedule: \"0 2 * * *\"\n  source:\n    type: gcs\n    bucket: sandbox-data-lake-123\n    prefix: raw/sales/\n  destination:\n    type: bigquery\n    dataset: sales_analytics\n    table: daily_sales"
+                  log_entries:
+                  - log_name: application-logs
+                    message: Application started successfully
+                    severity: INFO
+                    timestamp: '2025-01-15T08:00:00Z'
+                    resource_type: gce_instance
+                    resource_labels:
+                      instance_id: '1234567890'
+                      zone: us-central1-a
+                  - log_name: application-logs
+                    message: Database connection established
+                    severity: INFO
+                    timestamp: '2025-01-15T08:00:05Z'
+                    resource_type: gce_instance
+                    resource_labels:
+                      instance_id: '1234567890'
+                      zone: us-central1-a
+                  - log_name: application-logs
+                    json_data:
+                      event: user_login
+                      user_id: user_123
+                      ip_address: 192.168.1.100
+                      success: true
+                    severity: INFO
+                    timestamp: '2025-01-15T09:30:00Z'
+                    resource_type: gce_instance
+                    resource_labels:
+                      instance_id: '1234567890'
+                      zone: us-central1-a
+                  - log_name: error-logs
+                    message: 'Failed to process batch: timeout exceeded'
+                    severity: ERROR
+                    timestamp: '2025-01-15T14:22:00Z'
+                    resource_type: cloud_function
+                    resource_labels:
+                      function_name: process_batch
+                      region: us-central1
+                  - log_name: audit-logs
+                    json_data:
+                      action: resource.create
+                      resource_type: storage.bucket
+                      resource_name: new-bucket
+                      actor: admin@example.com
+                    severity: NOTICE
+                    timestamp: '2025-01-15T10:15:00Z'
+                    resource_type: project
+                  log_sinks:
+                  - name: bigquery-audit-sink
+                    filter: logName:"cloudaudit.googleapis.com"
+                    description: Export audit logs for analysis
+                  - name: error-logs-sink
+                    filter: severity>=ERROR
+                    description: Capture error logs
+                  - name: all-logs-sink
+                    description: Stream all logs for processing
+                  log_buckets:
+                  - name: app-logs-bucket5
+                    location: global
+                    retention_days: 30
+                    description: Bucket for app logs with 30-day retention
+                  - name: security-logs-bucket5
+                    location: us-central1
+                    retention_days: 365
+                    description: Bucket for security logs with 1-year retention
+                  instances:
+                  - name: web-server-1
+                    zone: us-central1-a
+                    machine_type: e2-medium
+                    description: Primary web server
+                    labels:
+                      environment: production
+                      team: web
+                  - name: web-server-2
+                    zone: us-central1-b
+                    machine_type: e2-medium
+                    description: Secondary web server
+                    labels:
+                      environment: production
+                      team: web
+                  - name: database-server
+                    zone: us-central1-a
+                    machine_type: n2-standard-4
+                    description: Main database server
+                    labels:
+                      environment: production
+                      team: database
+                  - name: dev-instance
+                    zone: us-west1-a
+                    machine_type: e2-micro
+                    description: Development and testing instance
+                    labels:
+                      environment: development
+                      team: engineering
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitializeSandboxResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /local-sandbox/google_cloud/{sandbox_id}/dump:
+    get:
+      tags:
+      - local-sandbox
+      summary: Export google_cloud sandbox data
+      description: Export all data from the sandbox in the same format used for initialization.
+      operationId: dump_sandbox_local_sandbox_google_cloud__sandbox_id__dump_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: sandbox_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The unique sandbox identifier
+          title: Sandbox Id
+        description: The unique sandbox identifier
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DumpSandboxResponse_GoogleCloudData_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /local-sandbox/poste_email_toolathlon/{sandbox_id}/initialize:
+    post:
+      tags:
+      - local-sandbox
+      summary: Initialize poste_email_toolathlon sandbox with data
+      description: Initialize the sandbox with poste_email_toolathlon-specific data following the defined schema.
+      operationId: initialize_sandbox_local_sandbox_poste_email_toolathlon__sandbox_id__initialize_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: sandbox_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The unique sandbox identifier
+          title: Sandbox Id
+        description: The unique sandbox identifier
+      - name: init_default_data
+        in: query
+        required: false
+        schema:
+          type: boolean
+          description: If true, use default test data for initialization
+          default: false
+          title: Init Default Data
+        description: If true, use default test data for initialization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              anyOf:
+              - $ref: '#/components/schemas/PosteEmailData-Input'
+              - type: 'null'
+              title: Request Body
+            examples:
+              default:
+                summary: Example initialization data
+                value:
+                  users:
+                    jsmith@mcp.com:
+                      emails:
+                      - email_id: '1'
+                        subject: '[COML 2025] Camera-ready instructions for accepted papers'
+                        from_addr: COML 2025 <noreply@mcp.com>
+                        to_addr: jsmith@mcp.com
+                        date: Wed, 10 Sep 2025 18:31:19 +0000
+                        message_id: <email1@mcp.com>
+                        body_text: 'Dear Dr. John Smith,
+
+
+                          Congratulations on your accepted COML 2025 paper!
+
+
+                          The camera-ready submission is due on 2025-09-19 (11:59pm AoE). Please make sure to follow the steps below before this deadline to avoid your paper being withdrawn from COML.
+
+
+                          Mandatory actions:
+
+                          1. At least one author must register for the conference with the ''Conference'' option checked.
+
+                          2. At least one author needs to digitally sign the publication consent form.
+
+                          3. The presenting author needs to digitally sign the consent form.
+
+                          4. The corresponding author needs to sign the PMLR publication agreement form.
+
+                          5. Your camera-ready pdf should include a mandatory impact statement.
+
+                          6. Complete the camera-ready form on OpenReview.
+
+
+                          Sincerely,
+
+                          Dr. Sarah Chen and Prof. Michael Rodriguez, COML 2025 Publications Chairs'
+                        body_html: <html><body><p>Dear <strong>Dr. John Smith</strong>,</p><p><strong>Congratulations on your accepted COML 2025 paper!</strong></p><p>The camera-ready submission is due on <strong>2025-09-19 (11:59pm AoE)</strong>.</p></body></html>
+                        is_read: false
+                        is_important: false
+                        folder: INBOX
+                        attachments: []
+                      - email_id: '2'
+                        subject: '[COMLW 2025] Urgent: Camera-Ready Deadline Tomorrow'
+                        from_addr: COMLW 2025 <noreply@mcp.com>
+                        to_addr: jsmith@mcp.com
+                        date: Wed, 10 Sep 2025 19:01:19 +0000
+                        message_id: <email2@mcp.com>
+                        body_text: 'Dear Dr. John Smith,
+
+
+                          This is a final reminder that your camera-ready paper for the COML Workshop on Large Language Models (COMLW 2025) is due tomorrow, 2025-09-16 at 23:59 AOE.
+
+
+                          Action Required:
+
+                          - Your paper titled "Ipsum Lorem is all you need for a workshop" has NOT been submitted yet
+
+                          - Missing camera-ready submissions will be excluded from the proceedings
+
+                          - No extensions will be granted
+
+
+                          Quick Submission Guide:
+
+                          1. Use the COML 2025 workshop template
+
+                          2. 4 pages + references for workshop papers
+
+                          3. Submit via OpenReview
+
+                          4. Include signed copyright form
+
+
+                          Best,
+
+                          COMLW 2025 Organizing Committee'
+                        body_html: <html><body><p>Dear Dr. John Smith,</p><p>This is a <strong>final reminder</strong> that your camera-ready paper for COMLW 2025 is due <strong>tomorrow, 2025-09-16 at 23:59 AOE</strong>.</p></body></html>
+                        is_read: false
+                        is_important: false
+                        folder: INBOX
+                        attachments: []
+                      - email_id: '3'
+                        subject: '[LCFM 2025] Invitation to serve as Reviewer'
+                        from_addr: LCFM 2025 <noreply@mcp.com>
+                        to_addr: jsmith@mcp.com
+                        date: Thu, 11 Sep 2025 13:23:19 +0000
+                        message_id: <email3@mcp.com>
+                        body_text: 'Dear invitee,
+
+
+                          You have been nominated by the program chair committee of LCFM 2025 to serve as Reviewer. As a respected researcher in the area, we hope you will accept and help us make LCFM 2025 a success. Reviews are due 2025-09-23 AOE, and we are aiming to assign no more than 1 paper to each reviewer.
+
+
+                          Please answer within 3 days.
+
+
+                          Cheers, and thank you!
+
+                          Program Chairs'
+                        body_html: <html><body><p>Dear invitee,</p><p>You have been nominated by the program chair committee of <strong>LCFM 2025</strong> to serve as <strong>Reviewer</strong>. Reviews are due <strong>2025-09-23 AOE</strong>.</p></body></html>
+                        is_read: false
+                        is_important: false
+                        folder: INBOX
+                        attachments: []
+                      - email_id: '4'
+                        subject: '[COML 2025] Oral presentation notification'
+                        from_addr: OpenReview <noreply@mcp.com>
+                        to_addr: jsmith@mcp.com
+                        date: Thu, 11 Sep 2025 22:31:19 +0000
+                        message_id: <email4@mcp.com>
+                        body_text: 'Dear Dr. John Smith,
+
+
+                          Congratulations! Your Paper Has Been Selected for an Oral Presentation!
+
+
+                          We are happy to notify you that your submission "Ipsum Lorem is all you need" has been selected for an oral presentation at COML 2025! 120 submissions were selected for orals this year, representing the top ~1% of all submissions.
+
+
+                          Presentation Details:
+
+                          - Duration: 12 minutes presentation + 2 minutes Q&A
+
+                          - Dates: 2025-11-05, 2025-11-06, or 2025-11-07
+
+                          - Format: In-person only
+
+
+                          Sincerely,
+
+                          COML 2025 Program Chairs'
+                        body_html: <html><body><p>Dear <strong>Dr. John Smith</strong>,</p><p>Your submission <strong>Ipsum Lorem is all you need</strong> has been selected for an <strong>oral presentation</strong> at COML 2025!</p></body></html>
+                        is_read: false
+                        is_important: false
+                        folder: INBOX
+                        attachments: []
+                      - email_id: '5'
+                        subject: New citations to your publications
+                        from_addr: Google Scholar <noreply@mcp.com>
+                        to_addr: jsmith@mcp.com
+                        date: Sat, 13 Sep 2025 15:01:19 +0000
+                        message_id: <email5@mcp.com>
+                        body_text: 'Hi Dr. John Smith,
+
+
+                          You have new citations to your publications:
+
+
+                          "Ipsum Lorem is all you need"
+
+                          Cited by: Transformer-based Approaches to Lorem Generation - Zhang et al., 2025
+
+
+                          Your publication metrics:
+
+                          - Total citations: 127 (+3 this week)
+
+                          - h-index: 8
+
+                          - i10-index: 6
+
+
+                          To see all citations and manage your profile, visit your Google Scholar profile.'
+                        body_html: '<html><body><p>Hi Dr. John Smith,</p><p>You have new citations to your publications.</p><p><strong>"Ipsum Lorem is all you need"</strong><br>Cited by: <em>Transformer-based Approaches to Lorem Generation</em> - Zhang et al., 2025</p></body></html>'
+                        is_read: false
+                        is_important: false
+                        folder: INBOX
+                        attachments: []
+                      - email_id: '6'
+                        subject: Registration Confirmation - COML 2025 Conference
+                        from_addr: COML 2025 Registration <noreply@mcp.com>
+                        to_addr: jsmith@mcp.com
+                        date: Sun, 14 Sep 2025 01:01:19 +0000
+                        message_id: <email6@mcp.com>
+                        body_text: 'Dear Dr. John Smith,
+
+
+                          Thank you for registering for the Conference on Machine Learning (COML 2025). Your registration has been successfully processed.
+
+
+                          Registration Details:
+
+                          - Registration ID: COML2025-REG-8742
+
+                          - Registration Type: Virtual Attendance
+
+                          - Registration Date: 2025-09-13
+
+                          - Amount Paid: $150 USD
+
+
+                          Important Information:
+
+                          - Access links for virtual sessions will be sent 24 hours before the conference
+
+                          - Conference dates: July 21-26, 2025
+
+
+                          Best regards,
+
+                          COML 2025 Registration Team'
+                        body_html: <html><body><p>Dear Dr. John Smith,</p><p>Thank you for registering for COML 2025.</p><p><strong>Registration ID:</strong> COML2025-REG-8742<br><strong>Type:</strong> Virtual Attendance<br><strong>Amount:</strong> $150 USD</p></body></html>
+                        is_read: true
+                        is_important: false
+                        folder: INBOX
+                        attachments: []
+                      - email_id: '7'
+                        subject: '[GitHub] Your personal access token will expire in 7 days'
+                        from_addr: GitHub <noreply@mcp.com>
+                        to_addr: jsmith@mcp.com
+                        date: Sun, 14 Sep 2025 10:01:19 +0000
+                        message_id: <email7@mcp.com>
+                        body_text: 'Hi @jsmith,
+
+
+                          Your personal access token "ML-research-token" with repo and workflow scopes will expire on 2025-09-22.
+
+
+                          This token is used by:
+
+                          - 2 GitHub Actions workflows
+
+                          - Your local development environment
+
+                          - CI/CD pipeline in ml-experiments repo
+
+
+                          To ensure uninterrupted access, please regenerate your token before it expires.
+
+
+                          GitHub, Inc.'
+                        body_html: <html><body><p>Hi @jsmith,</p><p>Your personal access token <strong>"ML-research-token"</strong> will expire on <strong>2025-09-22</strong>.</p></body></html>
+                        is_read: true
+                        is_important: false
+                        folder: INBOX
+                        attachments: []
+                      - email_id: '8'
+                        subject: '[COML 2025] Camera-ready deadline reminder'
+                        from_addr: COML 2025 <noreply@mcp.com>
+                        to_addr: jsmith@mcp.com
+                        date: Mon, 15 Sep 2025 06:01:19 +0000
+                        message_id: <email8@mcp.com>
+                        body_text: 'Dear Dr. John Smith,
+
+
+                          The camera-ready submission deadline is extended to 2025-09-26 (11:59pm AoE).
+
+
+                          See instructions here: https://coml.cc/Conferences/2025/AuthorInstructions
+
+
+                          We are aware of the issue with the paper format checker, and are working to resolve it.
+
+
+                          Regards,
+
+                          COML 2025 Publications Chairs'
+                        body_html: <html><body><p>Dear <strong>Dr. John Smith</strong>,</p><p>The camera-ready submission deadline is extended to <strong>2025-09-26 (11:59pm AoE)</strong>.</p></body></html>
+                        is_read: false
+                        is_important: false
+                        folder: INBOX
+                        attachments: []
+                      - email_id: '9'
+                        subject: 'Re: COML 2025 camera-ready submission'
+                        from_addr: jsmith@mcp.com
+                        to_addr: COML 2025 <noreply@mcp.com>
+                        date: Mon, 15 Sep 2025 12:30:00 +0000
+                        message_id: <email9@mcp.com>
+                        body_text: 'Dear Publication Chairs,
+
+
+                          Thank you for the deadline extension. I will submit the camera-ready version by 2025-09-26.
+
+
+                          Best regards,
+
+                          Dr. John Smith'
+                        is_read: true
+                        is_important: false
+                        folder: Sent
+                        attachments: []
+                      - email_id: '10'
+                        subject: 'Draft: LCFM 2025 reviewer response'
+                        from_addr: jsmith@mcp.com
+                        to_addr: longcontextfm2025@googlegroups.com
+                        date: Mon, 15 Sep 2025 14:00:00 +0000
+                        message_id: <email10@mcp.com>
+                        body_text: 'Dear LCFM 2025 Organizers,
+
+
+                          I am writing to confirm my availability as a reviewer for LCFM 2025. I have expertise in long-context modeling and would be happy to review papers in this area.
+
+
+                          Please let me know if you need any additional information.
+
+
+                          Best regards,
+
+                          Dr. John Smith'
+                        is_read: true
+                        is_important: false
+                        folder: Drafts
+                        attachments: []
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitializeSandboxResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /local-sandbox/poste_email_toolathlon/{sandbox_id}/dump:
+    get:
+      tags:
+      - local-sandbox
+      summary: Export poste_email_toolathlon sandbox data
+      description: Export all data from the sandbox in the same format used for initialization.
+      operationId: dump_sandbox_local_sandbox_poste_email_toolathlon__sandbox_id__dump_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: sandbox_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The unique sandbox identifier
+          title: Sandbox Id
+        description: The unique sandbox identifier
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DumpSandboxResponse_PosteEmailData_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /local-sandbox/canvas/{sandbox_id}/initialize:
+    post:
+      tags:
+      - local-sandbox
+      summary: Initialize canvas sandbox with data
+      description: Initialize the sandbox with canvas-specific data following the defined schema.
+      operationId: initialize_sandbox_local_sandbox_canvas__sandbox_id__initialize_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: sandbox_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The unique sandbox identifier
+          title: Sandbox Id
+        description: The unique sandbox identifier
+      - name: init_default_data
+        in: query
+        required: false
+        schema:
+          type: boolean
+          description: If true, use default test data for initialization
+          default: false
+          title: Init Default Data
+        description: If true, use default test data for initialization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              anyOf:
+              - $ref: '#/components/schemas/CanvasData-Input'
+              - type: 'null'
+              title: Request Body
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitializeSandboxResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /local-sandbox/canvas/{sandbox_id}/dump:
+    get:
+      tags:
+      - local-sandbox
+      summary: Export canvas sandbox data
+      description: Export all data from the sandbox in the same format used for initialization.
+      operationId: dump_sandbox_local_sandbox_canvas__sandbox_id__dump_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: sandbox_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The unique sandbox identifier
+          title: Sandbox Id
+        description: The unique sandbox identifier
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DumpSandboxResponse_CanvasData_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    BigQueryField-Output:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: Field name
+        type:
+          type: string
+          title: Type
+          description: Field type (STRING, INTEGER, FLOAT, BOOLEAN, TIMESTAMP, RECORD, etc.)
+        mode:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Mode
+          description: Field mode (NULLABLE, REQUIRED, REPEATED)
+          default: NULLABLE
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: Field description
+        fields:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/BigQueryField-Output'
+            type: array
+          - type: 'null'
+          title: Fields
+          description: Nested fields for RECORD type
+      type: object
+      required:
+      - name
+      - type
+      title: BigQueryField
+      description: Schema field for a BigQuery table
+    PosteEmailUserData-Input:
+      properties:
+        emails:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/PosteEmail-Input'
+            type: array
+          - type: 'null'
+          title: Emails
+          description: List of email messages for this user
+      type: object
+      title: PosteEmailUserData
+      description: Email data for a single user.
+    CanvasQuizQuestion-Input:
+      properties:
+        question_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Question Name
+          description: Short name/label for the question
+        question_text:
+          type: string
+          title: Question Text
+          description: The question text (supports HTML)
+        question_type:
+          type: string
+          title: Question Type
+          description: 'Question type: multiple_choice_question, true_false_question, short_answer_question, essay_question, etc.'
+          default: multiple_choice_question
+        points_possible:
+          type: number
+          title: Points Possible
+          description: Points for this question
+          default: 1.0
+        answers:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Answers
+          description: Answer options. Each dict has 'answer_text' and 'answer_weight' (100 = correct, 0 = wrong)
+      type: object
+      required:
+      - question_text
+      title: CanvasQuizQuestion
+      description: A single quiz question.
+    LocalSandboxMCPServer:
+      type: string
+      enum:
+      - filesystem
+      - git
+      - terminal
+      - desktop-commander
+      - arxiv
+      - excel
+      - word
+      - powerpoint
+      - code-executor
+      - code-runner
+      - pdf-tools
+      - google_cloud
+      - poste_email_toolathlon
+      - canvas
+      - localmemory
+      - playwright
+      title: LocalSandboxMCPServer
+      description: 'Supported MCP servers for local sandboxing.
+
+        These are typically stateless or local-only servers.'
+    ExportArtifactsRequest:
+      properties:
+        execution_name:
+          type: string
+          title: Execution Name
+          description: Name of the execution whose artifacts to export
+      type: object
+      required:
+      - execution_name
+      title: ExportArtifactsRequest
+    InitializeSandboxResponse:
+      properties:
+        sandbox_id:
+          type: string
+          title: Sandbox Id
+          description: Sandbox identifier
+        status:
+          $ref: '#/components/schemas/SandboxStatus'
+          description: Current status
+        message:
+          type: string
+          title: Message
+          description: Initialization result message
+      type: object
+      required:
+      - sandbox_id
+      - status
+      - message
+      title: InitializeSandboxResponse
+      description: Response model for sandbox initialization
+    ComputeInstance:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: Instance name
+        zone:
+          type: string
+          title: Zone
+          description: Instance zone
+        machine_type:
+          type: string
+          title: Machine Type
+          description: Machine type
+          default: e2-micro
+        status:
+          type: string
+          title: Status
+          description: Instance status
+          default: RUNNING
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: Instance description
+        labels:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Labels
+          description: Instance labels
+        created_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Created At
+          description: Creation timestamp
+      type: object
+      required:
+      - name
+      - zone
+      title: ComputeInstance
+      description: Compute Engine instance
+    GCSRegion:
+      type: string
+      enum:
+      - us
+      - asia
+      title: GCSRegion
+      description: 'Region hint for GCS upload/download bucket selection.
+
+
+        Controls which GCS bucket is used for signed URLs so that users
+
+        geographically closer to an edge bucket get faster transfers.
+
+        The data is always pulled to the US GKE cluster over Google''s
+
+        private backbone after upload.'
+    LifecycleRule:
+      properties:
+        action:
+          type: string
+          title: Action
+          description: Action type (Delete, SetStorageClass)
+        action_storage_class:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Action Storage Class
+          description: Target storage class for SetStorageClass action
+        age_days:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Age Days
+          description: Age in days to trigger rule
+        created_before:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Created Before
+          description: Created before date
+        is_live:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Live
+          description: Apply to live versions only
+        num_newer_versions:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Num Newer Versions
+          description: Number of newer versions to keep
+      type: object
+      required:
+      - action
+      title: LifecycleRule
+      description: Lifecycle rule for a storage bucket
+    GoogleCloudData-Input:
+      properties:
+        datasets:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/BigQueryDataset'
+            type: array
+          - type: 'null'
+          title: Datasets
+          description: BigQuery datasets
+        tables:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/BigQueryTable-Input'
+            type: array
+          - type: 'null'
+          title: Tables
+          description: BigQuery tables
+        buckets:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/StorageBucket'
+            type: array
+          - type: 'null'
+          title: Buckets
+          description: Cloud Storage buckets
+        objects:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/StorageObject'
+            type: array
+          - type: 'null'
+          title: Objects
+          description: Cloud Storage objects
+        log_entries:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/LogEntry'
+            type: array
+          - type: 'null'
+          title: Log Entries
+          description: Log entries
+        log_sinks:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/LogSink'
+            type: array
+          - type: 'null'
+          title: Log Sinks
+          description: Log sinks
+        log_buckets:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/LogBucket'
+            type: array
+          - type: 'null'
+          title: Log Buckets
+          description: Log buckets
+        instances:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ComputeInstance'
+            type: array
+          - type: 'null'
+          title: Instances
+          description: Compute Engine instances
+      type: object
+      title: GoogleCloudData
+      description: Complete Google Cloud sandbox data structure
+    SandboxStatus:
+      type: string
+      enum:
+      - idle
+      - occupied
+      - error
+      title: SandboxStatus
+      description: Status of a sandbox instance - matches database enum
+    AcquireLocalSandboxRequest:
+      properties:
+        server_names:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/LocalSandboxMCPServer'
+            type: array
+          - type: string
+            const: ALL
+          title: Server Names
+          description: List of MCP servers to acquire, or 'ALL' for all available local servers
+        benchmark:
+          anyOf:
+          - $ref: '#/components/schemas/BenchmarkEnum'
+          - type: 'null'
+          description: 'Optional benchmark to configure the local sandbox. NOTE: This parameter may affect BOTH (1) the initial data environment (preloaded data for supported servers) AND (2) the MCP server implementation (some servers are routed to a benchmark-specific MCP server with potentially different tools or behaviors).'
+        test_account_email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Test Account Email
+          description: Specific test account email
+        ttl_seconds:
+          anyOf:
+          - type: integer
+            maximum: 86400.0
+            minimum: 60.0
+          - type: 'null'
+          title: Ttl Seconds
+          description: 'TTL in seconds. The local sandbox will be automatically released after this duration. Default: 7200 (2 hours). Min: 60 (1 minute). Max: 86400 (24 hours). Set to null to disable auto-release.'
+          default: 7200
+      type: object
+      required:
+      - server_names
+      title: AcquireLocalSandboxRequest
+    DumpSandboxResponse_GoogleCloudData_:
+      properties:
+        sandbox_id:
+          type: string
+          title: Sandbox Id
+          description: Sandbox identifier
+        server_name:
+          $ref: '#/components/schemas/SandboxMCPServer'
+          description: MCP server type
+        dumped_at:
+          type: string
+          format: date-time
+          title: Dumped At
+          description: Timestamp of dump
+        data:
+          $ref: '#/components/schemas/GoogleCloudData-Output'
+          description: Dumped sandbox data in server-specific format
+      type: object
+      required:
+      - sandbox_id
+      - server_name
+      - dumped_at
+      - data
+      title: DumpSandboxResponse[GoogleCloudData]
+    ExecutionUploadUrlRequest:
+      properties:
+        execution_name:
+          type: string
+          title: Execution Name
+          description: Logical name for this execution (e.g. 'init', 'eval_1')
+      type: object
+      required:
+      - execution_name
+      title: ExecutionUploadUrlRequest
+    ExecuteRequest:
+      properties:
+        execution_name:
+          type: string
+          title: Execution Name
+          description: Logical name for this execution (e.g. 'init', 'eval_1')
+      type: object
+      required:
+      - execution_name
+      title: ExecuteRequest
+    GoogleCloudData-Output:
+      properties:
+        datasets:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/BigQueryDataset'
+            type: array
+          - type: 'null'
+          title: Datasets
+          description: BigQuery datasets
+        tables:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/BigQueryTable-Output'
+            type: array
+          - type: 'null'
+          title: Tables
+          description: BigQuery tables
+        buckets:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/StorageBucket'
+            type: array
+          - type: 'null'
+          title: Buckets
+          description: Cloud Storage buckets
+        objects:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/StorageObject'
+            type: array
+          - type: 'null'
+          title: Objects
+          description: Cloud Storage objects
+        log_entries:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/LogEntry'
+            type: array
+          - type: 'null'
+          title: Log Entries
+          description: Log entries
+        log_sinks:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/LogSink'
+            type: array
+          - type: 'null'
+          title: Log Sinks
+          description: Log sinks
+        log_buckets:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/LogBucket'
+            type: array
+          - type: 'null'
+          title: Log Buckets
+          description: Log buckets
+        instances:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ComputeInstance'
+            type: array
+          - type: 'null'
+          title: Instances
+          description: Compute Engine instances
+      type: object
+      title: GoogleCloudData
+      description: Complete Google Cloud sandbox data structure
+    BenchmarkEnum:
+      type: string
+      enum:
+      - MCP_Atlas
+      - Toolathlon
+      - MCP_Mark
+      title: BenchmarkEnum
+      description: Supported benchmarks for sandbox initial environment
+    BigQueryTable-Input:
+      properties:
+        dataset_id:
+          type: string
+          title: Dataset Id
+          description: Parent dataset ID
+        id:
+          type: string
+          title: Id
+          description: Table ID
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: Table description
+        fields:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/BigQueryField-Input'
+            type: array
+          - type: 'null'
+          title: Fields
+          description: Table schema fields
+        row_count:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Row Count
+          description: Number of rows
+        created_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Created At
+          description: Creation timestamp
+      type: object
+      required:
+      - dataset_id
+      - id
+      title: BigQueryTable
+      description: BigQuery table
+    CanvasAssignment-Input:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: Assignment name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: Assignment description (HTML)
+        points_possible:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Points Possible
+          description: Maximum points
+        due_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Due At
+          description: Due date in ISO 8601 format
+        submission_types:
+          items:
+            type: string
+          type: array
+          title: Submission Types
+          description: 'Allowed submission types: online_text_entry, online_upload, online_url, etc.'
+        published:
+          type: boolean
+          title: Published
+          description: Whether the assignment is published
+          default: true
+      type: object
+      required:
+      - name
+      title: CanvasAssignment
+      description: A Canvas assignment within a course.
+    PosteEmailData-Input:
+      properties:
+        users:
+          additionalProperties:
+            $ref: '#/components/schemas/PosteEmailUserData-Input'
+          type: object
+          title: Users
+          description: Per-user email data, keyed by email address
+      type: object
+      title: PosteEmailData
+      description: "Complete Poste Email sandbox data structure.\n\nData is organized per-user, keyed by email address.\nEach user entry contains their list of email messages across all folders.\n\nExample:\n    {\n        \"users\": {\n            \"jsmith@mcp.com\": {\n                \"emails\": [...]\n            }\n        }\n    }"
+    PosteEmail-Input:
+      properties:
+        email_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Email Id
+          description: Email ID (optional, auto-assigned if not provided)
+        subject:
+          type: string
+          title: Subject
+          description: Email subject line
+        from_addr:
+          type: string
+          title: From Addr
+          description: Sender email address (e.g., 'Name <user@example.com>')
+        to_addr:
+          type: string
+          title: To Addr
+          description: Recipient email address
+        cc_addr:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Cc Addr
+          description: CC email addresses
+        bcc_addr:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Bcc Addr
+          description: BCC email addresses
+        date:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Date
+          description: Email date in RFC 2822 format (e.g., 'Wed, 10 Sep 2025 18:31:19 +0000')
+        message_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Message Id
+          description: Message-ID header value
+        body_text:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Body Text
+          description: Plain text or HTML body content
+        body_html:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Body Html
+          description: HTML body content
+        is_read:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Read
+          description: Whether the email has been read
+          default: false
+        is_important:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Important
+          description: Whether the email is marked as important
+          default: false
+        folder:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Folder
+          description: Email folder (INBOX, Sent, Drafts, etc.)
+          default: INBOX
+        attachments:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/PosteEmailAttachment-Input'
+            type: array
+          - type: 'null'
+          title: Attachments
+          description: Email attachments
+      type: object
+      required:
+      - subject
+      - from_addr
+      - to_addr
+      title: PosteEmail
+      description: Single email message object matching the poste email backup format
+    UploadUrlResponse:
+      properties:
+        upload_url:
+          type: string
+          title: Upload Url
+          description: Signed GCS URL to PUT the tar.gz archive to
+        expires_in_minutes:
+          type: integer
+          title: Expires In Minutes
+          description: Minutes until the upload URL expires
+      type: object
+      required:
+      - upload_url
+      - expires_in_minutes
+      title: UploadUrlResponse
+      description: Response for the upload URL endpoint.
+    StorageBucket:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: Bucket name
+        location:
+          type: string
+          title: Location
+          description: Bucket location
+          default: US
+        storage_class:
+          type: string
+          title: Storage Class
+          description: Storage class
+          default: STANDARD
+        versioning_enabled:
+          type: boolean
+          title: Versioning Enabled
+          description: Whether versioning is enabled
+          default: false
+        lifecycle_rules:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/LifecycleRule'
+            type: array
+          - type: 'null'
+          title: Lifecycle Rules
+          description: Lifecycle rules
+        created_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Created At
+          description: Creation timestamp
+        updated_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Updated At
+          description: Last update timestamp
+      type: object
+      required:
+      - name
+      title: StorageBucket
+      description: Cloud Storage bucket
+    PosteEmailData-Output:
+      additionalProperties: true
+      type: object
+    DumpSandboxResponse_CanvasData_:
+      properties:
+        sandbox_id:
+          type: string
+          title: Sandbox Id
+          description: Sandbox identifier
+        server_name:
+          $ref: '#/components/schemas/SandboxMCPServer'
+          description: MCP server type
+        dumped_at:
+          type: string
+          format: date-time
+          title: Dumped At
+          description: Timestamp of dump
+        data:
+          $ref: '#/components/schemas/CanvasData-Output'
+          description: Dumped sandbox data in server-specific format
+      type: object
+      required:
+      - sandbox_id
+      - server_name
+      - dumped_at
+      - data
+      title: DumpSandboxResponse[CanvasData]
+    ExecutionUploadUrlResponse:
+      properties:
+        upload_url:
+          type: string
+          title: Upload Url
+          description: Pre-signed GCS PUT URL to upload the archive (.tar.gz)
+        expires_in_minutes:
+          type: integer
+          title: Expires In Minutes
+          description: Minutes until the upload URL expires
+      type: object
+      required:
+      - upload_url
+      - expires_in_minutes
+      title: ExecutionUploadUrlResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    AcquireLocalSandboxResponse:
+      properties:
+        local_sandbox_id:
+          type: string
+          title: Local Sandbox Id
+          description: Unique identifier for the entire local sandbox environment
+        status:
+          anyOf:
+          - $ref: '#/components/schemas/SandboxStatus'
+          - type: 'null'
+          description: Overall status of the local sandbox environment
+        benchmark:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Benchmark
+          description: Benchmark environment configuration used for the local sandbox
+        servers:
+          items:
+            $ref: '#/components/schemas/LocalSandboxServerItem'
+          type: array
+          title: Servers
+          description: List of interconnected MCP servers running in this sandbox
+        message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Message
+          description: Status message
+      type: object
+      required:
+      - local_sandbox_id
+      - servers
+      title: AcquireLocalSandboxResponse
+    BigQueryDataset:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Dataset ID
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: Dataset description
+        location:
+          type: string
+          title: Location
+          description: Dataset location
+          default: US
+        created_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Created At
+          description: Creation timestamp
+        updated_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Updated At
+          description: Last modified timestamp
+      type: object
+      required:
+      - id
+      title: BigQueryDataset
+      description: BigQuery dataset
+    ExecutionLogsResponse:
+      properties:
+        status:
+          type: string
+          title: Status
+          description: 'Current status: pending | running | completed | failed'
+        logs:
+          type: string
+          title: Logs
+          description: New log content since the provided cursor
+          default: ''
+        cursor:
+          type: integer
+          title: Cursor
+          description: Byte offset to pass as cursor on next poll
+          default: 0
+      type: object
+      required:
+      - status
+      title: ExecutionLogsResponse
+    CanvasData-Output:
+      additionalProperties: true
+      type: object
+    CanvasEnrollment-Input:
+      properties:
+        user_email:
+          type: string
+          title: User Email
+          description: Email of the user to enroll (must exist in Canvas)
+        role:
+          type: string
+          title: Role
+          description: 'Enrollment role: StudentEnrollment, TeacherEnrollment, TaEnrollment'
+          default: StudentEnrollment
+      type: object
+      required:
+      - user_email
+      title: CanvasEnrollment
+      description: An enrollment linking a user to a course.
+    CanvasCourse-Input:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: Course name
+        course_code:
+          type: string
+          title: Course Code
+          description: Course code (e.g. CS101)
+        published:
+          type: boolean
+          title: Published
+          description: Whether the course is published
+          default: true
+        assignments:
+          items:
+            $ref: '#/components/schemas/CanvasAssignment-Input'
+          type: array
+          title: Assignments
+          description: Course assignments
+        quizzes:
+          items:
+            $ref: '#/components/schemas/CanvasQuiz-Input'
+          type: array
+          title: Quizzes
+          description: Course quizzes
+        enrollments:
+          items:
+            $ref: '#/components/schemas/CanvasEnrollment-Input'
+          type: array
+          title: Enrollments
+          description: Course enrollments
+        announcements:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Announcements
+          description: Course announcements. Each dict has 'title' and 'message' (HTML)
+      type: object
+      required:
+      - name
+      - course_code
+      title: CanvasCourse
+      description: A Canvas course with its assignments, quizzes, and enrollments.
+    ListLocalSandboxesResponse:
+      properties:
+        local_sandboxes:
+          items:
+            $ref: '#/components/schemas/LocalSandboxInfo'
+          type: array
+          title: Local Sandboxes
+          description: List of all local sandbox environments
+        total_count:
+          type: integer
+          title: Total Count
+          description: Total number of local sandboxes
+      type: object
+      required:
+      - local_sandboxes
+      - total_count
+      title: ListLocalSandboxesResponse
+    StorageObject:
+      properties:
+        bucket:
+          type: string
+          title: Bucket
+          description: Bucket name
+        name:
+          type: string
+          title: Name
+          description: Object name/path
+        content_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Content Type
+          description: Content type
+        size:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Size
+          description: Object size in bytes
+        content:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Content
+          description: Object content (for initialization)
+        md5_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Md5 Hash
+          description: MD5 hash
+        created_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Created At
+          description: Creation timestamp
+        updated_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Updated At
+          description: Last update timestamp
+      type: object
+      required:
+      - bucket
+      - name
+      title: StorageObject
+      description: Cloud Storage object (blob)
+    LogSink:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: Sink name
+        filter:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Filter
+          description: Log filter expression
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: Sink description
+        created_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Created At
+          description: Creation timestamp
+        updated_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Updated At
+          description: Update timestamp
+      type: object
+      required:
+      - name
+      title: LogSink
+      description: Cloud Logging sink
+    LocalSandboxServerItem:
+      properties:
+        server_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Server Name
+          description: Name of the MCP server
+        id:
+          type: string
+          title: Id
+          description: Unique identifier for this specific server instance within the sandbox
+        mcp_server_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Mcp Server Url
+          description: URL to connect to this specific MCP server instance
+        status:
+          anyOf:
+          - $ref: '#/components/schemas/SandboxStatus'
+          - type: 'null'
+          description: Current status of this server's sandbox
+        benchmark:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Benchmark
+          description: Benchmark environment configuration
+        updated_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Updated At
+          description: Last update timestamp
+        metadata:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Metadata
+          description: Additional metadata for the sandbox
+        auth_data:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Auth Data
+          description: Authentication data for the sandbox
+        tags:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Tags
+          description: Sandbox tags
+      type: object
+      required:
+      - id
+      title: LocalSandboxServerItem
+    ExportArtifactsResponse:
+      properties:
+        download_url:
+          type: string
+          title: Download Url
+          description: Signed GCS URL to download the exported artifacts
+        expires_in_minutes:
+          type: integer
+          title: Expires In Minutes
+          description: Minutes until the download URL expires
+      type: object
+      required:
+      - download_url
+      - expires_in_minutes
+      title: ExportArtifactsResponse
+    DumpUrlResponse:
+      properties:
+        download_url:
+          type: string
+          title: Download Url
+          description: Signed GCS URL to GET the tar.gz archive from
+        expires_in_minutes:
+          type: integer
+          title: Expires In Minutes
+          description: Minutes until the download URL expires
+      type: object
+      required:
+      - download_url
+      - expires_in_minutes
+      title: DumpUrlResponse
+      description: Response for the dump endpoint — returns a signed download URL.
+    BigQueryField-Input:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: Field name
+        type:
+          type: string
+          title: Type
+          description: Field type (STRING, INTEGER, FLOAT, BOOLEAN, TIMESTAMP, RECORD, etc.)
+        mode:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Mode
+          description: Field mode (NULLABLE, REQUIRED, REPEATED)
+          default: NULLABLE
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: Field description
+        fields:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/BigQueryField-Input'
+            type: array
+          - type: 'null'
+          title: Fields
+          description: Nested fields for RECORD type
+      type: object
+      required:
+      - name
+      - type
+      title: BigQueryField
+      description: Schema field for a BigQuery table
+    CanvasQuiz-Input:
+      properties:
+        title:
+          type: string
+          title: Title
+          description: Quiz title
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: Quiz description (HTML)
+        quiz_type:
+          type: string
+          title: Quiz Type
+          description: 'Quiz type: practice_quiz, assignment, graded_survey, survey'
+          default: assignment
+        time_limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Time Limit
+          description: Time limit in minutes
+        published:
+          type: boolean
+          title: Published
+          description: Whether the quiz is published
+          default: true
+        due_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Due At
+          description: Due date in ISO 8601 format
+        questions:
+          items:
+            $ref: '#/components/schemas/CanvasQuizQuestion-Input'
+          type: array
+          title: Questions
+          description: Quiz questions
+      type: object
+      required:
+      - title
+      title: CanvasQuiz
+      description: A Canvas quiz within a course.
+    SandboxMCPServer:
+      type: string
+      enum:
+      - jira
+      - github
+      - salesforce
+      - hubspot
+      - notion
+      - airtable
+      - linear
+      - asana
+      - google_sheets
+      - google_drive
+      - google_docs
+      - gmail
+      - google_calendar
+      - google_forms
+      - clickup
+      - close
+      - monday
+      - motion
+      - onedrive
+      - microsoft_teams
+      - outlook_mail
+      - cal.com
+      - quickbooks
+      - moneybird
+      - dropbox
+      - shopify
+      - woocommerce
+      - outlook_calendar
+      - resend
+      - wordpress
+      - mem0
+      - supabase
+      - slack
+      - confluence
+      - discord
+      - snowflake
+      - postgres
+      - mongodb
+      - youtube
+      - googleworkspaceatlas
+      - huggingface
+      - mock_notion
+      - arxiv_latex
+      - calculator
+      - clinicaltrialsgov
+      - fetch
+      - met_museum
+      - open_library
+      - osm
+      - pubmed
+      - us_weather
+      - duckduckgo
+      - whois
+      - wikipedia
+      - scholarly
+      - howtocook
+      - yahoo_finance
+      - '12306'
+      - youtube_transcript
+      - weather
+      - twelvedata
+      - national_parks
+      - lara_translate
+      - e2b
+      - context7
+      - alchemy
+      - weights_and_biases
+      - oxylabs
+      - google_maps
+      - brave_search
+      - exa
+      - serper
+      title: SandboxMCPServer
+      description: Supported MCP servers for sandboxing
+    BigQueryTable-Output:
+      properties:
+        dataset_id:
+          type: string
+          title: Dataset Id
+          description: Parent dataset ID
+        id:
+          type: string
+          title: Id
+          description: Table ID
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: Table description
+        fields:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/BigQueryField-Output'
+            type: array
+          - type: 'null'
+          title: Fields
+          description: Table schema fields
+        row_count:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Row Count
+          description: Number of rows
+        created_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Created At
+          description: Creation timestamp
+      type: object
+      required:
+      - dataset_id
+      - id
+      title: BigQueryTable
+      description: BigQuery table
+    ExecuteResponse:
+      properties:
+        message:
+          type: string
+          title: Message
+        execution_name:
+          type: string
+          title: Execution Name
+      type: object
+      required:
+      - message
+      - execution_name
+      title: ExecuteResponse
+    PosteEmailAttachment-Input:
+      properties:
+        filename:
+          type: string
+          title: Filename
+          description: Attachment filename
+        content_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Content Type
+          description: MIME content type
+        size:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Size
+          description: Attachment size in bytes
+      type: object
+      required:
+      - filename
+      title: PosteEmailAttachment
+      description: Email attachment object
+    ExecutionStatusResponse:
+      properties:
+        status:
+          type: string
+          title: Status
+          description: 'Current status: pending | running | completed | failed'
+      type: object
+      required:
+      - status
+      title: ExecutionStatusResponse
+    LogEntry:
+      properties:
+        log_name:
+          type: string
+          title: Log Name
+          description: Log name
+        message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Message
+          description: Text message payload
+        json_data:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Json Data
+          description: JSON payload
+        severity:
+          type: string
+          title: Severity
+          description: Log severity (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+          default: INFO
+        timestamp:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Timestamp
+          description: Entry timestamp
+        resource_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Resource Type
+          description: Resource type (e.g., gce_instance, cloud_function)
+        resource_labels:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Resource Labels
+          description: Resource labels
+      type: object
+      required:
+      - log_name
+      title: LogEntry
+      description: Cloud Logging log entry
+    DumpSandboxResponse_PosteEmailData_:
+      properties:
+        sandbox_id:
+          type: string
+          title: Sandbox Id
+          description: Sandbox identifier
+        server_name:
+          $ref: '#/components/schemas/SandboxMCPServer'
+          description: MCP server type
+        dumped_at:
+          type: string
+          format: date-time
+          title: Dumped At
+          description: Timestamp of dump
+        data:
+          $ref: '#/components/schemas/PosteEmailData-Output'
+          description: Dumped sandbox data in server-specific format
+      type: object
+      required:
+      - sandbox_id
+      - server_name
+      - dumped_at
+      - data
+      title: DumpSandboxResponse[PosteEmailData]
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    LogBucket:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: Bucket name/ID
+        location:
+          type: string
+          title: Location
+          description: Bucket location
+          default: global
+        retention_days:
+          type: integer
+          title: Retention Days
+          description: Retention period in days
+          default: 30
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: Bucket description
+        created_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Created At
+          description: Creation timestamp
+        updated_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Updated At
+          description: Update timestamp
+      type: object
+      required:
+      - name
+      title: LogBucket
+      description: Cloud Logging bucket
+    LocalSandboxInfo:
+      properties:
+        local_sandbox_id:
+          type: string
+          title: Local Sandbox Id
+          description: Unique identifier for the local sandbox environment
+        created_at:
+          type: string
+          title: Created At
+          description: Timestamp when the sandbox was created
+        status:
+          anyOf:
+          - $ref: '#/components/schemas/SandboxStatus'
+          - type: 'null'
+          description: Current status of the local sandbox environment
+        benchmark:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Benchmark
+          description: Benchmark environment configuration for the local sandbox
+        servers:
+          items:
+            $ref: '#/components/schemas/LocalSandboxServerItem'
+          type: array
+          title: Servers
+          description: List of MCP servers in this sandbox
+      type: object
+      required:
+      - local_sandbox_id
+      - created_at
+      - servers
+      title: LocalSandboxInfo
+    CanvasData-Input:
+      properties:
+        courses:
+          items:
+            $ref: '#/components/schemas/CanvasCourse-Input'
+          type: array
+          title: Courses
+          description: Courses to create/load into the Canvas instance
+      type: object
+      title: CanvasData
+      description: "Complete Canvas sandbox data structure for initialize/dump operations.\n\nCanvas sandboxes come pre-baked with ~500 users and 3 admin accounts.\nThis schema allows loading additional course data on top of the pre-baked state.\n\nExample:\n    {\n        \"courses\": [\n            {\n                \"name\": \"Introduction to CS\",\n                \"course_code\": \"CS101\",\n                \"published\": true,\n                \"assignments\": [...],\n                \"quizzes\": [...],\n                \"enrollments\": [\n                    {\"user_email\": \"rkelly27@mcp.com\", \"role\": \"StudentEnrollment\"}\n                ]\n            }\n        ]\n    }"
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      description: Your Klavis AI API key.
+      scheme: bearer
+      x-fern-bearer:
+        name: api_key

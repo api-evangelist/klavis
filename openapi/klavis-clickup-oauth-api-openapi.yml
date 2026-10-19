@@ -1,0 +1,114 @@
+openapi: 3.2.0
+info:
+  title: Klavis AI (https://www.klavis.ai) Clickup OAUTH API
+  description: Klavis AI - Open Source MCP Integrations for AI Applications
+  version: 0.1.0
+servers:
+- url: https://api.klavis.ai
+  description: US Production server
+- url: https://api.eu.klavis.ai
+  description: EU Production server
+tags:
+- name: clickup-oauth
+paths:
+  /oauth/clickup/authorize:
+    get:
+      tags:
+      - clickup-oauth
+      summary: Authorize Clickup
+      description: 'Start ClickUp OAuth flow
+
+
+        Parameters:
+
+        - instance_id: Identifier for the instance requesting authorization
+
+        - client_id: Optional client ID for white labeling
+
+        - redirect_url: Optional URL to redirect to after authorization completes'
+      operationId: authorizeClickUp
+      parameters:
+      - name: instance_id
+        in: query
+        required: true
+        schema:
+          type: string
+          description: Unique identifier for the client instance requesting authorization
+          title: Instance Id
+        description: Unique identifier for the client instance requesting authorization
+      - name: client_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Client ID for white labeling, if not provided will use default credentials
+          title: Client Id
+        description: Client ID for white labeling, if not provided will use default credentials
+      - name: redirect_url
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Optional URL to redirect to after authorization completes
+          title: Redirect Url
+        description: Optional URL to redirect to after authorization completes
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      description: Your Klavis AI API key.
+      scheme: bearer
+      x-fern-bearer:
+        name: api_key

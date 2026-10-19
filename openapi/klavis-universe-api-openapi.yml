@@ -1,0 +1,398 @@
+openapi: 3.2.0
+info:
+  title: Klavis AI (https://www.klavis.ai) Universe API
+  description: Klavis AI - Open Source MCP Integrations for AI Applications
+  version: 0.1.0
+servers:
+- url: https://api.klavis.ai
+  description: US Production server
+- url: https://api.eu.klavis.ai
+  description: EU Production server
+tags:
+- name: Universe
+paths:
+  /universes:
+    get:
+      tags:
+      - Universe
+      summary: List universes
+      description: List all available universes.
+      operationId: list_universes_universes_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListUniversesResponse'
+      security:
+      - HTTPBearer: []
+  /universes/{universe_id}/initial_data:
+    get:
+      tags:
+      - Universe
+      summary: Get init data
+      description: Get universe initial data for all services.
+      operationId: get_universe_data_universes__universe_id__initial_data_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: universe_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Universe Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /universes/{universe_id}:
+    post:
+      tags:
+      - Universe
+      summary: Acquire universe
+      description: Acquire the next idle universe instance.
+      operationId: acquire_universe_universes__universe_id__post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: universe_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Universe Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UniverseInstance'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /universes/{universe_instance_id}/release:
+    post:
+      tags:
+      - Universe
+      summary: Release universe
+      description: 'Release and Reinitialize the universe to its initial state.
+
+
+        This immediately returns and handles reset/initialization in the background.
+
+        Only gcalendar and notion setup methods use sandbox (which call reset internally).
+
+        Others need explicit reset before re-initialization.'
+      operationId: release_universe_universes__universe_instance_id__release_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: universe_instance_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Universe Instance Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReleaseUniverseResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /universes/{universe_id}/tasks/{task_num}:
+    get:
+      tags:
+      - Universe
+      summary: Get task details
+      description: Get task details within a universe instance.
+      operationId: get_task_universes__universe_id__tasks__task_num__get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: universe_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Universe Id
+      - name: task_num
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Task Num
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskDetails'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /universes/{universe_instance_id}/tasks/{task_num}/verify:
+    post:
+      tags:
+      - Universe
+      summary: Verify task
+      description: Verify if the task has been performed correctly by running the task's verify function.
+      operationId: verify_task_universes__universe_instance_id__tasks__task_num__verify_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: universe_instance_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Universe Instance Id
+      - name: task_num
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Task Num
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyTaskResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    UniverseInstance:
+      properties:
+        instance_id:
+          type: string
+          title: Instance Id
+          description: Unique universe instance ID
+        mcp_servers:
+          additionalProperties:
+            type: string
+          type: object
+          title: Mcp Servers
+          description: MCP server connections
+      type: object
+      required:
+      - instance_id
+      - mcp_servers
+      title: UniverseInstance
+      description: Universe instance details
+    ReleaseUniverseResponse:
+      properties:
+        message:
+          type: string
+          title: Message
+          description: Release confirmation message
+        released_at:
+          type: string
+          format: date-time
+          title: Released At
+          description: Timestamp of release
+      type: object
+      required:
+      - message
+      - released_at
+      title: ReleaseUniverseResponse
+      description: Response after releasing a universe to idle state
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    VerifyTaskResponse:
+      properties:
+        task_num:
+          type: string
+          title: Task Num
+        passed:
+          type: boolean
+          title: Passed
+        failure_reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Failure Reason
+      type: object
+      required:
+      - task_num
+      - passed
+      title: VerifyTaskResponse
+      description: Response from task verification
+    TaskDetails:
+      properties:
+        task_num:
+          type: string
+          title: Task Num
+          description: Task number
+        universe_id:
+          type: string
+          title: Universe Id
+          description: Universe ID
+        title:
+          type: string
+          title: Title
+          description: Task title
+        description:
+          type: string
+          title: Description
+          description: Full task description
+        prompt:
+          type: string
+          title: Prompt
+          description: LLM prompt for the task
+        difficulty:
+          $ref: '#/components/schemas/TaskDifficulty'
+          description: Difficulty level
+        verification_rationale:
+          type: string
+          title: Verification Rationale
+          description: Detailed explanation of what verification checks for and how task completion is evaluated
+      type: object
+      required:
+      - task_num
+      - universe_id
+      - title
+      - description
+      - prompt
+      - difficulty
+      - verification_rationale
+      title: TaskDetails
+      description: Detailed information about a task
+    Universe:
+      properties:
+        universe_id:
+          type: string
+          title: Universe Id
+          description: Universe template ID
+        name:
+          type: string
+          title: Name
+          description: Universe name
+        description:
+          type: string
+          title: Description
+          description: Universe description
+        domain:
+          type: string
+          title: Domain
+          description: Domain (e.g., 'Software Development')
+        personas:
+          items:
+            additionalProperties:
+              type: string
+            type: object
+          type: array
+          title: Personas
+          description: Available personas
+        task_nums:
+          items:
+            type: string
+          type: array
+          title: Task Nums
+          description: Task numbers available in this instance
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+          description: Instance creation time
+      type: object
+      required:
+      - universe_id
+      - name
+      - description
+      - domain
+      - personas
+      - task_nums
+      - created_at
+      title: Universe
+      description: Universe details
+    ListUniversesResponse:
+      properties:
+        universes:
+          items:
+            $ref: '#/components/schemas/Universe'
+          type: array
+          title: Universes
+          description: List of available universes
+      type: object
+      required:
+      - universes
+      title: ListUniversesResponse
+      description: Response listing available universes
+    TaskDifficulty:
+      type: string
+      enum:
+      - easy
+      - medium
+      - hard
+      title: TaskDifficulty
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      description: Your Klavis AI API key.
+      scheme: bearer
+      x-fern-bearer:
+        name: api_key
