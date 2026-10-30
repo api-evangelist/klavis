@@ -1,4 +1,4 @@
-# Klavis AI (klavis)
+# Klavis AI
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,81 +66,126 @@
 
 Klavis AI is an open-source MCP integration platform that lets AI agents reliably use external tools at production scale. The product line is organized around Strata (intelligent connectors that compress and route tool context), 100+ prebuilt MCP integrations with OAuth, and an MCP Sandbox for live agent training and evaluation. Target customers are AI agent companies, RL teams, and enterprises that need long-horizon multi-app environments with seeded state, resets, and verifiable outcomes, plus SOC 2 Type II and GDPR posture. SDKs are available for Python and TypeScript/JavaScript, integrations cover Claude, OpenAI, Gemini, Cohere, Mistral, LangChain/LangGraph, LlamaIndex, CrewAI, Mastra, Agno, Fireworks, Together, and Google ADK, and the project is Apache-2.0 on GitHub.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/klavis/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/klavis/refs/heads/main/apis.yml)
+**Areas:** MCP · MCP Server · MCP Hosting · Connectors · Authentication · Sandbox · Agent Training · Reinforcement Learning · White Label · Open Source · Strata
 
-## Scope
+## Klavis AI on APIs.io
 
-- **Type:** Index
-- **Position:** Provider
-- **Access:** 3rd-Party
+Everything profiled for Klavis AI is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/klavis/](https://apis.io/providers/klavis/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (5)
 
-- MCP
-- Model Context Protocol
-- MCP Servers
-- MCP Hosting
-- Connectors
-- OAuth
-- Sandboxes
-- Agent Training
-- Reinforcement Learning
-- White Label
-- Open Source
-- Strata
+- [Klavis MCP Platform API](https://apis.io/apis/klavis/mcp-platform/) — The Klavis API manages hosted MCP servers, OAuth flows for 50+ integrated services, Strata multi-tool servers, and live sandbox environments. Endpoints…
+- [Klavis AI MCP Servers API](https://apis.io/apis/klavis/klavis-mcp-servers-api/) — Create and manage hosted MCP server instances
+- [Klavis AI Sandbox API](https://apis.io/apis/klavis/klavis-sandbox-api/) — Acquire and manage isolated sandbox VMs
+- [Klavis AI Tools API](https://apis.io/apis/klavis/klavis-tools-api/) — List and invoke MCP server tools
+- [Klavis AI Users API](https://apis.io/apis/klavis/klavis-users-api/) — End-user metadata for agent integrations
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-05-23
-- **Modified:** 2026-05-23
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### Agentic access (1)
 
-### Klavis MCP Platform API
+Which operations an agent can call, which act, and which need a human in the loop.
 
-The Klavis API manages hosted MCP servers, OAuth flows for 50+ integrated services, Strata multi-tool servers, and live sandbox environments. Endpoints cover MCP server CRUD and tool invocation, sandbox VM acquisition and reset, data initialization and export, user and integration management, and white-label OAuth branding.
+- [Klavis Agentic Access](https://apis.io/agentic-access/klavis/klavis-agentic-access/)
 
-- **Human URL:** [https://www.klavis.ai/docs](https://www.klavis.ai/docs)
-- **Base URL:** `https://api.klavis.ai`
+#### Collections (5)
 
-#### Tags
+Postman and Open Collection request collections.
 
-- MCP Servers
-- Strata
-- Sandboxes
-- OAuth
-- Integrations
-- White Label
-- Users
+- [Klavis AI MCP Platform API](https://apis.io/collections/klavis/open-klavis/)
+- [Klavis AI MCP Platform MCP Servers API](https://apis.io/collections/klavis/open-klavis-mcp-servers-api/)
+- [Klavis AI MCP Platform MCP Servers Sandbox API](https://apis.io/collections/klavis/open-klavis-sandbox-api/)
+- [Klavis AI MCP Platform MCP Servers Tools API](https://apis.io/collections/klavis/open-klavis-tools-api/)
+- [Klavis AI MCP Platform MCP Servers Users API](https://apis.io/collections/klavis/open-klavis-users-api/)
 
-#### Properties
+#### Security (2)
 
-- [Documentation](https://www.klavis.ai/docs)
-- [API Reference](https://www.klavis.ai/docs/api-reference)
-- [Getting Started](https://www.klavis.ai/docs/quickstart)
-- [Sign Up](https://www.klavis.ai/home)
-- [SDK](https://pypi.org/project/klavis/)
-- [SDK](https://www.npmjs.com/package/klavis)
-- [GitHub Repository](https://github.com/Klavis-AI/klavis)
-- [GitHub Organization](https://github.com/Klavis-AI)
-- [Pricing](https://www.klavis.ai/pricing)
-- [L L Ms Txt](https://www.klavis.ai/docs/llms.txt)
-- [Postman Collection](collections/klavis.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/klavis.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Authentication, trust centre, and vulnerability disclosure.
 
-## Common Properties
+- [Klavis Authentication](https://apis.io/security/klavis/klavis-authentication/)
+- [Klavis Domain Security](https://apis.io/security/klavis/klavis-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Klavis Plans Pricing](https://apis.io/plans/klavis/klavis-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Klavis Rate Limits](https://apis.io/rate-limits/klavis/klavis-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Klavis Finops](https://apis.io/finops/klavis/klavis-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://www.klavis.ai)
 - [Documentation](https://www.klavis.ai/docs)
-- [Blog](https://www.klavis.ai/blog)
-- [GitHub Organization](https://github.com/Klavis-AI)
-- [GitHub Repository](https://github.com/Klavis-AI/klavis)
 - [Pricing](https://www.klavis.ai/pricing)
-- [Contact](https://www.klavis.ai/contact)
-- [Terms of Service](https://www.klavis.ai/terms)
-- [Privacy Policy](https://www.klavis.ai/privacy)
+- [Blog](https://www.klavis.ai/blog)
+- [Terms of service](https://www.klavis.ai/terms)
+- [Privacy policy](https://www.klavis.ai/privacy)
+- [GitHub](https://github.com/Klavis-AI)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 39.0** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 51.9 |
+| Contract governance | 0.0 |
+| Operational transparency | 23.7 |
+| Developer ergonomics | 50.0 |
+| Access clarity | 28.9 |
+
+**Agent readiness 17.9** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 11.8** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/klavis/](https://apis.io/providers/klavis/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Klavis AI: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/klavis/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
